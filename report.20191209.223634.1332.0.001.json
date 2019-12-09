@@ -4,10 +4,10 @@
     "reportVersion": 1,
     "event": "Allocation failed - JavaScript heap out of memory",
     "trigger": "FatalError",
-    "filename": "report.20191209.200445.876.0.001.json",
-    "dumpEventTime": "2019-12-09T20:04:45Z",
-    "dumpEventTimeStamp": "1575893085918",
-    "processId": 876,
+    "filename": "report.20191209.223634.1332.0.001.json",
+    "dumpEventTime": "2019-12-09T22:36:34Z",
+    "dumpEventTimeStamp": "1575902194777",
+    "processId": 1332,
     "cwd": "/Users/lxs/Desktop/work/inservice-web",
     "commandLine": [
       "node",
@@ -49,73 +49,73 @@
       {
         "model": "Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz",
         "speed": 2600,
-        "user": 242520,
+        "user": 1024050,
         "nice": 0,
-        "sys": 172900,
-        "idle": 1485130,
+        "sys": 656140,
+        "idle": 7472560,
         "irq": 0
       },
       {
         "model": "Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz",
         "speed": 2600,
-        "user": 70310,
+        "user": 123910,
         "nice": 0,
-        "sys": 34640,
-        "idle": 1794070,
+        "sys": 80730,
+        "idle": 8946540,
         "irq": 0
       },
       {
         "model": "Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz",
         "speed": 2600,
-        "user": 199880,
+        "user": 867780,
         "nice": 0,
-        "sys": 133340,
-        "idle": 1565890,
+        "sys": 457790,
+        "idle": 7825710,
         "irq": 0
       },
       {
         "model": "Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz",
         "speed": 2600,
-        "user": 70900,
+        "user": 124080,
         "nice": 0,
-        "sys": 32990,
-        "idle": 1795080,
+        "sys": 71700,
+        "idle": 8955370,
         "irq": 0
       },
       {
         "model": "Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz",
         "speed": 2600,
-        "user": 172330,
+        "user": 746230,
         "nice": 0,
-        "sys": 100860,
-        "idle": 1625910,
+        "sys": 344540,
+        "idle": 8060500,
         "irq": 0
       },
       {
         "model": "Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz",
         "speed": 2600,
-        "user": 71570,
+        "user": 125550,
         "nice": 0,
-        "sys": 32480,
-        "idle": 1794920,
+        "sys": 67190,
+        "idle": 8958400,
         "irq": 0
       },
       {
         "model": "Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz",
         "speed": 2600,
-        "user": 153720,
+        "user": 625100,
         "nice": 0,
-        "sys": 80240,
-        "idle": 1665130,
+        "sys": 258260,
+        "idle": 8267900,
         "irq": 0
       },
       {
         "model": "Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz",
         "speed": 2600,
-        "user": 72910,
+        "user": 129140,
         "nice": 0,
-        "sys": 31390,
-        "idle": 1794670,
+        "sys": 63060,
+        "idle": 8958930,
         "irq": 0
       }
     ],
@@ -176,7 +176,7 @@
         "name": "en0",
         "internal": false,
         "mac": "f4:0f:24:31:4b:86",
-        "address": "2001:db8:1:0:a93b:d3a8:100d:cb4e",
+        "address": "2001:db8:1:0:2982:8e7:78f6:5fb3",
         "netmask": "ffff:ffff:ffff:ffff::",
         "family": "IPv6",
         "scopeid": 0
@@ -269,21 +269,13 @@
     {
       "pc": "0x0000000100930c99",
       "symbol": "Builtins_CEntry_Return1_DontSaveFPRegs_ArgvOnStack_NoBuiltinExit [/usr/local/bin/node]"
-    },
-    {
-      "pc": "0x00001b17288b7cd3",
-      "symbol": ""
-    },
-    {
-      "pc": "0x00001b1728666a67",
-      "symbol": ""
     }
   ],
   "javascriptHeap": {
-    "totalMemory": 2171232256,
-    "totalCommittedMemory": 2157972856,
-    "usedMemory": 1923925360,
-    "availableMemory": 142531672,
+    "totalMemory": 2169266176,
+    "totalCommittedMemory": 2160847720,
+    "usedMemory": 1908586608,
+    "availableMemory": 232766744,
     "memoryLimit": 2197815296,
     "heapSpaces": {
       "read_only_space": {
@@ -295,37 +287,37 @@
       },
       "new_space": {
         "memorySize": 33554432,
-        "committedMemory": 22027792,
+        "committedMemory": 26481608,
         "capacity": 16759808,
-        "used": 5969032,
-        "available": 10790776
+        "used": 3822096,
+        "available": 12937712
       },
       "old_space": {
-        "memorySize": 2084941824,
-        "committedMemory": 2083858032,
-        "capacity": 1955155080,
-        "used": 1866986608,
-        "available": 88168472
+        "memorySize": 2063183872,
+        "committedMemory": 2062308952,
+        "capacity": 2008284192,
+        "used": 1833993664,
+        "available": 174290528
       },
       "code_space": {
-        "memorySize": 1736704,
-        "committedMemory": 1521184,
-        "capacity": 1354944,
-        "used": 1354944,
+        "memorySize": 1474560,
+        "committedMemory": 1379808,
+        "capacity": 1263264,
+        "used": 1263264,
         "available": 0
       },
       "map_space": {
-        "memorySize": 3674112,
-        "committedMemory": 3470240,
-        "capacity": 2683280,
-        "used": 2683280,
+        "memorySize": 3936256,
+        "committedMemory": 3789872,
+        "capacity": 2782000,
+        "used": 2782000,
         "available": 0
       },
       "large_object_space": {
-        "memorySize": 46440448,
-        "committedMemory": 46440448,
-        "capacity": 46348544,
-        "used": 46348544,
+        "memorySize": 66232320,
+        "committedMemory": 66232320,
+        "capacity": 66142632,
+        "used": 66142632,
         "available": 0
       },
       "code_large_object_space": {
@@ -345,13 +337,13 @@
     }
   },
   "resourceUsage": {
-    "userCpuSeconds": 155.878,
-    "kernelCpuSeconds": 50.919,
-    "cpuConsumptionPercent": 211.017,
-    "maxRss": 2711332323328,
+    "userCpuSeconds": 150.158,
+    "kernelCpuSeconds": 38.5811,
+    "cpuConsumptionPercent": 214.476,
+    "maxRss": 2781280731136,
     "pageFaults": {
-      "IORequired": 347,
-      "IONotRequired": 916935
+      "IORequired": 0,
+      "IONotRequired": 1103555
     },
     "fsActivity": {
       "reads": 0,
@@ -369,7 +361,7 @@
     "npm_config_only": "",
     "npm_config_commit_hooks": "true",
     "npm_config_browser": "",
-    "npm_package_gitHead": "e1259cf602c9d44280aa92ab7e5ff3baf658c714",
+    "npm_package_gitHead": "d7fa8ec385ac2bc66b50476e032abf55b7597dcc",
     "npm_package_dependencies_semver": "6.3.0",
     "npm_package_dependencies_camelcase": "^5.2.0",
     "npm_package_dependencies__typescript_eslint_eslint_plugin": "^2.2.0",
@@ -415,7 +407,7 @@
     "npm_config_cert": "",
     "npm_package_dependencies_pnp_webpack_plugin": "1.5.0",
     "npm_package_dependencies_jest_watch_typeahead": "0.4.0",
-    "TERM_SESSION_ID": "A5026F55-B89C-4A54-A671-ED57013F8452",
+    "TERM_SESSION_ID": "9B30AF44-0C54-4FB5-88C2-927E4A6E341E",
     "npm_config_registry": "https://registry.npmjs.org/",
     "npm_config_noproxy": "",
     "npm_config_fetch_retries": "2",
@@ -603,7 +595,6 @@
     "npm_config_git": "git",
     "npm_config_scope": "",
     "npm_package_dependencies_ts_pnp": "1.1.4",
-    "SECURITYSESSIONID": "186a9",
     "npm_config_unsafe_perm": "true",
     "npm_config_tmp": "/var/folders/7h/swqhrlrs1y3ck5y4cdzfz2480000gn/T",
     "npm_config_onload_script": "",

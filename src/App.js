@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import './App.less';
+import Login from './page/Login'
 class App extends Component {
 
   render () {
     
     return (
       <div className="App">
-        <h1>
-          登录
-        </h1>
+        <Login/>
       </div>
     );
   }
