@@ -1,11 +1,26 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import { Form, Icon, Input, Button, Checkbox, Col,Row } from 'antd';
 import Header from '../Header'
 import './index.less'
 class Login extends Component {
 
+    handleSubmit = e => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            console.log('this.props', this.props);
+            this.props.handleChangeisLogin()
+            this.props.history.push('/home')
+            // if (!err) {
+
+            // }
+        });
+    };
+
   render () {
     const { getFieldDecorator } = this.props.form;
+    console.log('login',this.props);
+    
     const  formItemLayout = {
                 labelCol: {
                     xs: { span: 24 },
@@ -63,4 +78,23 @@ class Login extends Component {
   }
   
 }
-export default Login = Form.create()(Login);
+const mapStateToProps = state => {
+    return {
+        isLogin: state.isLogin,
+    }
+}
+
+const mapDispatchTopProps = dispatch => {
+    return {
+        handleChangeisLogin() {
+            const action = {
+                type: 'change_islogin',
+                payload: {
+                    isLogin: true,
+                }
+            }
+            dispatch(action)
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchTopProps)(Login = Form.create()(Login));
