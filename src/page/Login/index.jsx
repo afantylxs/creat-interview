@@ -19,8 +19,6 @@ class Login extends Component {
 
   render () {
     const { getFieldDecorator } = this.props.form;
-    console.log('login',this.props);
-    
     const  formItemLayout = {
                 labelCol: {
                     xs: { span: 24 },
@@ -34,10 +32,10 @@ class Login extends Component {
     return (
     <div>
       <div className="login-form-layout">
-          <Row>
+          <Row style={{backgroundColor: '#fff'}}>
               <Col span={15}>
                   <div className="login-left-img">
-                    <img src={require('../../images/login.jpg')} />
+                    <img width="100%" src={require('../../images/login.jpg')} />
                   </div>
               </Col>
               <Col span={9}>

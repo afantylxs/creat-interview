@@ -10,16 +10,14 @@ class Header extends Component {
         this.props.history.push('/login')
     }
     render() {
-        console.log('header.this',this.props);
-
         const { pathname } = this.props.location
         return (
             <div className="inservice-header">
-                <Row>
-                    <Col span={4}>
+                <Row style={{height: '100%', display: 'flex'}}>
+                    <Col span={6}>
                         <div className="inservice-header-logo"></div>
                     </Col>
-                    <Col span={18}>
+                    <Col span={16}>
                         <Menus />
                     </Col>
                     <Col span={2}>
