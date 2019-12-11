@@ -8,7 +8,7 @@ class Login extends Component {
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            console.log('this.props', this.props);
+            localStorage.setItem("flag", true);
             this.props.handleChangeisLogin()
             this.props.history.push('/home')
             // if (!err) {
@@ -33,42 +33,51 @@ class Login extends Component {
             };
     return (
     <div>
-        <Header />
       <div className="login-form-layout">
           <Row>
               <Col span={15}>
-                logo
+                  <div className="login-left-img">
+                    <img src={require('../../images/login.jpg')} />
+                  </div>
               </Col>
               <Col span={9}>
-                  <h2>软通人员管理系统</h2>
-                <Form {...formItemLayout} onSubmit={this.handleSubmit} className="login-form">
-                    <Form.Item>
-                    {getFieldDecorator('username', {
-                        rules: [{ required: true, message: 'Please input your username!' }],
-                    })(
-                        <Input
-                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        placeholder="Username"
-                        />,
-                    )}
-                    </Form.Item>
-                    <Form.Item>
-                    {getFieldDecorator('password', {
-                        rules: [{ required: true, message: 'Please input your Password!' }],
-                    })(
-                        <Input
-                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        type="password"
-                        placeholder="Password"
-                        />,
-                    )}
-                    </Form.Item>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit" className="login-form-button">
-                            登录
-                        </Button>
-                    </Form.Item>
-                </Form>
+                  <div className="login-rigiht-img">
+                    <h2 style={{fontSize: '30px'}}>登录</h2>
+                    <Form {...formItemLayout} onSubmit={this.handleSubmit} className="login-form">
+                        <Form.Item>
+                        {getFieldDecorator('username', {
+                            rules: [{ required: true, message: 'Please input your username!' }],
+                        })(
+                            <Input
+                            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            placeholder="Username"
+                            />,
+                        )}
+                        </Form.Item>
+                        <Form.Item>
+                        {getFieldDecorator('password', {
+                            rules: [{ required: true, message: 'Please input your Password!' }],
+                        })(
+                            <Input
+                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            type="password"
+                            placeholder="Password"
+                            />,
+                        )}
+                        </Form.Item>
+                        <Form.Item>
+                            {getFieldDecorator('remember', {
+                                valuePropName: 'checked',
+                                initialValue: true,
+                            })(<Checkbox>记住密码</Checkbox>)}
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" className="login-form-button">
+                                登录
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </div>
               </Col>
           </Row>
       </div>

@@ -1,19 +1,31 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom';
-import { Button } from 'antd'
+import { Button, Row, Col } from 'antd';
+import Menus from '../../components/Menu'
+import './index.less';
 
 class Header extends Component {
     handleCancleLogin = () => {
+        localStorage.setItem("flag", false);
         this.props.history.push('/login')
     }
     render() {
+        console.log('header.this',this.props);
+
         const { pathname } = this.props.location
-        console.log('header.this.props',this.props);
-        
         return (
-            <div style={{height: '100px'}}>
-                <span>头部</span>
-                {pathname !== '/login' && <Button onClick={this.handleCancleLogin.bind(this)}>退出登录</Button>}
+            <div className="inservice-header">
+                <Row>
+                    <Col span={4}>
+                        <div className="inservice-header-logo"></div>
+                    </Col>
+                    <Col span={18}>
+                        <Menus />
+                    </Col>
+                    <Col span={2}>
+                        {pathname !== '/login' && <Button onClick={this.handleCancleLogin.bind(this)}>退出登录</Button>}
+                    </Col>
+                </Row>
             </div>
         )
     }

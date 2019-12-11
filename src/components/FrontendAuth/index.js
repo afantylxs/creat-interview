@@ -3,16 +3,24 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux'
 
 class FrontendAuth extends Component {
-    componentWillReceiveProps() {
-        const { isLogin } = this.props;
+    componentWillReceiveProps(nextProps) {
+        console.log('nextProps', nextProps);
+        // const newiILogin = nextProps.isLogin;
+        // const { isLogin } = this.props;
         const { pathname } = this.props.location;
-        if(!isLogin && pathname !== '/login') {
+        const flag = localStorage.getItem("flag");
+        console.log('flag',flag);
+        
+        if(!flag&& pathname !== '/login') {
+
             this.props.history.push('/login')
         }
     }
     componentDidMount () {
         const { isLogin } = this.props;
-        if(!isLogin) {
+        const { pathname } = this.props.location;
+        const flag = localStorage.getItem("flag");
+        if(!flag&& pathname !== '/login') {
             this.props.history.push('/login')
         }
     }
