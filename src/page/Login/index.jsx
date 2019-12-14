@@ -1,19 +1,29 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { Form, Icon, Input, Button, Checkbox, Col,Row } from 'antd';
-import Header from '../Header'
+import axios from 'axios'
+import { Form, Icon, Input, Button, Checkbox, Col, Row, message } from 'antd';
 import './index.less'
 class Login extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            localStorage.setItem("flag", true);
-            this.props.handleChangeisLogin()
-            this.props.history.push('/home')
-            // if (!err) {
-
-            // }
+            if (!err) {
+                axios.post('/api/user/login.json', {
+                    username: values.username,
+                    password: values.password,
+                }).then(res => {
+                    if(res.data.success) {
+                        localStorage.setItem("token", res.data.data.token);
+                        localStorage.setItem("flag", true);
+                        this.props.history.push('/home');
+                    } else {
+                        message.error('登录失败')
+                    }
+                }).catch( err => {
+                    message.error('登录失败' + err)
+                })
+                
+            }
         });
     };
 
@@ -48,7 +58,7 @@ class Login extends Component {
                         })(
                             <Input
                             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            placeholder="Username"
+                            placeholder="请输入账号"
                             />,
                         )}
                         </Form.Item>
@@ -59,7 +69,7 @@ class Login extends Component {
                             <Input
                             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                             type="password"
-                            placeholder="Password"
+                            placeholder="请输入密码"
                             />,
                         )}
                         </Form.Item>
@@ -83,25 +93,5 @@ class Login extends Component {
     
     );
   }
-  
 }
-const mapStateToProps = state => {
-    return {
-        isLogin: state.isLogin,
-    }
-}
-
-const mapDispatchTopProps = dispatch => {
-    return {
-        handleChangeisLogin() {
-            const action = {
-                type: 'change_islogin',
-                payload: {
-                    isLogin: true,
-                }
-            }
-            dispatch(action)
-        }
-    }
-}
-export default connect(mapStateToProps, mapDispatchTopProps)(Login = Form.create()(Login));
+export default Login = Form.create()(Login);

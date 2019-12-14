@@ -6,19 +6,11 @@ import './index.less'
 const { SubMenu } = Menu;
 
 class Menus extends Component {
-      handleClick = e => {
-        console.log('click ', e);
-        this.props.handleChangeMenuSelectedKeys(e.key)
-      };
-  selectRouterAactive = current => {
-    const newCurrent = '/' + current;
+  selectRouterAactive = () => {
     const { pathname } = this.props.location;
-    console.log('this.props',this.props, 'sssss', newCurrent);
-
-    
     let activeKey = '';
     activeKey = pathname.substr(1);
-    if(pathname !== '/' && pathname !== newCurrent) {
+    if(pathname !== '/' ) {
       activeKey = pathname.substr(1)
     } 
 
@@ -29,14 +21,13 @@ class Menus extends Component {
     
   }
     render() {
-      const { current } = this.props;
-      const activeKey = this.selectRouterAactive(current)
-      console.log('activeKey',activeKey);
+      const activeKey = this.selectRouterAactive()
+      console.log('menu',this.props);
 
       
         return (
           <div className="inservice-menu">
-            <Menu theme="dark" style={{backgroundColor: '#658ef7', color: '#fff'}} onClick={this.handleClick} selectedKeys={[activeKey]} mode="horizontal">
+            <Menu theme="dark" style={{backgroundColor: '#658ef7', color: '#fff'}} selectedKeys={[activeKey]} mode="horizontal">
               <Menu.Item key="home">
                 <Link to='/home'>
                     首页
@@ -57,24 +48,4 @@ class Menus extends Component {
         );
       }
 }
-
-const mapStateToProps = state => {
-  return {
-    current: state.current,
-  }
-}
-
-const mapDispatchTopProps = dispatch => {
-  return {
-      handleChangeMenuSelectedKeys(key) {
-          const action = {
-              type: 'change_selectedKeys',
-              payload: key
-          }
-          dispatch(action)
-      }
-  }
-}
-
-
-export default withRouter(connect(mapStateToProps, mapDispatchTopProps)(Menus))
+export default withRouter(Menus)

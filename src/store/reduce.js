@@ -1,19 +1,7 @@
-const defaultState = {
-    isLogin: false,
-    current: 'home',
-};
+import { combineReducers } from 'redux';
+import { reducer as basicRudecer } from '../page/BasicInformation/store/'
+ const reducer = combineReducers({
+    basic: basicRudecer
+})
 
-export default (state = defaultState, action) => {
-    switch (action.type) {
-        case 'change_islogin':
-            return { ...state, isLogin: true }
-            break;
-        case 'change_selectedKeys':
-            return { ...state, current: action.payload}
-            break;
-    
-        default:
-            return state;
-            break;
-    }
-}
+export default reducer

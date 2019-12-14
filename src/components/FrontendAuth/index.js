@@ -4,22 +4,23 @@ import { connect } from 'react-redux'
 
 class FrontendAuth extends Component {
     componentWillReceiveProps(nextProps) {
-        // const newiILogin = nextProps.isLogin;
-        // const { isLogin } = this.props;
         const { pathname } = this.props.location;
         const flag = localStorage.getItem("flag");
-        if(!flag&& pathname !== '/login') {
-
+        if(!flag && pathname !== '/login') {
             this.props.history.push('/login')
+            return;
         }
     }
     componentDidMount () {
-        const { isLogin } = this.props;
         const { pathname } = this.props.location;
         const flag = localStorage.getItem("flag");
-        if(!flag&& pathname !== '/login') {
+        // 判断登录情况，如果是登录状态跳转至当前页面，如果不是登录状态跳转至登录页
+        if(!flag && pathname !== '/login') {
             this.props.history.push('/login')
+            return;
         }
+        
+        this.props.history.push(pathname)
     }
     render() {
         return null
@@ -27,7 +28,7 @@ class FrontendAuth extends Component {
 }
 const mapStateToProps = state => {
     return {
-        isLogin: state.isLogin,
+        state
     }
 }
 export default connect(mapStateToProps)(withRouter(FrontendAuth))

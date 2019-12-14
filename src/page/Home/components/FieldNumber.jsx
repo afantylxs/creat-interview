@@ -46,7 +46,7 @@ export default class FieldNumber extends Component {
     render() {
         return (
             <div className="fieldNumber" style={{padding: '10px'}} >
-                <Table columns={columns} dataSource={data} pagination={false} />
+                <Table rowKey={(record, index) => index} columns={columns} dataSource={data} pagination={false} />
             </div>
         )
     }

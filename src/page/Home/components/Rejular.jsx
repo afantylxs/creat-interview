@@ -42,9 +42,9 @@ export default class Rejular extends Component {
         return (
             <div className="rejular" style={{padding: '10px'}} >
                 {
-                    arr.map( item => {
+                    arr.map( (item, index) => {
                         return (
-                    <span className="rejular-content">{item.name}将在<span style={{color: '#658ef7'}}>{item.days}</span>天后转正</span>
+                    <span key={index} className="rejular-content">{item.name}将在<span style={{color: '#658ef7'}}>{item.days}</span>天后转正</span>
                         )
                     })
                 }

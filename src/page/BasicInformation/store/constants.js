@@ -1,0 +1,1 @@
+export const CHANGE_BASICVISIBLE = 'basic/CHANGE_BASICVISIBLE';
