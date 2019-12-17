@@ -1,15 +1,22 @@
-import * as constants  from './constants'
+import * as constants from './constants';
 
 const defaultState = {
-    basicVisible: false,
+  basicVisible: false,
+  basicRecord: {}
 };
 
 export default (state = defaultState, action) => {
-    const { type, payload } = action;
-    switch (type) {
-        case constants.CHANGE_BASICVISIBLE:
-            return { ...state, basicVisible: payload.basicVisible }
-        default:
-            return state;
-    }
-}
+  const { type, payload } = action;
+  console.log('reduce', payload);
+
+  switch (type) {
+    case constants.CHANGE_BASICVISIBLE:
+      return {
+        ...state,
+        basicVisible: payload.basicVisible,
+        basicRecord: payload.record
+      };
+    default:
+      return state;
+  }
+};
