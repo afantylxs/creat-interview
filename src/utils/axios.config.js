@@ -10,6 +10,9 @@ const fetch = axios.create({
 fetch.interceptors.request.use(
   config => {
     const token = localStorage.getItem('token');
+    // const data = JSON.parse(JSON.stringify(config.data));
+    // console.log('request---config', config, 'datadatadata', data);
+
     config.method === 'post'
       ? (config.data = { ...config.data })
       : (config.params = { ...config.params });
@@ -18,6 +21,7 @@ fetch.interceptors.request.use(
   },
   error => {
     //请求错误处理
+    console.log('请求错误处理request', error);
     Promise.reject(error);
   }
 );
@@ -36,11 +40,16 @@ fetch.interceptors.response.use(
     //响应错误处理
     let text = `TypeError: Cannot read property 'token' of undefined`;
     // localStorage.setItem("flag", false);
+    console.log('响应错误response', error);
+
     if (error === text) {
       message.error('登录过期' + error);
       return Promise.reject('登录过期');
     }
     message.error('网络异常' + error);
+    localStorage.setItem('token', null);
+    localStorage.setItem('flag', false);
+
     return Promise.reject('网络异常');
   }
 );

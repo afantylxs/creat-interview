@@ -4,33 +4,6 @@ import { connect } from 'react-redux';
 import { actionCreators } from '../store';
 import './rejular.less';
 
-const arr = [
-  {
-    empName: '刘晓森',
-    regularTime: '15'
-  },
-  {
-    empName: '刘晓森',
-    regularTime: '15'
-  },
-  {
-    empName: '刘晓森',
-    regularTime: '15'
-  },
-  {
-    empName: '刘晓森',
-    regularTime: '15'
-  },
-  {
-    empName: '刘晓森',
-    regularTime: '15'
-  },
-  {
-    empName: '刘晓森',
-    regularTime: '15'
-  }
-];
-
 @connect(state => state.home, actionCreators)
 class Rejular extends Component {
   constructor(props) {

@@ -1,1 +1,2 @@
 export const CHANGE_BASICVISIBLE = 'basic/CHANGE_BASICVISIBLE';
+export const CHANGE_BASICLIST = 'basic/CHANGE_BASICLIST';

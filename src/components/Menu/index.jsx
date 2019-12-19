@@ -44,10 +44,10 @@ class Menus extends Component {
             <Link to="/project">项目信息</Link>
           </Menu.Item>
           <Menu.Item key="department">
-            <Link to="/department">部门调整</Link>
+            <Link to="/department">人事调整</Link>
           </Menu.Item>
           <Menu.Item key="leave">
-            <Link to="/leave">离职离项</Link>
+            <Link to="/leave">离职信息</Link>
           </Menu.Item>
           <Menu.Item key="analysis">
             <Link to="/analysis">数据分析</Link>

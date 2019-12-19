@@ -1,0 +1,1 @@
+export const CHANGE_PROJECTVISIBLE = 'project/CHANGE_BASICVISIBLE';

@@ -6,58 +6,134 @@ import { actionCreators } from './store';
 import { reminderColumns } from '../../utils/tableTitle.config';
 const { Search } = Input;
 const { Option } = Select;
-const data = [];
-for (let i = 0; i < 10; i++) {
-  data.push({
-    bu: '阿里实施部',
-    workId: i + 1,
-    name: '约翰',
-    bumen: '北京MAG阿里实施部4606',
-    sex: '男',
-    bieth: '1990-01-01',
-    entry: '2017-01-01',
-    currency: '助理视觉设计师',
-    code: 'P7',
-    nature: '试用期',
-    superior: '权威光',
-    deliver: '闫海军'
-  });
-}
 @connect(state => state.basic, actionCreators)
 class BasicInformation extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      visible: false
-    };
     this.columns = [
-      ...reminderColumns,
+      {
+        title: '姓名',
+        dataIndex: 'empName',
+        width: '150px'
+      },
+      {
+        title: 'BU',
+        dataIndex: 'ipsaBuDeptId',
+        width: '150px'
+      },
+      {
+        title: '部门',
+        dataIndex: 'ipsaDeptId',
+        width: '150px'
+      },
+      {
+        title: '软通工号',
+        dataIndex: 'empNo',
+        width: '150px'
+      },
+      {
+        title: '性别',
+        dataIndex: 'gender',
+        width: '150px',
+        render: (text, record) => {
+          switch (text) {
+            case 0:
+              return <span>男</span>;
+            case 1:
+              return <span>女</span>;
+
+            default:
+              break;
+          }
+        }
+      },
+      {
+        title: '出生日期',
+        dataIndex: 'birthday',
+        width: '150px'
+      },
+      {
+        title: '入职日期',
+        dataIndex: 'joiningDay',
+        width: '150px'
+      },
+      {
+        title: '转正日期',
+        dataIndex: 'correctionTime',
+        width: '150px'
+      },
+      {
+        title: '通用职位',
+        dataIndex: 'ipsaPostNo',
+        width: '150px'
+      },
+      {
+        title: 'Grade代码',
+        dataIndex: 'ipsaGradeCode',
+        width: '150px'
+      },
+      {
+        title: '是否在职',
+        dataIndex: 'onJob',
+        width: '150px'
+      },
+      {
+        title: '人员性质',
+        dataIndex: 'empProperty',
+        width: '150px',
+        render: (text, record) => {
+          switch (text) {
+            case 0:
+              return <span>正式员工</span>;
+            case 1:
+              return <span>试用期</span>;
+            case 2:
+              return <span>实习期</span>;
+            case 3:
+              return <span>兼职员工</span>;
+
+            default:
+              break;
+          }
+        }
+      },
+      {
+        title: '直属上级',
+        dataIndex: 'directSuperiorName',
+        width: '150px'
+      },
+      {
+        title: '交付经理',
+        dataIndex: 'deliveryManagerName',
+        width: '150px'
+      },
       {
         title: '操作',
-        dataIndex: '17',
-        width: '100px',
-        fixed: 'right',
-        render: (text, record) => (
-          <Button
-            onClick={() => {
-              console.log('record', record);
-
-              const { changeBasicVisible } = this.props;
-              changeBasicVisible({
-                basicVisible: true,
-                record
-              });
-            }}
-          >
-            编辑
-          </Button>
-        )
+        dataIndex: 'action',
+        width: '150px',
+        render: (text, record) => {
+          return (
+            <Button
+              onClick={() => {
+                const { changeBasicVisible } = this.props;
+                changeBasicVisible({
+                  basicVisible: true,
+                  record
+                });
+              }}
+            >
+              编辑
+            </Button>
+          );
+        }
       }
     ];
   }
 
   componentDidMount() {
-    console.log('渲染几次');
+    const { queryEmployeeBaseInfoList, deptInfoBu } = this.props;
+    queryEmployeeBaseInfoList();
+    deptInfoBu();
   }
   handleShowModel = () => {
     const { changeBasicVisible } = this.props;
@@ -68,7 +144,11 @@ class BasicInformation extends Component {
   };
   render() {
     const columns = this.columns;
+    const { basicList } = this.props;
     const { getFieldDecorator } = this.props.form;
+    console.log('basicList', this.props);
+
+    // const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -80,7 +160,7 @@ class BasicInformation extends Component {
       }
     };
     return (
-      <div className="project-information">
+      <div className="basic-information">
         <Row style={{ padding: '30px' }}>
           <Col span={24}>
             <Row>
@@ -183,7 +263,7 @@ class BasicInformation extends Component {
             <Table
               rowKey={(record, index) => index}
               columns={columns}
-              dataSource={data}
+              dataSource={basicList}
               scroll={{ x: 1300 }}
             />
           </Col>

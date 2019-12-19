@@ -2,13 +2,12 @@ import * as constants from './constants';
 
 const defaultState = {
   basicVisible: false,
-  basicRecord: {}
+  basicRecord: {},
+  basicList: []
 };
 
 export default (state = defaultState, action) => {
   const { type, payload } = action;
-  console.log('reduce', payload);
-
   switch (type) {
     case constants.CHANGE_BASICVISIBLE:
       return {
@@ -16,6 +15,8 @@ export default (state = defaultState, action) => {
         basicVisible: payload.basicVisible,
         basicRecord: payload.record
       };
+    case constants.CHANGE_BASICLIST:
+      return { ...state, basicList: payload };
     default:
       return state;
   }
