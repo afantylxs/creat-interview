@@ -28,8 +28,10 @@ export const getBirthdayList = () => {
   return dispatch => {
     fetch
       .get('/api/home/queryEmployeeBirthdayCountByMonth.json', {
-        currentPage: 1,
-        pageSize: 3
+        params: {
+          pageSize: 3,
+          currentPage: 1
+        }
       })
       .then(res => {
         if (res.success) {
@@ -47,8 +49,10 @@ export const getRejularList = () => {
   return dispatch => {
     fetch
       .get('api/home/queryWillRegularEmployee.json', {
-        pageSize: 3,
-        currentPage: 1
+        params: {
+          pageSize: 3,
+          currentPage: 1
+        }
       })
       .then(res => {
         if (res.success) {
@@ -66,8 +70,10 @@ export const getFieldList = () => {
   return dispatch => {
     fetch
       .get('/api/home/queryAreaEmployeeCount.json', {
-        pageSize: 3,
-        currentPage: 1
+        params: {
+          pageSize: 3,
+          currentPage: 1
+        }
       })
       .then(res => {
         if (res.success) {
@@ -83,18 +89,13 @@ export const getFieldList = () => {
 //获取入职离职列表
 export const getReminderList = () => {
   return dispatch => {
-    fetch
-      .get('/api/home/queryEmployeeCountByMonthAndStatus.json', {
-        pageSize: 3,
-        currentPage: 1
-      })
-      .then(res => {
-        if (res.success) {
-          const { data } = res;
-          dispatch(changeReminderList(data));
-        } else {
-          message.error('获取列表失败');
-        }
-      });
+    fetch.get('/api/home/queryEmployeeCountByMonthAndStatus.json').then(res => {
+      if (res.success) {
+        const { data } = res;
+        dispatch(changeReminderList(data));
+      } else {
+        message.error('获取列表失败');
+      }
+    });
   };
 };

@@ -109,5 +109,9 @@ export const reminderColumnsForm = [
     title: '交付经理',
     dataIndex: 'deliveryManagerName',
     width: '150px'
+  },
+  {
+    title: '招聘顾问',
+    dataIndex: 'recruitmentUserId'
   }
 ];

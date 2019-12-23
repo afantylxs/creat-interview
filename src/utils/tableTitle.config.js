@@ -199,6 +199,29 @@ export const projectColumns = [
   }
 ];
 
+export const educationList = [
+  {
+    title: '毕业学校',
+    dataIndex: 'w',
+    width: '150px'
+  },
+  {
+    title: '专业',
+    dataIndex: 'e',
+    width: '150px'
+  },
+  {
+    title: '学历',
+    dataIndex: 'r',
+    width: '150px'
+  },
+  {
+    title: '是否统招本科',
+    dataIndex: 't',
+    width: '150px'
+  }
+];
+
 export const leaveFormList = [
   {
     title: '姓名',

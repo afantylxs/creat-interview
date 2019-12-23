@@ -28,7 +28,7 @@ class Layout extends Component {
   render() {
     const { pathname } = this.props.location;
     return (
-      <div>
+      <div style={{ minWidth: '1300px' }}>
         <FrontendAuth />
         {routerList.includes(pathname) && <Header />}
         <Switch>

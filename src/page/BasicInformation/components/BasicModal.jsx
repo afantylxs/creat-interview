@@ -33,14 +33,24 @@ class BasicModal extends Component {
     return [];
   };
 
+  componentDidMount() {
+    const { queryUserListInfoByRolePermission } = this.props;
+    queryUserListInfoByRolePermission('dm');
+    // queryUserListInfoByRolePermission('pm');
+    queryUserListInfoByRolePermission('rs');
+  }
+
   // 根据不同的信息渲染不同的输入框
   baseFormInput = key => {
+    const { rsData, dmData, buList, dicList } = this.props;
     if (inputList.indexOf(key) !== -1) {
       return <Input />;
     }
     if (dateList.indexOf(key) !== -1) {
+      const { basicRecord } = this.props;
       return (
         <DatePicker
+          disabled={key === 'correctionTime' && !basicRecord.id && true}
           placeholder="请选择日期"
           style={{ width: '100%' }}
           onChange={this.handleChangeDate.bind(this, key)}
@@ -48,8 +58,19 @@ class BasicModal extends Component {
       );
     }
     return (
-      <Select className="basic-select" style={{ width: '100%' }}>
-        {key === 'ipsaBuDeptId' && <Option value={2}>阿里</Option>}
+      <Select
+        onFocus={this.handleGetOption.bind(this, key)}
+        className="basic-select"
+        style={{ width: '100%' }}
+      >
+        {key === 'ipsaBuDeptId' &&
+          buList.map(item => {
+            return (
+              <Option key={item.id} value={item.id}>
+                {item.name}
+              </Option>
+            );
+          })}
         {key === 'ipsaDeptId' && <Option value={1}>部门</Option>}
         {key === 'gender' &&
           genderEunm.map(item => {
@@ -59,7 +80,14 @@ class BasicModal extends Component {
               </Option>
             );
           })}
-        {key === 'ipsaPostNo' && <Option value={3}>高级视觉设计师</Option>}
+        {key === 'ipsaPostNo' &&
+          dicList.map(item => {
+            return (
+              <Option key={item.id} value={item.id}>
+                {item.label}
+              </Option>
+            );
+          })}
         {key === 'ipsaGradeCode' && <Option value={4}>p7</Option>}
         {key === 'empProperty' &&
           empPropertyEumn.map(item => {
@@ -72,9 +100,15 @@ class BasicModal extends Component {
         {key === 'directSuperiorName' && (
           <Option value="superior">权威光</Option>
         )}
-        {key === 'deliveryManagerName' && (
-          <Option value="deliver">闫海军</Option>
-        )}
+        {key === 'deliveryManagerName' &&
+          dmData.map(item => {
+            //交付下拉列表
+            return (
+              <Option key={item.id} value={item.id}>
+                {item.username}
+              </Option>
+            );
+          })}
         {key === 'onJob' &&
           onJobEnum.map(item => {
             return (
@@ -83,8 +117,25 @@ class BasicModal extends Component {
               </Option>
             );
           })}
+        {key === 'recruitmentUserId' &&
+          rsData.map(item => {
+            //招聘顾问下拉列表
+            return (
+              <Option key={item.id} value={item.id}>
+                {item.username}
+              </Option>
+            );
+          })}
       </Select>
     );
+  };
+
+  handleGetOption = key => {
+    const { dictInfo } = this.props;
+    if (key === 'ipsaPostNo') {
+      dictInfo('general_position');
+    }
+    console.log('key', key);
   };
 
   handleChangeDate = (key, date, dateString) => {
@@ -94,7 +145,7 @@ class BasicModal extends Component {
   handleProjectSubmit = () => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const { saveEmployeeBaseInfo } = this.props;
+        const { saveEmployeeBaseInfo, basicRecord } = this.props;
         const arg0 = {
           empName: values.empName,
           ipsaBuDeptId: values.ipsaBuDeptId,
@@ -103,9 +154,9 @@ class BasicModal extends Component {
           gender: values.gender,
           birthdayFormat: moment(values.birthday).format('YYYY-MM-DD'),
           joiningDayFormat: moment(values.joiningDay).format('YYYY-MM-DD'),
-          correctionTimeFormat: moment(values.correctionTime).format(
-            'YYYY-MM-DD'
-          ),
+          correctionTimeFormat: basicRecord.id
+            ? moment(values.correctionTime).format('YYYY-MM-DD')
+            : '',
           ipsaPostNo: values.ipsaPostNo,
           ipsaGradeCode: values.ipsaGradeCode,
           empProperty: values.empProperty,
@@ -117,7 +168,14 @@ class BasicModal extends Component {
           recruitmentUserId: 1,
           recruitmentUserName: '谁'
         };
-        saveEmployeeBaseInfo(arg0);
+        console.log('arg0', arg0);
+
+        console.log(basicRecord);
+        if (basicRecord.id) {
+          console.log('编辑');
+        } else {
+          // saveEmployeeBaseInfo(arg0);
+        }
       }
     });
   };
@@ -160,7 +218,9 @@ class BasicModal extends Component {
                       item.dataIndex === 'birthday' ||
                       item.dataIndex === 'joiningDay' ||
                       item.dataIndex === 'correctionTime'
-                        ? moment(basicRecord[item.dataIndex])
+                        ? basicRecord[item.dataIndex]
+                          ? moment(basicRecord[item.dataIndex])
+                          : moment()
                         : basicRecord[item.dataIndex],
                     rules: this.basicFormRules(item.dataIndex)
                   })(this.baseFormInput(item.dataIndex))}

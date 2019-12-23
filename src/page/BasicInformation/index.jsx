@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Button, Table, Form, Select, Input } from 'antd';
+import {
+  DatePicker,
+  Upload,
+  Row,
+  Col,
+  Button,
+  Table,
+  Form,
+  Select,
+  Input
+} from 'antd';
 import BasicModal from './components/BasicModal.jsx';
+import { empPropertyEumn } from '../../utils/optionEnum';
 import { actionCreators } from './store';
-import { reminderColumns } from '../../utils/tableTitle.config';
 const { Search } = Input;
 const { Option } = Select;
 @connect(state => state.basic, actionCreators)
@@ -19,7 +29,12 @@ class BasicInformation extends Component {
       {
         title: 'BU',
         dataIndex: 'ipsaBuDeptId',
-        width: '150px'
+        width: '150px',
+        render: text => {
+          const { buList } = this.props;
+          const showText = buList.filter(item => item.id === text);
+          return <span>{showText.length && showText[0].name}</span>;
+        }
       },
       {
         title: '部门',
@@ -41,7 +56,6 @@ class BasicInformation extends Component {
               return <span>男</span>;
             case 1:
               return <span>女</span>;
-
             default:
               break;
           }
@@ -108,6 +122,11 @@ class BasicInformation extends Component {
         width: '150px'
       },
       {
+        title: '招聘顾问',
+        dataIndex: 'recruitmentUserId',
+        width: '150px'
+      },
+      {
         title: '操作',
         dataIndex: 'action',
         width: '150px',
@@ -142,11 +161,28 @@ class BasicInformation extends Component {
       record: {}
     });
   };
+
+  handleChangeFile = ({ file, fileList }) => {
+    console.log('file', file, 'fileList', fileList);
+  };
+
+  //搜索框调用查询列表
+  handleSearchInput = value => {
+    const { queryEmployeeBaseInfoList } = this.props;
+    queryEmployeeBaseInfoList(value);
+    // console.log('value', value);
+  };
+
+  handleChangeBuDeptId = value => {
+    const { deptInfo } = this.props;
+    console.log('value', value);
+    deptInfo(value);
+  };
   render() {
     const columns = this.columns;
-    const { basicList } = this.props;
+    const { basicList, buList, depList } = this.props;
     const { getFieldDecorator } = this.props.form;
-    console.log('basicList', this.props);
+    const token = localStorage.getItem('token');
 
     // const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -176,17 +212,38 @@ class BasicInformation extends Component {
                 <Search
                   style={{ width: '50%' }}
                   placeholder="输入姓名或软通工号"
-                  onSearch={value => console.log(value)}
+                  onSearch={value => this.handleSearchInput(value)}
                   enterButton
                 />
               </Col>
               <Col span={12} style={{ textAlign: 'right' }}>
-                <Button style={{ marginRight: '40px' }} type="primary">
-                  导入
-                </Button>
-                <Button style={{ marginRight: '30px' }} type="primary">
-                  导出
-                </Button>
+                <div
+                  style={{
+                    width: '64px',
+                    display: 'inline-block',
+                    marginRight: '40px'
+                  }}
+                >
+                  <Upload
+                    action="/api/file/uploadFile.json"
+                    method="post"
+                    headers={{
+                      Authorization: 'Bearer ' + token
+                    }}
+                    // onChange={this.handleChangeFile.bind(this)}
+                  >
+                    <Button type="primary">导入</Button>
+                  </Upload>
+                </div>
+                <div
+                  style={{
+                    width: '64px',
+                    display: 'inline-block',
+                    marginRight: '40px'
+                  }}
+                >
+                  <Button type="primary">导出</Button>
+                </div>
               </Col>
             </Row>
           </Col>
@@ -195,55 +252,62 @@ class BasicInformation extends Component {
               <Form {...formItemLayout}>
                 <Col span={6}>
                   <Form.Item label="BU" hasFeedback>
-                    {getFieldDecorator('confirm')(
-                      <Select>
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="tom">Tom</Option>
+                    {getFieldDecorator('ipsaBuDeptId')(
+                      <Select onChange={this.handleChangeBuDeptId.bind(this)}>
+                        {buList.length &&
+                          buList.map((item, index) => {
+                            return (
+                              <Option key={item.id} value={item.id}>
+                                {item.name}
+                              </Option>
+                            );
+                          })}
                       </Select>
                     )}
                   </Form.Item>
                 </Col>
                 <Col span={6}>
                   <Form.Item label="部门" hasFeedback>
-                    {getFieldDecorator('bumen')(
+                    {getFieldDecorator('ipsaDeptId')(
                       <Select>
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="tom">Tom</Option>
+                        {depList.length &&
+                          depList.map(item => {
+                            return (
+                              <Option key={item.id} value={item.id}>
+                                {item.name}
+                              </Option>
+                            );
+                          })}
                       </Select>
                     )}
                   </Form.Item>
                 </Col>
                 <Col span={6}>
                   <Form.Item label="性别" hasFeedback>
-                    {getFieldDecorator('sex')(
+                    {getFieldDecorator('gender')(
                       <Select>
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="tom">Tom</Option>
+                        <Option value="0">男</Option>
+                        <Option value="1">女</Option>
                       </Select>
                     )}
                   </Form.Item>
                 </Col>
                 <Col span={6}>
                   <Form.Item label="入职日期" hasFeedback>
-                    {getFieldDecorator('entry')(
-                      <Select>
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="tom">Tom</Option>
-                      </Select>
-                    )}
+                    {getFieldDecorator('joiningDay')(<DatePicker />)}
                   </Form.Item>
                 </Col>
                 <Col span={6}>
                   <Form.Item label="人员性质" hasFeedback>
-                    {getFieldDecorator('xinzhi')(
+                    {getFieldDecorator('empProperty')(
                       <Select>
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="tom">Tom</Option>
+                        {empPropertyEumn.map(item => {
+                          return (
+                            <Option key={item.id} value={item.id}>
+                              {item.name}
+                            </Option>
+                          );
+                        })}
                       </Select>
                     )}
                   </Form.Item>

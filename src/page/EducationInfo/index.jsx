@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Row, Col, Button, Table, Form, Select, Input } from 'antd';
 import { connect } from 'react-redux';
-import { actionCreators } from '../BasicInformation/store';
+import { actionCreators } from './store';
+import EducationModal from './components/EducationModal.jsx';
 const { Search } = Input;
 const { Option } = Select;
 
@@ -14,7 +15,7 @@ const data = [
     empNo: 111
   }
 ];
-@connect(state => state.basic, actionCreators)
+@connect(state => state.educ, actionCreators)
 class EducationInfo extends Component {
   constructor(props) {
     super(props);
@@ -64,11 +65,19 @@ class EducationInfo extends Component {
         dataIndex: 'action',
         width: '150px',
         render: (text, record) => {
-          return <Button>编辑</Button>;
+          return (
+            <Button onClick={this.handleShowModal.bind(this)}>编辑</Button>
+          );
         }
       }
     ];
   }
+  handleShowModal = () => {
+    const { changeEducationVisible } = this.props;
+    changeEducationVisible({
+      educVisible: true
+    });
+  };
   render() {
     const columns = this.columns;
     const { basicList } = this.props;
@@ -84,8 +93,6 @@ class EducationInfo extends Component {
         sm: { span: 14 }
       }
     };
-    console.log('basicList', basicList);
-
     return (
       <div>
         <Row style={{ padding: '30px' }}>
@@ -175,6 +182,7 @@ class EducationInfo extends Component {
             <Table columns={columns} dataSource={data} />
           </Col>
         </Row>
+        <EducationModal />
       </div>
     );
   }

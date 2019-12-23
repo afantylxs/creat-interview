@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavLink, Link, withRouter } from 'react-router-dom';
-import { Menu, Icon } from 'antd';
+import { Menu, Row, Col } from 'antd';
 import './index.less';
 const { SubMenu } = Menu;
 

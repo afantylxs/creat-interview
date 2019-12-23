@@ -11,12 +11,11 @@ fetch.interceptors.request.use(
   config => {
     const token = localStorage.getItem('token');
     // const data = JSON.parse(JSON.stringify(config.data));
-    // console.log('request---config', config, 'datadatadata', data);
-
     config.method === 'post'
       ? (config.data = { ...config.data })
       : (config.params = { ...config.params });
     config.headers['Authorization'] = 'Bearer ' + token;
+
     return config;
   },
   error => {
@@ -38,19 +37,19 @@ fetch.interceptors.response.use(
   },
   error => {
     //响应错误处理
-    let text = `TypeError: Cannot read property 'token' of undefined`;
     // localStorage.setItem("flag", false);
-    console.log('响应错误response', error);
+    console.log('响应错误response', error.response.status);
+    if (error.response.status === 401) {
+      console.log(' window.location.href', window.location.href);
 
-    if (error === text) {
-      message.error('登录过期' + error);
-      return Promise.reject('登录过期');
+      message.error('请重新登录');
+      localStorage.setItem('token', null);
+      localStorage.setItem('flag', false);
+      // window.location.href('/login');
+
+      return Promise.reject(error.response);
     }
-    message.error('网络异常' + error);
-    localStorage.setItem('token', null);
-    localStorage.setItem('flag', false);
-
-    return Promise.reject('网络异常');
+    return Promise.reject(error.response);
   }
 );
 export default fetch;

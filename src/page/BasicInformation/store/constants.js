@@ -1,2 +1,7 @@
 export const CHANGE_BASICVISIBLE = 'basic/CHANGE_BASICVISIBLE';
 export const CHANGE_BASICLIST = 'basic/CHANGE_BASICLIST';
+export const RS_ROLE = 'basic/RS_ROLE';
+export const DM_ROLE = 'basic/DM_ROLE';
+export const CHANGE_BULIST = 'basic/CHANGE_BULIST';
+export const CHANGE_DEPLIST = 'basic/CHANGE_DEPLIST';
+export const CHANGE_DICLIST = 'basic/CHANGE_DICLIST';
