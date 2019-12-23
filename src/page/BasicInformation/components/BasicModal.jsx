@@ -42,7 +42,7 @@ class BasicModal extends Component {
 
   // 根据不同的信息渲染不同的输入框
   baseFormInput = key => {
-    const { rsData, dmData, buList, dicList } = this.props;
+    const { rsData, dmData, buList, dicList, dicModalList } = this.props;
     if (inputList.indexOf(key) !== -1) {
       return <Input />;
     }
@@ -59,21 +59,32 @@ class BasicModal extends Component {
     }
     return (
       <Select
-        onFocus={this.handleGetOption.bind(this, key)}
+        onChange={this.handleGetOption.bind(this, key)}
+        labelInValue={true}
         className="basic-select"
         style={{ width: '100%' }}
       >
         {key === 'ipsaBuDeptId' &&
           buList.map(item => {
+            //BU下拉列表
             return (
               <Option key={item.id} value={item.id}>
                 {item.name}
               </Option>
             );
           })}
-        {key === 'ipsaDeptId' && <Option value={1}>部门</Option>}
+        {key === 'ipsaDeptId' &&
+          dicModalList.map(item => {
+            //部门下拉列表
+            return (
+              <Option key={item.id} value={item.id}>
+                {item.name}
+              </Option>
+            );
+          })}
         {key === 'gender' &&
           genderEunm.map(item => {
+            //性别下拉列表
             return (
               <Option key={item.value} value={item.value}>
                 {item.label}
@@ -82,6 +93,7 @@ class BasicModal extends Component {
           })}
         {key === 'ipsaPostNo' &&
           dicList.map(item => {
+            //通用职位下拉列表
             return (
               <Option key={item.id} value={item.id}>
                 {item.label}
@@ -91,6 +103,7 @@ class BasicModal extends Component {
         {key === 'ipsaGradeCode' && <Option value={4}>p7</Option>}
         {key === 'empProperty' &&
           empPropertyEumn.map(item => {
+            //员工性质下拉列表
             return (
               <Option key={item.id} value={item.id}>
                 {item.name}
@@ -130,12 +143,12 @@ class BasicModal extends Component {
     );
   };
 
-  handleGetOption = key => {
-    const { dictInfo } = this.props;
-    if (key === 'ipsaPostNo') {
-      dictInfo('general_position');
+  handleGetOption = (key, value) => {
+    const { deptInfo } = this.props;
+
+    if (key === 'ipsaBuDeptId') {
+      deptInfo({ id: value.key, tab: 'ipsaPostNo' });
     }
-    console.log('key', key);
   };
 
   handleChangeDate = (key, date, dateString) => {
@@ -146,10 +159,11 @@ class BasicModal extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const { saveEmployeeBaseInfo, basicRecord } = this.props;
+        console.log('value', values);
         const arg0 = {
           empName: values.empName,
-          ipsaBuDeptId: values.ipsaBuDeptId,
-          ipsaDeptId: values.ipsaDeptId,
+          ipsaBuDeptId: values.ipsaBuDeptId ? values.ipsaBuDeptId.key : '',
+          ipsaDeptId: values.ipsaDeptId ? values.ipsaDeptId.key : '',
           empNo: values.empNo,
           gender: values.gender,
           birthdayFormat: moment(values.birthday).format('YYYY-MM-DD'),
@@ -159,14 +173,26 @@ class BasicModal extends Component {
             : '',
           ipsaPostNo: values.ipsaPostNo,
           ipsaGradeCode: values.ipsaGradeCode,
-          empProperty: values.empProperty,
-          directSuperiorId: 1,
-          directSuperiorName: values.directSuperiorName,
-          deliveryManagerId: 1,
-          deliveryManagerName: values.deliveryManagerName,
-          onJob: values.onJob,
-          recruitmentUserId: 1,
-          recruitmentUserName: '谁'
+          empProperty: values.empProperty ? values.empProperty.key : '',
+          directSuperiorId: values.directSuperiorName
+            ? values.directSuperiorName.id
+            : '',
+          directSuperiorName: values.directSuperiorName
+            ? values.directSuperiorName.label
+            : '',
+          deliveryManagerId: values.deliveryManagerName
+            ? values.deliveryManagerName.id
+            : '',
+          deliveryManagerName: values.deliveryManagerName
+            ? values.deliveryManagerName.label
+            : '',
+          onJob: values.onJob ? values.onJob.key : '',
+          recruitmentUserId: values.recruitmentUserId
+            ? values.recruitmentUserId.key
+            : '',
+          recruitmentUserName: values.recruitmentUserId
+            ? values.recruitmentUserId.label
+            : ''
         };
         console.log('arg0', arg0);
 

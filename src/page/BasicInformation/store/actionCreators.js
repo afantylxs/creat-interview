@@ -33,6 +33,11 @@ export const changeDepList = payload => ({
   payload
 });
 
+export const changeDepModalList = payload => ({
+  type: constants.CHANGE_DEPMODALLIST,
+  payload
+});
+
 export const changeDicList = payload => ({
   type: constants.CHANGE_DICLIST,
   payload
@@ -145,13 +150,17 @@ export const deptInfo = payload => {
     fetch
       .get('/api/deptInfo/pid', {
         params: {
-          pid: payload
+          pid: payload.id ? payload.id : payload
         }
       })
       .then(res => {
         if (res.success) {
           const depList = res.data;
-          dispatch(changeDepList(depList));
+          if (payload.id) {
+            dispatch(changeDepModalList(depList));
+          } else {
+            dispatch(changeDepList(depList));
+          }
         }
       });
   };

@@ -28,7 +28,7 @@ class BasicInformation extends Component {
       },
       {
         title: 'BU',
-        dataIndex: 'ipsaBuDeptId',
+        dataIndex: 'ipsaBuDeptNname',
         width: '150px',
         render: text => {
           const { buList } = this.props;
@@ -38,7 +38,7 @@ class BasicInformation extends Component {
       },
       {
         title: '部门',
-        dataIndex: 'ipsaDeptId',
+        dataIndex: 'ipsaDeptName',
         width: '150px'
       },
       {
@@ -78,12 +78,12 @@ class BasicInformation extends Component {
       },
       {
         title: '通用职位',
-        dataIndex: 'ipsaPostNo',
+        dataIndex: 'ipsaPostName',
         width: '150px'
       },
       {
         title: 'Grade代码',
-        dataIndex: 'ipsaGradeCode',
+        dataIndex: 'ipsaGradeName',
         width: '150px'
       },
       {
@@ -175,7 +175,6 @@ class BasicInformation extends Component {
 
   handleChangeBuDeptId = value => {
     const { deptInfo } = this.props;
-    console.log('value', value);
     deptInfo(value);
   };
   render() {

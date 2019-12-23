@@ -8,7 +8,8 @@ const defaultState = {
   dmData: [],
   buList: [],
   depList: [],
-  dicList: []
+  dicList: [],
+  dicModalList: []
 };
 
 export default (state = defaultState, action) => {
@@ -32,6 +33,8 @@ export default (state = defaultState, action) => {
       return { ...state, depList: payload };
     case constants.CHANGE_DICLIST:
       return { ...state, dicList: payload };
+    case constants.CHANGE_DEPMODALLIST:
+      return { ...state, dicModalList: payload };
     default:
       return state;
   }

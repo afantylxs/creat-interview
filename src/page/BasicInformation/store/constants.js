@@ -5,3 +5,4 @@ export const DM_ROLE = 'basic/DM_ROLE';
 export const CHANGE_BULIST = 'basic/CHANGE_BULIST';
 export const CHANGE_DEPLIST = 'basic/CHANGE_DEPLIST';
 export const CHANGE_DICLIST = 'basic/CHANGE_DICLIST';
+export const CHANGE_DEPMODALLIST = 'basic/CHANGE_DEPMODALLIST';
