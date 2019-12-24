@@ -60,9 +60,9 @@ class BasicInformation extends Component {
         width: '150px',
         render: (text, record) => {
           switch (text) {
-            case 0:
-              return <span>男</span>;
             case 1:
+              return <span>男</span>;
+            case 0:
               return <span>女</span>;
             default:
               break;
@@ -149,7 +149,7 @@ class BasicInformation extends Component {
               onClick={() => {
                 const { changeBasicVisible, deptInfo } = this.props;
                 const newRecord = {
-                  id: 26,
+                  id: record.id,
                   empNo: record.empNo,
                   empName: record.empName,
                   ipsaBuDeptId: {
@@ -162,7 +162,7 @@ class BasicInformation extends Component {
                   },
                   gender: {
                     key: record.gender,
-                    label: record.gender === 0 ? '男' : '女'
+                    label: record.gender === 1 ? '男' : '女'
                   },
                   birthday: record.birthday,
                   joiningDay: record.joiningDay,
@@ -320,15 +320,11 @@ class BasicInformation extends Component {
       },
       responseType: 'blob'
     }).then(res => {
-      console.log('res', res);
-
       const blob = new Blob([res.data], {
         type:
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'
       });
       const url = window.URL.createObjectURL(blob);
-      console.log('url', url);
-
       const aLink = document.createElement('a');
       aLink.style.display = 'none';
       aLink.href = url;
@@ -462,8 +458,8 @@ class BasicInformation extends Component {
                   <Form.Item label="性别" hasFeedback>
                     {getFieldDecorator('gender')(
                       <Select allowClear>
-                        <Option value="0">男</Option>
-                        <Option value="1">女</Option>
+                        <Option value="1">男</Option>
+                        <Option value="0">女</Option>
                       </Select>
                     )}
                   </Form.Item>

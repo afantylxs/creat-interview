@@ -1,10 +1,10 @@
 export const genderEunm = [
   {
-    value: 0,
+    value: 1,
     label: '男'
   },
   {
-    value: 1,
+    value: 0,
     label: '女'
   }
 ];
