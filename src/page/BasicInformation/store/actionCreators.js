@@ -43,23 +43,38 @@ export const changeDicList = payload => ({
   payload
 });
 
+export const changemanageRoleData = payload => ({
+  type: constants.CHANGE_MANAGELIST,
+  payload
+});
+
+export const changeGradeData = payload => ({
+  type: constants.CHANGE_GRADELIST,
+  payload
+});
+
 //获取基础信息列表
 export const queryEmployeeBaseInfoList = payload => {
   return dispatch => {
     fetch
-      .post('/api/base/queryEmployeeBaseInfoList.json', {
-        currentPage: 1,
-        pageSize: 10,
-        keyword: payload
-      })
+      .post('/api/base/queryEmployeeBaseInfoList.json', payload)
       .then(res => {
         if (res.success) {
           const basiclist = res.data.data;
+          const total = res.data.total;
           basiclist.forEach(item => {
             item.birthday = moment(item.birthday).format('YYYY-MM-DD');
             item.joiningDay = moment(item.joiningDay).format('YYYY-MM-DD');
+            item.correctionTime = moment(item.correctionTime).format(
+              'YYYY-MM-DD'
+            );
           });
-          dispatch(changeBasicList(basiclist));
+          dispatch(
+            changeBasicList({
+              basiclist,
+              total
+            })
+          );
         }
       });
   };
@@ -76,6 +91,24 @@ export const saveEmployeeBaseInfo = payload => {
             record: {}
           })
         );
+        dispatch(queryEmployeeBaseInfoList());
+      }
+    });
+  };
+};
+
+//编辑基础信息
+export const updateEmployeeBaseInfo = payload => {
+  return dispatch => {
+    fetch.post('/api/base/updateEmployeeBaseInfo.json', payload).then(res => {
+      if (res.success) {
+        dispatch(
+          changeBasicVisible({
+            basicVisible: false,
+            record: {}
+          })
+        );
+        message.success('修改成功');
         dispatch(queryEmployeeBaseInfoList());
       }
     });
@@ -107,11 +140,14 @@ export const queryUserListInfoByRolePermission = payload => {
         if (res.success) {
           const roleData = res.data;
           switch (payload) {
-            case 'rs':
+            case 'recruitmentConsultant':
               dispatch(changeRsRoleData(roleData));
               break;
-            case 'dm':
+            case 'deliveryManager':
               dispatch(changeDmRoleData(roleData));
+              break;
+            case 'projectManage':
+              dispatch(changemanageRoleData(roleData));
               break;
             default:
               break;
@@ -180,7 +216,16 @@ export const dictInfo = payload => {
 
         if (res.success) {
           const dicList = res.data;
-          dispatch(changeDicList(dicList));
+          switch (payload) {
+            case 'general_position':
+              dispatch(changeDicList(dicList));
+              break;
+            case 'position_grade_code':
+              dispatch(changeGradeData(dicList));
+              break;
+            default:
+              break;
+          }
         }
       });
   };

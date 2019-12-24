@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import {
   DatePicker,
   Upload,
@@ -14,12 +15,19 @@ import {
 import BasicModal from './components/BasicModal.jsx';
 import { empPropertyEumn } from '../../utils/optionEnum';
 import { actionCreators } from './store';
+import axios from 'axios';
 const { Search } = Input;
 const { Option } = Select;
 @connect(state => state.basic, actionCreators)
 class BasicInformation extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      selectSearchData: {},
+      currentPage: 1,
+      pageSize: 10,
+      keyword: ''
+    };
     this.columns = [
       {
         title: '姓名',
@@ -28,13 +36,8 @@ class BasicInformation extends Component {
       },
       {
         title: 'BU',
-        dataIndex: 'ipsaBuDeptNname',
-        width: '150px',
-        render: text => {
-          const { buList } = this.props;
-          const showText = buList.filter(item => item.id === text);
-          return <span>{showText.length && showText[0].name}</span>;
-        }
+        dataIndex: 'ipsaBuDeptName',
+        width: '150px'
       },
       {
         title: '部门',
@@ -89,7 +92,17 @@ class BasicInformation extends Component {
       {
         title: '是否在职',
         dataIndex: 'onJob',
-        width: '150px'
+        width: '150px',
+        render: (text, record) => {
+          switch (text) {
+            case 0:
+              return <span>离职</span>;
+            case 1:
+              return <span>在职</span>;
+            default:
+              break;
+          }
+        }
       },
       {
         title: '人员性质',
@@ -122,11 +135,6 @@ class BasicInformation extends Component {
         width: '150px'
       },
       {
-        title: '招聘顾问',
-        dataIndex: 'recruitmentUserId',
-        width: '150px'
-      },
-      {
         title: '操作',
         dataIndex: 'action',
         width: '150px',
@@ -134,11 +142,56 @@ class BasicInformation extends Component {
           return (
             <Button
               onClick={() => {
-                const { changeBasicVisible } = this.props;
+                const { changeBasicVisible, deptInfo } = this.props;
+                const newRecord = {
+                  id: 26,
+                  empNo: record.empNo,
+                  empName: record.empName,
+                  ipsaBuDeptId: {
+                    key: record.ipsaBuDeptId,
+                    label: record.ipsaBuDeptName
+                  },
+                  ipsaDeptId: {
+                    key: record.ipsaDeptId,
+                    label: record.ipsaDeptName
+                  },
+                  gender: {
+                    key: record.gender,
+                    label: record.gender === 0 ? '男' : '女'
+                  },
+                  birthday: record.birthday,
+                  joiningDay: record.joiningDay,
+                  ipsaPostNo: {
+                    key: record.ipsaPostNo,
+                    label: record.ipsaPostName
+                  },
+                  ipsaGradeCode: {
+                    key: record.ipsaGradeCode,
+                    label: record.ipsaGradeName
+                  },
+                  correctionTime: record.correctionTime,
+                  empProperty: {
+                    key: record.empProperty,
+                    label: record.empProperty
+                  },
+                  directSuperiorName: {
+                    key: record.directSuperiorId,
+                    label: record.directSuperiorName
+                  },
+                  deliveryManagerName: {
+                    key: record.deliveryManagerId,
+                    label: record.deliveryManagerName
+                  },
+                  onJob: {
+                    key: record.onJob,
+                    label: record.onJob === 0 ? '离职' : '在职'
+                  }
+                };
                 changeBasicVisible({
                   basicVisible: true,
-                  record
+                  record: newRecord
                 });
+                deptInfo({ id: record.ipsaBuDeptId });
               }}
             >
               编辑
@@ -156,6 +209,7 @@ class BasicInformation extends Component {
   }
   handleShowModel = () => {
     const { changeBasicVisible } = this.props;
+    this.props.form.resetFields();
     changeBasicVisible({
       basicVisible: true,
       record: {}
@@ -169,19 +223,105 @@ class BasicInformation extends Component {
   //搜索框调用查询列表
   handleSearchInput = value => {
     const { queryEmployeeBaseInfoList } = this.props;
-    queryEmployeeBaseInfoList(value);
-    // console.log('value', value);
+    const { selectSearchData } = this.state;
+    const arg0 = {
+      currentPage: 1,
+      pageSize: 10,
+      keyword: value,
+      ...selectSearchData
+    };
+    queryEmployeeBaseInfoList(arg0);
   };
 
   handleChangeBuDeptId = value => {
-    const { deptInfo } = this.props;
-    deptInfo(value);
+    const { deptInfo, changeDepList } = this.props;
+    if (value) {
+      deptInfo(value);
+    } else {
+      changeDepList([]);
+    }
+  };
+
+  //查询搜索列表
+  handleSearchList = () => {
+    this.props.form.validateFields((err, values) => {
+      const { queryEmployeeBaseInfoList } = this.props;
+      const arg0 = {
+        ipsaBuDeptId: values.ipsaBuDeptId,
+        ipsaDeptId: values.ipsaDeptId,
+        gender: values.gender,
+        joiningDay: moment(values.joiningDay).format('YYYY-MM-DD'),
+        empProperty: values.empProperty,
+        currentPage: 1,
+        pageSize: 10
+      };
+      this.setState(
+        {
+          selectSearchData: arg0
+        },
+        () => {
+          queryEmployeeBaseInfoList(arg0);
+        }
+      );
+    });
+  };
+
+  //分页查询
+  handleTableChange = page => {
+    console.log('page', page);
+    const { queryEmployeeBaseInfoList } = this.props;
+    this.setState(
+      {
+        currentPage: page
+      },
+      () => {
+        const { currentPage, pageSize } = this.state;
+        const arg0 = {
+          currentPage,
+          pageSize
+        };
+        queryEmployeeBaseInfoList(arg0);
+      }
+    );
+  };
+
+  //导出excel
+  handleDownload = () => {
+    const token = localStorage.getItem('token');
+    axios({
+      method: 'get',
+      url: '/api/base/download',
+      headers: {
+        Authorization: 'Bearer ' + token
+      },
+      responseType: 'blob'
+    }).then(res => {
+      const blob = new Blob([res], {
+        type:
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'
+      });
+      const url = window.URL.createObjectURL(blob);
+      const aLink = document.createElement('a');
+      aLink.style.display = 'none';
+      aLink.href = url;
+      aLink.setAttribute('download', 'excel.xls');
+      document.body.appendChild(aLink);
+      aLink.click();
+      document.body.removeChild(aLink); //下载完成移除元素
+      window.URL.revokeObjectURL(url);
+    });
   };
   render() {
     const columns = this.columns;
-    const { basicList, buList, depList } = this.props;
+    const { basicList, buList, depList, total } = this.props;
     const { getFieldDecorator } = this.props.form;
     const token = localStorage.getItem('token');
+    const paginationProps = {
+      total,
+      onChange: page => {
+        this.handleTableChange(page);
+      }
+    };
 
     // const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -224,11 +364,12 @@ class BasicInformation extends Component {
                   }}
                 >
                   <Upload
-                    action="/api/file/uploadFile.json"
+                    action="/api/base/import/employeeBaseInfo.json"
                     method="post"
                     headers={{
                       Authorization: 'Bearer ' + token
                     }}
+                    showUploadList={false}
                     // onChange={this.handleChangeFile.bind(this)}
                   >
                     <Button type="primary">导入</Button>
@@ -241,7 +382,12 @@ class BasicInformation extends Component {
                     marginRight: '40px'
                   }}
                 >
-                  <Button type="primary">导出</Button>
+                  <Button
+                    type="primary"
+                    onClick={this.handleDownload.bind(this)}
+                  >
+                    导出
+                  </Button>
                 </div>
               </Col>
             </Row>
@@ -252,7 +398,10 @@ class BasicInformation extends Component {
                 <Col span={6}>
                   <Form.Item label="BU" hasFeedback>
                     {getFieldDecorator('ipsaBuDeptId')(
-                      <Select onChange={this.handleChangeBuDeptId.bind(this)}>
+                      <Select
+                        allowClear
+                        onChange={this.handleChangeBuDeptId.bind(this)}
+                      >
                         {buList.length &&
                           buList.map((item, index) => {
                             return (
@@ -268,7 +417,7 @@ class BasicInformation extends Component {
                 <Col span={6}>
                   <Form.Item label="部门" hasFeedback>
                     {getFieldDecorator('ipsaDeptId')(
-                      <Select>
+                      <Select allowClear>
                         {depList.length &&
                           depList.map(item => {
                             return (
@@ -284,7 +433,7 @@ class BasicInformation extends Component {
                 <Col span={6}>
                   <Form.Item label="性别" hasFeedback>
                     {getFieldDecorator('gender')(
-                      <Select>
+                      <Select allowClear>
                         <Option value="0">男</Option>
                         <Option value="1">女</Option>
                       </Select>
@@ -299,7 +448,7 @@ class BasicInformation extends Component {
                 <Col span={6}>
                   <Form.Item label="人员性质" hasFeedback>
                     {getFieldDecorator('empProperty')(
-                      <Select>
+                      <Select allowClear>
                         {empPropertyEumn.map(item => {
                           return (
                             <Option key={item.id} value={item.id}>
@@ -315,6 +464,7 @@ class BasicInformation extends Component {
                   <Button
                     type="primary"
                     style={{ marginTop: '3px', marginLeft: '5%' }}
+                    onClick={this.handleSearchList.bind(this)}
                   >
                     查询
                   </Button>
@@ -328,6 +478,7 @@ class BasicInformation extends Component {
               columns={columns}
               dataSource={basicList}
               scroll={{ x: 1300 }}
+              pagination={paginationProps}
             />
           </Col>
         </Row>

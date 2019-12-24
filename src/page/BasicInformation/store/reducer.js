@@ -9,11 +9,15 @@ const defaultState = {
   buList: [],
   depList: [],
   dicList: [],
-  dicModalList: []
+  dicModalList: [],
+  manageList: [],
+  gradeList: [],
+  total: 1
 };
 
 export default (state = defaultState, action) => {
   const { type, payload } = action;
+  const total = 2;
   switch (type) {
     case constants.CHANGE_BASICVISIBLE:
       return {
@@ -22,7 +26,7 @@ export default (state = defaultState, action) => {
         basicRecord: payload.record
       };
     case constants.CHANGE_BASICLIST:
-      return { ...state, basicList: payload };
+      return { ...state, basicList: payload.basiclist, total: payload.total };
     case constants.RS_ROLE:
       return { ...state, rsData: payload };
     case constants.DM_ROLE:
@@ -35,6 +39,10 @@ export default (state = defaultState, action) => {
       return { ...state, dicList: payload };
     case constants.CHANGE_DEPMODALLIST:
       return { ...state, dicModalList: payload };
+    case constants.CHANGE_MANAGELIST:
+      return { ...state, manageList: payload };
+    case constants.CHANGE_GRADELIST:
+      return { ...state, gradeList: payload };
     default:
       return state;
   }

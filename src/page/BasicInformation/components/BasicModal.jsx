@@ -19,6 +19,7 @@ const dateList = ['birthday', 'joiningDay', 'correctionTime'];
 class BasicModal extends Component {
   handleCancel = () => {
     const { changeBasicVisible } = this.props;
+    this.props.form.resetFields();
     changeBasicVisible({
       basicVisible: false,
       record: {}
@@ -34,20 +35,32 @@ class BasicModal extends Component {
   };
 
   componentDidMount() {
-    const { queryUserListInfoByRolePermission } = this.props;
-    queryUserListInfoByRolePermission('dm');
-    // queryUserListInfoByRolePermission('pm');
-    queryUserListInfoByRolePermission('rs');
+    const { queryUserListInfoByRolePermission, dictInfo } = this.props;
+
+    queryUserListInfoByRolePermission('deliveryManager');
+    dictInfo('general_position');
+    dictInfo('position_grade_code');
+    queryUserListInfoByRolePermission('recruitmentConsultant');
+    queryUserListInfoByRolePermission('projectManage');
   }
 
   // 根据不同的信息渲染不同的输入框
   baseFormInput = key => {
-    const { rsData, dmData, buList, dicList, dicModalList } = this.props;
+    const {
+      rsData,
+      dmData,
+      buList,
+      dicList,
+      dicModalList,
+      manageList,
+      gradeList,
+      basicRecord
+    } = this.props;
+
     if (inputList.indexOf(key) !== -1) {
       return <Input />;
     }
     if (dateList.indexOf(key) !== -1) {
-      const { basicRecord } = this.props;
       return (
         <DatePicker
           disabled={key === 'correctionTime' && !basicRecord.id && true}
@@ -100,7 +113,15 @@ class BasicModal extends Component {
               </Option>
             );
           })}
-        {key === 'ipsaGradeCode' && <Option value={4}>p7</Option>}
+        {key === 'ipsaGradeCode' &&
+          gradeList.map(item => {
+            //Grade代码下拉列表
+            return (
+              <Option key={item.id} value={item.id}>
+                {item.label}
+              </Option>
+            );
+          })}
         {key === 'empProperty' &&
           empPropertyEumn.map(item => {
             //员工性质下拉列表
@@ -110,9 +131,15 @@ class BasicModal extends Component {
               </Option>
             );
           })}
-        {key === 'directSuperiorName' && (
-          <Option value="superior">权威光</Option>
-        )}
+        {key === 'directSuperiorName' &&
+          manageList.map(item => {
+            //上级主管列表
+            return (
+              <Option key={item.id} value={item.id}>
+                {item.username}
+              </Option>
+            );
+          })}
         {key === 'deliveryManagerName' &&
           dmData.map(item => {
             //交付下拉列表
@@ -144,7 +171,8 @@ class BasicModal extends Component {
   };
 
   handleGetOption = (key, value) => {
-    const { deptInfo } = this.props;
+    const { deptInfo, dictInfo } = this.props;
+    console.log('key', key);
 
     if (key === 'ipsaBuDeptId') {
       deptInfo({ id: value.key, tab: 'ipsaPostNo' });
@@ -158,30 +186,35 @@ class BasicModal extends Component {
   handleProjectSubmit = () => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const { saveEmployeeBaseInfo, basicRecord } = this.props;
-        console.log('value', values);
+        const {
+          saveEmployeeBaseInfo,
+          basicRecord,
+          updateEmployeeBaseInfo,
+          manageList
+        } = this.props;
+        console.log('value', values, 'basicRecord', basicRecord);
         const arg0 = {
           empName: values.empName,
           ipsaBuDeptId: values.ipsaBuDeptId ? values.ipsaBuDeptId.key : '',
           ipsaDeptId: values.ipsaDeptId ? values.ipsaDeptId.key : '',
           empNo: values.empNo,
-          gender: values.gender,
+          gender: values.gender ? values.gender.key : '',
           birthdayFormat: moment(values.birthday).format('YYYY-MM-DD'),
           joiningDayFormat: moment(values.joiningDay).format('YYYY-MM-DD'),
           correctionTimeFormat: basicRecord.id
             ? moment(values.correctionTime).format('YYYY-MM-DD')
             : '',
-          ipsaPostNo: values.ipsaPostNo,
-          ipsaGradeCode: values.ipsaGradeCode,
+          ipsaPostNo: values.ipsaPostNo ? values.ipsaPostNo.key : '',
+          ipsaGradeCode: values.ipsaGradeCode ? values.ipsaGradeCode.key : '',
           empProperty: values.empProperty ? values.empProperty.key : '',
           directSuperiorId: values.directSuperiorName
-            ? values.directSuperiorName.id
+            ? values.directSuperiorName.key
             : '',
           directSuperiorName: values.directSuperiorName
             ? values.directSuperiorName.label
             : '',
           deliveryManagerId: values.deliveryManagerName
-            ? values.deliveryManagerName.id
+            ? values.deliveryManagerName.key
             : '',
           deliveryManagerName: values.deliveryManagerName
             ? values.deliveryManagerName.label
@@ -194,13 +227,14 @@ class BasicModal extends Component {
             ? values.recruitmentUserId.label
             : ''
         };
-        console.log('arg0', arg0);
 
-        console.log(basicRecord);
         if (basicRecord.id) {
-          console.log('编辑');
+          arg0.id = basicRecord.id;
+          updateEmployeeBaseInfo(arg0);
+          this.props.form.resetFields();
         } else {
-          // saveEmployeeBaseInfo(arg0);
+          saveEmployeeBaseInfo(arg0);
+          this.props.form.resetFields();
         }
       }
     });

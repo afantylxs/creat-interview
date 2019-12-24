@@ -6,3 +6,5 @@ export const CHANGE_BULIST = 'basic/CHANGE_BULIST';
 export const CHANGE_DEPLIST = 'basic/CHANGE_DEPLIST';
 export const CHANGE_DICLIST = 'basic/CHANGE_DICLIST';
 export const CHANGE_DEPMODALLIST = 'basic/CHANGE_DEPMODALLIST';
+export const CHANGE_MANAGELIST = 'basic/CHANGE_MANAGELIST';
+export const CHANGE_GRADELIST = 'basic/CHANGE_GRADELIST';
