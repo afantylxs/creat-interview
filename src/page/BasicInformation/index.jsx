@@ -26,7 +26,12 @@ class BasicInformation extends Component {
       selectSearchData: {},
       currentPage: 1,
       pageSize: 10,
-      keyword: ''
+      keyword: '',
+      ipsaBuDeptId: '',
+      ipsaDeptId: '',
+      gender: '',
+      joiningDay: '',
+      empProperty: ''
     };
     this.columns = [
       {
@@ -169,7 +174,9 @@ class BasicInformation extends Component {
                     key: record.ipsaGradeCode,
                     label: record.ipsaGradeName
                   },
-                  correctionTime: record.correctionTime,
+                  correctionTime: record.correctionTime
+                    ? record.correctionTime
+                    : '',
                   empProperty: {
                     key: record.empProperty,
                     label: record.empProperty
@@ -246,20 +253,37 @@ class BasicInformation extends Component {
   handleSearchList = () => {
     this.props.form.validateFields((err, values) => {
       const { queryEmployeeBaseInfoList } = this.props;
-      const arg0 = {
-        ipsaBuDeptId: values.ipsaBuDeptId,
-        ipsaDeptId: values.ipsaDeptId,
-        gender: values.gender,
-        joiningDay: moment(values.joiningDay).format('YYYY-MM-DD'),
-        empProperty: values.empProperty,
-        currentPage: 1,
-        pageSize: 10
-      };
       this.setState(
         {
-          selectSearchData: arg0
+          ipsaBuDeptId: values.ipsaBuDeptId,
+          ipsaDeptId: values.ipsaDeptId,
+          gender: values.gender,
+          joiningDay: values.joiningDay
+            ? moment(values.joiningDay).format('YYYY-MM-DD')
+            : '',
+          empProperty: values.empProperty,
+          currentPage: 1,
+          pageSize: 10
         },
         () => {
+          const {
+            currentPage,
+            pageSize,
+            ipsaBuDeptId,
+            ipsaDeptId,
+            gender,
+            joiningDay,
+            empProperty
+          } = this.state;
+          const arg0 = {
+            currentPage,
+            pageSize,
+            ipsaBuDeptId,
+            ipsaDeptId,
+            gender,
+            joiningDay,
+            empProperty
+          };
           queryEmployeeBaseInfoList(arg0);
         }
       );
@@ -296,15 +320,19 @@ class BasicInformation extends Component {
       },
       responseType: 'blob'
     }).then(res => {
-      const blob = new Blob([res], {
+      console.log('res', res);
+
+      const blob = new Blob([res.data], {
         type:
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'
       });
       const url = window.URL.createObjectURL(blob);
+      console.log('url', url);
+
       const aLink = document.createElement('a');
       aLink.style.display = 'none';
       aLink.href = url;
-      aLink.setAttribute('download', 'excel.xls');
+      aLink.setAttribute('download', 'excel.xlsx');
       document.body.appendChild(aLink);
       aLink.click();
       document.body.removeChild(aLink); //下载完成移除元素

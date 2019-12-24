@@ -65,9 +65,9 @@ export const queryEmployeeBaseInfoList = payload => {
           basiclist.forEach(item => {
             item.birthday = moment(item.birthday).format('YYYY-MM-DD');
             item.joiningDay = moment(item.joiningDay).format('YYYY-MM-DD');
-            item.correctionTime = moment(item.correctionTime).format(
-              'YYYY-MM-DD'
-            );
+            item.correctionTime = item.correctionTime
+              ? moment(item.correctionTime).format('YYYY-MM-DD')
+              : '';
           });
           dispatch(
             changeBasicList({
@@ -99,19 +99,28 @@ export const saveEmployeeBaseInfo = payload => {
 
 //编辑基础信息
 export const updateEmployeeBaseInfo = payload => {
+  console.log('编辑payload', payload);
+
   return dispatch => {
-    fetch.post('/api/base/updateEmployeeBaseInfo.json', payload).then(res => {
-      if (res.success) {
-        dispatch(
-          changeBasicVisible({
-            basicVisible: false,
-            record: {}
-          })
-        );
-        message.success('修改成功');
-        dispatch(queryEmployeeBaseInfoList());
-      }
-    });
+    fetch
+      .post('/api/base/updateEmployeeBaseInfo.json', payload)
+      .then(res => {
+        if (res.success) {
+          dispatch(
+            changeBasicVisible({
+              basicVisible: false,
+              record: {}
+            })
+          );
+          message.success('修改成功');
+          dispatch(queryEmployeeBaseInfoList());
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+
+        message.error(err.data.massage);
+      });
   };
 };
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { Row, Col, Button, Select, Modal, Form, DatePicker, Input } from 'antd';
+import { Select, Modal, Form, DatePicker, Input } from 'antd';
 import './basicModal.less';
 import { actionCreators } from '../store';
 import {
@@ -28,10 +28,10 @@ class BasicModal extends Component {
 
   // 对输入框进行校验
   basicFormRules = key => {
-    if (key === 'deliver') {
-      return [{ required: true, message: '不能为空' }];
+    if (key === 'correctionTime') {
+      return [];
     }
-    return [];
+    return [{ required: true, message: '不能为空' }];
   };
 
   componentDidMount() {
