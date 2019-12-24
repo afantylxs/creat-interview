@@ -14,28 +14,28 @@ class Reminder extends Component {
   render() {
     const { reminderList } = this.props;
     return (
-      <div className="layout-home-reminder">
-        <span className="reminder-content">
+      <Row className="layout-home-reminder" style={{ minWidth: '290px' }}>
+        <Col span={12} className="reminder-content">
           12月入职人数
           <span style={{ color: '#658ef7' }}>10</span>人
-        </span>
-        <span className="reminder-content">
+        </Col>
+        <Col span={12} className="reminder-content">
           12月离职人数
           <span style={{ color: '#658ef7' }}>10</span>人
-        </span>
-        <span className="reminder-content">
+        </Col>
+        <Col span={12} className="reminder-content">
           待完善项目
           <span style={{ color: '#658ef7' }}>10</span>人
-        </span>
-        <span className="reminder-content">
+        </Col>
+        <Col span={12} className="reminder-content">
           信息安全提醒
           <span style={{ color: '#658ef7' }}>10</span>
-        </span>
-        <span className="reminder-content">
+        </Col>
+        <Col span={12} className="reminder-content">
           待完善学历
           <span style={{ color: '#658ef7' }}>10</span>人
-        </span>
-      </div>
+        </Col>
+      </Row>
     );
   }
 }
