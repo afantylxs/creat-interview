@@ -271,7 +271,10 @@ class BasicInformation extends Component {
   };
 
   //查询搜索列表
-  handleSearchList = () => {
+  handleSearchList = event => {
+    console.log('evevt', event.preventDefault());
+
+    event.preventDefault();
     this.props.form.validateFields((err, values) => {
       const { queryEmployeeBaseInfoList } = this.props;
       this.setState(
@@ -312,7 +315,6 @@ class BasicInformation extends Component {
 
   //分页查询
   handleTableChange = page => {
-    console.log('page', page);
     const { queryEmployeeBaseInfoList } = this.props;
     this.setState(
       {

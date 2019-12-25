@@ -182,7 +182,8 @@ class BasicModal extends Component {
     console.log('date', date, 'dateString', dateString, 'key', key);
   };
 
-  handleProjectSubmit = () => {
+  handleProjectSubmit = event => {
+    event.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const {
@@ -262,11 +263,7 @@ class BasicModal extends Component {
           okText="提交"
           cancelText="取消"
         >
-          <Form
-            {...formItemLayout}
-            onSubmit={this.handleProjectSubmit}
-            className="basic-form"
-          >
+          <Form {...formItemLayout} className="basic-form">
             {reminderColumnsForm.map((item, index) => {
               return (
                 <Form.Item label={item.title} key={item.dataIndex}>

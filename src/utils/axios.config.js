@@ -37,17 +37,11 @@ fetch.interceptors.response.use(
   },
   error => {
     //响应错误处理
-    // localStorage.setItem("flag", false);
-    console.log('响应错误response', error.response.status);
-    if (error.response.status === 401) {
-      console.log(' window.location.href', window.location.href);
-
+    if (error && error.response && error.response.status === 401) {
       message.error('请重新登录');
       localStorage.setItem('token', null);
       localStorage.setItem('flag', false);
-      // window.location.href('/login');
-
-      return Promise.reject(error.response);
+      return;
     }
     return Promise.reject(error.response);
   }
