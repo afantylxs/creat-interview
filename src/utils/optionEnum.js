@@ -40,12 +40,6 @@ export const onJobEnum = [
 
 export const reminderColumnsForm = [
   {
-    title: '姓名',
-    dataIndex: 'empName',
-    width: '150px',
-    fixed: 'left'
-  },
-  {
     title: 'BU',
     dataIndex: 'ipsaBuDeptId',
     width: '150px'
@@ -54,6 +48,12 @@ export const reminderColumnsForm = [
     title: '部门',
     dataIndex: 'ipsaDeptId',
     width: '150px'
+  },
+  {
+    title: '姓名',
+    dataIndex: 'empName',
+    width: '150px',
+    fixed: 'left'
   },
   {
     title: '软通工号',

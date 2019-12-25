@@ -117,9 +117,7 @@ export const updateEmployeeBaseInfo = payload => {
         }
       })
       .catch(err => {
-        console.log('err', err);
-
-        message.error(err.data.massage);
+        message.error(err.data.message);
       });
   };
 };

@@ -3,7 +3,7 @@ import { message } from 'antd';
 /****** 创建axios实例 ******/
 const fetch = axios.create({
   baseURL: process.env.BASE_URL, // api的base_url
-  timeout: 10000 // 请求超时时间
+  timeout: 6000 // 请求超时时间
 });
 
 /****** request拦截器==>对请求参数做处理 ******/

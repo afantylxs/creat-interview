@@ -10,12 +10,14 @@ import {
   Table,
   Form,
   Select,
-  Input
+  Input,
+  Pagination
 } from 'antd';
+import axios from 'axios';
 import BasicModal from './components/BasicModal.jsx';
 import { empPropertyEumn } from '../../utils/optionEnum';
 import { actionCreators } from './store';
-import axios from 'axios';
+import './index.less';
 const { Search } = Input;
 const { Option } = Select;
 @connect(state => state.basic, actionCreators)
@@ -35,11 +37,6 @@ class BasicInformation extends Component {
     };
     this.columns = [
       {
-        title: '姓名',
-        dataIndex: 'empName',
-        width: '150px'
-      },
-      {
         title: 'BU',
         dataIndex: 'ipsaBuDeptName',
         width: '150px'
@@ -50,14 +47,19 @@ class BasicInformation extends Component {
         width: '150px'
       },
       {
+        title: '姓名',
+        dataIndex: 'empName',
+        width: '100px'
+      },
+      {
         title: '软通工号',
         dataIndex: 'empNo',
-        width: '150px'
+        width: '100px'
       },
       {
         title: '性别',
         dataIndex: 'gender',
-        width: '150px',
+        width: '80px',
         render: (text, record) => {
           switch (text) {
             case 1:
@@ -92,12 +94,12 @@ class BasicInformation extends Component {
       {
         title: 'Grade代码',
         dataIndex: 'ipsaGradeName',
-        width: '150px'
+        width: '80px'
       },
       {
         title: '是否在职',
         dataIndex: 'onJob',
-        width: '150px',
+        width: '90px',
         render: (text, record) => {
           switch (text) {
             case 0:
@@ -112,7 +114,7 @@ class BasicInformation extends Component {
       {
         title: '人员性质',
         dataIndex: 'empProperty',
-        width: '150px',
+        width: '100px',
         render: (text, record) => {
           switch (text) {
             case 0:
@@ -132,17 +134,17 @@ class BasicInformation extends Component {
       {
         title: '直属上级',
         dataIndex: 'directSuperiorName',
-        width: '150px'
+        width: '100px'
       },
       {
         title: '交付经理',
         dataIndex: 'deliveryManagerName',
-        width: '150px'
+        width: '100px'
       },
       {
         title: '操作',
         dataIndex: 'action',
-        width: '150px',
+        width: '90px',
         render: (text, record) => {
           return (
             <Button
@@ -230,14 +232,33 @@ class BasicInformation extends Component {
   //搜索框调用查询列表
   handleSearchInput = value => {
     const { queryEmployeeBaseInfoList } = this.props;
-    const { selectSearchData } = this.state;
-    const arg0 = {
-      currentPage: 1,
-      pageSize: 10,
-      keyword: value,
-      ...selectSearchData
-    };
-    queryEmployeeBaseInfoList(arg0);
+    this.setState(
+      {
+        keyword: value
+      },
+      () => {
+        const {
+          pageSize,
+          ipsaBuDeptId,
+          ipsaDeptId,
+          gender,
+          joiningDay,
+          empProperty,
+          keyword
+        } = this.state;
+        const arg0 = {
+          pageSize,
+          ipsaBuDeptId,
+          ipsaDeptId,
+          gender,
+          joiningDay,
+          empProperty,
+          currentPage: 1,
+          keyword
+        };
+        queryEmployeeBaseInfoList(arg0);
+      }
+    );
   };
 
   handleChangeBuDeptId = value => {
@@ -261,28 +282,27 @@ class BasicInformation extends Component {
           joiningDay: values.joiningDay
             ? moment(values.joiningDay).format('YYYY-MM-DD')
             : '',
-          empProperty: values.empProperty,
-          currentPage: 1,
-          pageSize: 10
+          empProperty: values.empProperty
         },
         () => {
           const {
-            currentPage,
             pageSize,
             ipsaBuDeptId,
             ipsaDeptId,
             gender,
             joiningDay,
-            empProperty
+            empProperty,
+            keyword
           } = this.state;
           const arg0 = {
-            currentPage,
+            currentPage: 1,
             pageSize,
             ipsaBuDeptId,
             ipsaDeptId,
             gender,
             joiningDay,
-            empProperty
+            empProperty,
+            keyword
           };
           queryEmployeeBaseInfoList(arg0);
         }
@@ -299,10 +319,25 @@ class BasicInformation extends Component {
         currentPage: page
       },
       () => {
-        const { currentPage, pageSize } = this.state;
+        const {
+          currentPage,
+          pageSize,
+          ipsaBuDeptId,
+          ipsaDeptId,
+          gender,
+          joiningDay,
+          empProperty,
+          keyword
+        } = this.state;
         const arg0 = {
           currentPage,
-          pageSize
+          pageSize,
+          ipsaBuDeptId,
+          ipsaDeptId,
+          gender,
+          joiningDay,
+          empProperty,
+          keyword
         };
         queryEmployeeBaseInfoList(arg0);
       }
@@ -338,53 +373,39 @@ class BasicInformation extends Component {
   render() {
     const columns = this.columns;
     const { basicList, buList, depList, total } = this.props;
+    console.log('total', total);
+
     const { getFieldDecorator } = this.props.form;
     const token = localStorage.getItem('token');
-    const paginationProps = {
-      total,
-      onChange: page => {
-        this.handleTableChange(page);
-      }
-    };
 
     // const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 4 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 18 }
-      }
-    };
     return (
       <div className="basic-information">
         <Row style={{ padding: '30px' }}>
           <Col span={24}>
-            <Row>
-              <Col span={4}>
-                <Button
-                  style={{ marginLeft: '30px' }}
-                  onClick={this.handleShowModel.bind(this)}
-                >
-                  + 新增
-                </Button>
-              </Col>
+            <Row className="basic-operator-set">
               <Col span={8}>
                 <Search
-                  style={{ width: '50%' }}
+                  style={{ width: '50%', marginLeft: '20px' }}
                   placeholder="输入姓名或软通工号"
                   onSearch={value => this.handleSearchInput(value)}
                   enterButton
                 />
               </Col>
               <Col span={12} style={{ textAlign: 'right' }}>
+                <Button
+                  type="primary"
+                  onClick={this.handleShowModel.bind(this)}
+                >
+                  + 新增
+                </Button>
+              </Col>
+              <Col span={4} style={{ textAlign: 'right' }}>
                 <div
                   style={{
                     width: '64px',
                     display: 'inline-block',
-                    marginRight: '40px'
+                    marginRight: '65px'
                   }}
                 >
                   <Upload
@@ -402,8 +423,7 @@ class BasicInformation extends Component {
                 <div
                   style={{
                     width: '64px',
-                    display: 'inline-block',
-                    marginRight: '40px'
+                    display: 'inline-block'
                   }}
                 >
                   <Button
@@ -418,9 +438,14 @@ class BasicInformation extends Component {
           </Col>
           <Col style={{ marginTop: '30px' }} span={24}>
             <Row>
-              <Form {...formItemLayout}>
-                <Col span={6}>
-                  <Form.Item label="BU" hasFeedback>
+              <Form>
+                <Col span={4}>
+                  <Form.Item
+                    labelCol={{ span: 4 }}
+                    wrapperCol={{ span: 18 }}
+                    label="BU"
+                    hasFeedback
+                  >
                     {getFieldDecorator('ipsaBuDeptId')(
                       <Select
                         allowClear
@@ -438,8 +463,13 @@ class BasicInformation extends Component {
                     )}
                   </Form.Item>
                 </Col>
-                <Col span={6}>
-                  <Form.Item label="部门" hasFeedback>
+                <Col span={5}>
+                  <Form.Item
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 16 }}
+                    label="部门"
+                    hasFeedback
+                  >
                     {getFieldDecorator('ipsaDeptId')(
                       <Select allowClear>
                         {depList.length &&
@@ -454,8 +484,13 @@ class BasicInformation extends Component {
                     )}
                   </Form.Item>
                 </Col>
-                <Col span={6}>
-                  <Form.Item label="性别" hasFeedback>
+                <Col span={4}>
+                  <Form.Item
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 14 }}
+                    label="性别"
+                    hasFeedback
+                  >
                     {getFieldDecorator('gender')(
                       <Select allowClear>
                         <Option value="1">男</Option>
@@ -464,13 +499,23 @@ class BasicInformation extends Component {
                     )}
                   </Form.Item>
                 </Col>
-                <Col span={6}>
-                  <Form.Item label="入职日期" hasFeedback>
+                <Col span={5}>
+                  <Form.Item
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 18 }}
+                    label="入职日期"
+                    hasFeedback
+                  >
                     {getFieldDecorator('joiningDay')(<DatePicker />)}
                   </Form.Item>
                 </Col>
-                <Col span={6}>
-                  <Form.Item label="人员性质" hasFeedback>
+                <Col span={4}>
+                  <Form.Item
+                    labelCol={{ span: 7 }}
+                    wrapperCol={{ span: 15 }}
+                    label="人员性质"
+                    hasFeedback
+                  >
                     {getFieldDecorator('empProperty')(
                       <Select allowClear>
                         {empPropertyEumn.map(item => {
@@ -484,10 +529,12 @@ class BasicInformation extends Component {
                     )}
                   </Form.Item>
                 </Col>
-                <Col span={6}>
+                <Col span={2} style={{ textAlign: 'right' }}>
                   <Button
                     type="primary"
-                    style={{ marginTop: '3px', marginLeft: '5%' }}
+                    style={{
+                      marginTop: '3px'
+                    }}
                     onClick={this.handleSearchList.bind(this)}
                   >
                     查询
@@ -496,13 +543,25 @@ class BasicInformation extends Component {
               </Form>
             </Row>
           </Col>
-          <Col style={{ marginTop: '30px' }} span={24}>
+          <Col
+            className="basic-content-table"
+            style={{ marginTop: '30px' }}
+            span={24}
+          >
             <Table
               rowKey={(record, index) => index}
               columns={columns}
               dataSource={basicList}
               scroll={{ x: 1300 }}
-              pagination={paginationProps}
+              pagination={false}
+            />
+          </Col>
+          <Col className="basic-paging" span={24}>
+            <Pagination
+              total={total}
+              onChange={page => {
+                this.handleTableChange(page);
+              }}
             />
           </Col>
         </Row>

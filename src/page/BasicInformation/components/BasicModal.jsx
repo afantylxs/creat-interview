@@ -28,7 +28,7 @@ class BasicModal extends Component {
 
   // 对输入框进行校验
   basicFormRules = key => {
-    if (key === 'correctionTime') {
+    if (key === 'correctionTime' || key === 'recruitmentUserId') {
       return [];
     }
     return [{ required: true, message: '不能为空' }];
@@ -172,7 +172,6 @@ class BasicModal extends Component {
 
   handleGetOption = (key, value) => {
     const { deptInfo, dictInfo } = this.props;
-    console.log('key', key);
 
     if (key === 'ipsaBuDeptId') {
       deptInfo({ id: value.key, tab: 'ipsaPostNo' });
@@ -192,7 +191,6 @@ class BasicModal extends Component {
           updateEmployeeBaseInfo,
           manageList
         } = this.props;
-        console.log('value', values, 'basicRecord', basicRecord);
         const arg0 = {
           empName: values.empName,
           ipsaBuDeptId: values.ipsaBuDeptId ? values.ipsaBuDeptId.key : '',
@@ -241,7 +239,7 @@ class BasicModal extends Component {
   };
 
   render() {
-    const { basicVisible } = this.props;
+    const { basicVisible, basicRecord } = this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -256,7 +254,7 @@ class BasicModal extends Component {
     return (
       <div className="basic-modal">
         <Modal
-          title="添加新员工"
+          title={basicRecord.id ? '修改信息' : '添加新员工'}
           visible={basicVisible}
           onOk={this.handleProjectSubmit}
           onCancel={this.handleCancel}
@@ -270,7 +268,6 @@ class BasicModal extends Component {
             className="basic-form"
           >
             {reminderColumnsForm.map((item, index) => {
-              const { basicRecord } = this.props;
               return (
                 <Form.Item label={item.title} key={item.dataIndex}>
                   {getFieldDecorator(item.dataIndex, {
