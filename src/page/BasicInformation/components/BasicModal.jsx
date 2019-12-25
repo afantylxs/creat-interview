@@ -14,6 +14,7 @@ const { Option } = Select;
 
 const inputList = ['empName', 'empNo'];
 const dateList = ['birthday', 'joiningDay', 'correctionTime'];
+const managedisabled = ['directSuperiorName', 'deliveryManagerName'];
 
 @connect(state => state.basic, actionCreators)
 class BasicModal extends Component {
@@ -28,7 +29,11 @@ class BasicModal extends Component {
 
   // 对输入框进行校验
   basicFormRules = key => {
-    if (key === 'correctionTime' || key === 'recruitmentUserId') {
+    const { basicRecord } = this.props;
+    if (key === 'deliveryManagerName') {
+      return [];
+    }
+    if (key === 'correctionTime' && !basicRecord.id) {
       return [];
     }
     return [{ required: true, message: '不能为空' }];
@@ -36,8 +41,6 @@ class BasicModal extends Component {
 
   componentDidMount() {
     const { queryUserListInfoByRolePermission, dictInfo } = this.props;
-
-    queryUserListInfoByRolePermission('deliveryManager');
     dictInfo('general_position');
     dictInfo('position_grade_code');
     queryUserListInfoByRolePermission('recruitmentConsultant');
@@ -45,7 +48,7 @@ class BasicModal extends Component {
   }
 
   // 根据不同的信息渲染不同的输入框
-  baseFormInput = key => {
+  baseFormInput = (key, disabled) => {
     const {
       rsData,
       dmData,
@@ -73,6 +76,7 @@ class BasicModal extends Component {
     return (
       <Select
         onChange={this.handleGetOption.bind(this, key)}
+        disabled={disabled}
         labelInValue={true}
         className="basic-select"
         style={{ width: '100%' }}
@@ -159,7 +163,6 @@ class BasicModal extends Component {
           })}
         {key === 'recruitmentUserId' &&
           rsData.map(item => {
-            //招聘顾问下拉列表
             return (
               <Option key={item.id} value={item.id}>
                 {item.username}
@@ -190,7 +193,7 @@ class BasicModal extends Component {
           saveEmployeeBaseInfo,
           basicRecord,
           updateEmployeeBaseInfo,
-          manageList
+          basicVisible
         } = this.props;
         const arg0 = {
           empName: values.empName,
@@ -230,14 +233,18 @@ class BasicModal extends Component {
         if (basicRecord.id) {
           arg0.id = basicRecord.id;
           updateEmployeeBaseInfo(arg0);
-          this.props.form.resetFields();
         } else {
           saveEmployeeBaseInfo(arg0);
-          this.props.form.resetFields();
         }
       }
     });
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.basicVisible) {
+      this.props.form.resetFields();
+    }
+  }
 
   render() {
     const { basicVisible, basicRecord } = this.props;
@@ -265,6 +272,15 @@ class BasicModal extends Component {
         >
           <Form {...formItemLayout} className="basic-form">
             {reminderColumnsForm.map((item, index) => {
+              if (item.dataIndex === 'recruitmentUserId' && basicRecord.id) {
+                //编辑状态不显示招聘顾问
+                return '';
+              }
+              //直属上级在编辑时不能修改
+              let disabled = false;
+              if (managedisabled.includes(item.dataIndex) && basicRecord.id) {
+                disabled = true;
+              }
               return (
                 <Form.Item label={item.title} key={item.dataIndex}>
                   {getFieldDecorator(item.dataIndex, {
@@ -274,10 +290,10 @@ class BasicModal extends Component {
                       item.dataIndex === 'correctionTime'
                         ? basicRecord[item.dataIndex]
                           ? moment(basicRecord[item.dataIndex])
-                          : moment()
+                          : null
                         : basicRecord[item.dataIndex],
                     rules: this.basicFormRules(item.dataIndex)
-                  })(this.baseFormInput(item.dataIndex))}
+                  })(this.baseFormInput(item.dataIndex, disabled))}
                 </Form.Item>
               );
             })}

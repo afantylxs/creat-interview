@@ -41,7 +41,7 @@ fetch.interceptors.response.use(
       message.error('请重新登录');
       localStorage.setItem('token', null);
       localStorage.setItem('flag', false);
-      return;
+      return Promise.reject(error.response);
     }
     return Promise.reject(error.response);
   }

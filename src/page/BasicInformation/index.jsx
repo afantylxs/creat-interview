@@ -11,7 +11,8 @@ import {
   Form,
   Select,
   Input,
-  Pagination
+  Pagination,
+  message
 } from 'antd';
 import axios from 'axios';
 import BasicModal from './components/BasicModal.jsx';
@@ -20,21 +21,11 @@ import { actionCreators } from './store';
 import './index.less';
 const { Search } = Input;
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 @connect(state => state.basic, actionCreators)
 class BasicInformation extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectSearchData: {},
-      currentPage: 1,
-      pageSize: 10,
-      keyword: '',
-      ipsaBuDeptId: '',
-      ipsaDeptId: '',
-      gender: '',
-      joiningDay: '',
-      empProperty: ''
-    };
     this.columns = [
       {
         title: 'BU',
@@ -212,10 +203,17 @@ class BasicInformation extends Component {
   }
 
   componentDidMount() {
-    const { queryEmployeeBaseInfoList, deptInfoBu } = this.props;
+    const {
+      queryEmployeeBaseInfoList,
+      deptInfoBu,
+      queryUserListInfoByRolePermission
+    } = this.props;
     queryEmployeeBaseInfoList();
+    queryUserListInfoByRolePermission('deliveryManager');
     deptInfoBu();
   }
+
+  //打开对话框
   handleShowModel = () => {
     const { changeBasicVisible } = this.props;
     this.props.form.resetFields();
@@ -225,40 +223,52 @@ class BasicInformation extends Component {
     });
   };
 
+  //导入数据提醒
   handleChangeFile = ({ file, fileList }) => {
-    console.log('file', file, 'fileList', fileList);
+    const { queryEmployeeBaseInfoList } = this.props;
+
+    if (file && file.status === 'done' && file.response.success) {
+      message.success(
+        file.response.message + '，共导入' + file.response.data + '条数据'
+      );
+      queryEmployeeBaseInfoList({
+        currentPage: 1,
+        pageSize: 20
+      });
+    }
   };
 
+  //上传前的文件校验
+  handleBeforeUpload = (file, fileList) => {
+    if (
+      file &&
+      file.type !==
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    ) {
+      message.error('请上传以.xlsx为后缀的Excel文件');
+      return;
+    }
+  };
   //搜索框调用查询列表
   handleSearchInput = value => {
-    const { queryEmployeeBaseInfoList } = this.props;
-    this.setState(
-      {
-        keyword: value
-      },
-      () => {
-        const {
-          pageSize,
-          ipsaBuDeptId,
-          ipsaDeptId,
-          gender,
-          joiningDay,
-          empProperty,
-          keyword
-        } = this.state;
-        const arg0 = {
-          pageSize,
-          ipsaBuDeptId,
-          ipsaDeptId,
-          gender,
-          joiningDay,
-          empProperty,
-          currentPage: 1,
-          keyword
-        };
-        queryEmployeeBaseInfoList(arg0);
-      }
-    );
+    const {
+      queryEmployeeBaseInfoList,
+      changeCurrentPageData,
+      currentPageData
+    } = this.props;
+    const arg0 = {
+      currentPage: 1,
+      pageSize: 10,
+      keyword: value,
+      ipsaBuDeptId: currentPageData.ipsaBuDeptId,
+      ipsaDeptId: currentPageData.ipsaDeptId,
+      gender: currentPageData.gender,
+      joiningDay: currentPageData.joiningDay,
+      empProperty: currentPageData.empProperty,
+      deliveryManagerId: currentPageData.deliveryManagerId
+    };
+    changeCurrentPageData(arg0);
+    queryEmployeeBaseInfoList(arg0);
   };
 
   handleChangeBuDeptId = value => {
@@ -270,113 +280,115 @@ class BasicInformation extends Component {
     }
   };
 
-  //查询搜索列表
+  //查询按钮
   handleSearchList = event => {
-    console.log('evevt', event.preventDefault());
-
     event.preventDefault();
     this.props.form.validateFields((err, values) => {
-      const { queryEmployeeBaseInfoList } = this.props;
-      this.setState(
-        {
-          ipsaBuDeptId: values.ipsaBuDeptId,
-          ipsaDeptId: values.ipsaDeptId,
-          gender: values.gender,
-          joiningDay: values.joiningDay
-            ? moment(values.joiningDay).format('YYYY-MM-DD')
-            : '',
-          empProperty: values.empProperty
-        },
-        () => {
-          const {
-            pageSize,
-            ipsaBuDeptId,
-            ipsaDeptId,
-            gender,
-            joiningDay,
-            empProperty,
-            keyword
-          } = this.state;
-          const arg0 = {
-            currentPage: 1,
-            pageSize,
-            ipsaBuDeptId,
-            ipsaDeptId,
-            gender,
-            joiningDay,
-            empProperty,
-            keyword
-          };
-          queryEmployeeBaseInfoList(arg0);
-        }
-      );
+      const {
+        queryEmployeeBaseInfoList,
+        changeCurrentPageData,
+        currentPageData
+      } = this.props;
+      const dateStart = values.joiningDay
+        ? moment(values.joiningDay[0]).format('YYYY-MM-DD')
+        : '';
+      const dateEnd = values.joiningDay
+        ? moment(values.joiningDay[1]).format('YYYY-MM-DD')
+        : '';
+      const arg0 = {
+        currentPage: 1,
+        pageSize: 10,
+        ipsaBuDeptId: values.ipsaBuDeptId,
+        ipsaDeptId: values.ipsaDeptId,
+        gender: values.gender,
+        keyword: currentPageData.keyword,
+        joiningDayStartTime: dateStart,
+        joiningDayEndTime: dateEnd,
+        empProperty: values.empProperty,
+        deliveryManagerId: values.deliveryManagerName
+      };
+      changeCurrentPageData(arg0);
+      queryEmployeeBaseInfoList(arg0);
     });
   };
 
   //分页查询
   handleTableChange = page => {
-    const { queryEmployeeBaseInfoList } = this.props;
-    this.setState(
-      {
-        currentPage: page
-      },
-      () => {
-        const {
-          currentPage,
-          pageSize,
-          ipsaBuDeptId,
-          ipsaDeptId,
-          gender,
-          joiningDay,
-          empProperty,
-          keyword
-        } = this.state;
-        const arg0 = {
-          currentPage,
-          pageSize,
-          ipsaBuDeptId,
-          ipsaDeptId,
-          gender,
-          joiningDay,
-          empProperty,
-          keyword
-        };
-        queryEmployeeBaseInfoList(arg0);
-      }
-    );
+    const {
+      queryEmployeeBaseInfoList,
+      changeCurrentPageData,
+      currentPageData
+    } = this.props;
+    const arg0 = {
+      currentPage: page,
+      pageSize: 10,
+      keyword: currentPageData.keyword,
+      ipsaBuDeptId: currentPageData.ipsaBuDeptId,
+      ipsaDeptId: currentPageData.ipsaDeptId,
+      gender: currentPageData.gender,
+      jjoiningDayEndTime: currentPageData.joiningDayEndTime,
+      joiningDayStartTime: currentPageData.joiningDayStartTime,
+      empProperty: currentPageData.empProperty
+    };
+    changeCurrentPageData(arg0);
+    queryEmployeeBaseInfoList(arg0);
   };
 
   //导出excel
   handleDownload = () => {
     const token = localStorage.getItem('token');
+    const { currentPageData } = this.props;
+    console.log('currentPageData', currentPageData);
+
     axios({
       method: 'get',
       url: '/api/base/download',
       headers: {
         Authorization: 'Bearer ' + token
       },
+      params: {
+        ipsaBuDeptId: currentPageData.ipsaBuDeptId,
+        ipsaDeptId: currentPageData.ipsaDeptId,
+        gender: currentPageData.gender,
+        joiningDayEndTime: currentPageData.joiningDayEndTime,
+        joiningDayStartTime: currentPageData.joiningDayStartTime
+      },
       responseType: 'blob'
-    }).then(res => {
-      const blob = new Blob([res.data], {
-        type:
-          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'
+    })
+      .then(res => {
+        if (res.status === 200) {
+          const blob = new Blob([res.data], {
+            type:
+              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'
+          });
+          const url = window.URL.createObjectURL(blob);
+          const aLink = document.createElement('a');
+          aLink.style.display = 'none';
+          aLink.href = url;
+          aLink.setAttribute('download', 'excel.xlsx');
+          document.body.appendChild(aLink);
+          aLink.click();
+          document.body.removeChild(aLink); //下载完成移除元素
+          window.URL.revokeObjectURL(url);
+          message.success('导出成功');
+        } else {
+          message.error('导出失败');
+        }
+      })
+      .catch(err => {
+        message.error('导出失败');
       });
-      const url = window.URL.createObjectURL(blob);
-      const aLink = document.createElement('a');
-      aLink.style.display = 'none';
-      aLink.href = url;
-      aLink.setAttribute('download', 'excel.xlsx');
-      document.body.appendChild(aLink);
-      aLink.click();
-      document.body.removeChild(aLink); //下载完成移除元素
-      window.URL.revokeObjectURL(url);
-    });
   };
   render() {
     const columns = this.columns;
-    const { basicList, buList, depList, total } = this.props;
-    console.log('total', total);
-
+    const {
+      basicList,
+      buList,
+      depList,
+      total,
+      currentPageData,
+      dmData
+    } = this.props;
     const { getFieldDecorator } = this.props.form;
     const token = localStorage.getItem('token');
 
@@ -407,7 +419,7 @@ class BasicInformation extends Component {
                   style={{
                     width: '64px',
                     display: 'inline-block',
-                    marginRight: '65px'
+                    marginRight: '19%'
                   }}
                 >
                   <Upload
@@ -417,7 +429,8 @@ class BasicInformation extends Component {
                       Authorization: 'Bearer ' + token
                     }}
                     showUploadList={false}
-                    // onChange={this.handleChangeFile.bind(this)}
+                    onChange={this.handleChangeFile.bind(this)}
+                    beforeUpload={this.handleBeforeUpload.bind(this)}
                   >
                     <Button type="primary">导入</Button>
                   </Upload>
@@ -425,7 +438,8 @@ class BasicInformation extends Component {
                 <div
                   style={{
                     width: '64px',
-                    display: 'inline-block'
+                    display: 'inline-block',
+                    marginRight: '7%'
                   }}
                 >
                   <Button
@@ -440,109 +454,143 @@ class BasicInformation extends Component {
           </Col>
           <Col style={{ marginTop: '30px' }} span={24}>
             <Row>
-              <Form>
-                <Col span={4}>
-                  <Form.Item
-                    labelCol={{ span: 4 }}
-                    wrapperCol={{ span: 18 }}
-                    label="BU"
-                    hasFeedback
-                  >
-                    {getFieldDecorator('ipsaBuDeptId')(
-                      <Select
-                        allowClear
-                        onChange={this.handleChangeBuDeptId.bind(this)}
-                      >
-                        {buList.length &&
-                          buList.map((item, index) => {
+              <Col span={22}>
+                <Form>
+                  <Col span={6}>
+                    <Form.Item
+                      labelCol={{ span: 5 }}
+                      wrapperCol={{ span: 18 }}
+                      label="BU"
+                      hasFeedback
+                    >
+                      {getFieldDecorator('ipsaBuDeptId')(
+                        <Select
+                          allowClear
+                          onChange={this.handleChangeBuDeptId.bind(this)}
+                        >
+                          {buList.length &&
+                            buList.map((item, index) => {
+                              return (
+                                <Option key={item.id} value={item.id}>
+                                  {item.name}
+                                </Option>
+                              );
+                            })}
+                        </Select>
+                      )}
+                    </Form.Item>
+                  </Col>
+                  <Col span={6}>
+                    <Form.Item
+                      labelCol={{ span: 6 }}
+                      wrapperCol={{ span: 16 }}
+                      label="部门"
+                      hasFeedback
+                    >
+                      {getFieldDecorator('ipsaDeptId')(
+                        <Select allowClear>
+                          {depList.length &&
+                            depList.map(item => {
+                              return (
+                                <Option key={item.id} value={item.id}>
+                                  {item.name}
+                                </Option>
+                              );
+                            })}
+                        </Select>
+                      )}
+                    </Form.Item>
+                  </Col>
+                  <Col span={4}>
+                    <Form.Item
+                      labelCol={{ span: 6 }}
+                      wrapperCol={{ span: 14 }}
+                      label="性别"
+                      hasFeedback
+                    >
+                      {getFieldDecorator('gender')(
+                        <Select allowClear>
+                          <Option value="1">男</Option>
+                          <Option value="0">女</Option>
+                        </Select>
+                      )}
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item
+                      labelCol={{ span: 5 }}
+                      wrapperCol={{ span: 18 }}
+                      label="入职日期"
+                      hasFeedback
+                    >
+                      {getFieldDecorator('joiningDay')(
+                        <RangePicker
+                          placeholder={['起始日期', '结束日期']}
+                          ranges={{
+                            Today: [moment(), moment()],
+                            'This Month': [
+                              moment().startOf('month'),
+                              moment().endOf('month')
+                            ]
+                          }}
+                        />
+                      )}
+                    </Form.Item>
+                  </Col>
+                  <Col span={4}>
+                    <Form.Item
+                      labelCol={{ span: 8 }}
+                      wrapperCol={{ span: 15 }}
+                      label="人员性质"
+                      hasFeedback
+                    >
+                      {getFieldDecorator('empProperty')(
+                        <Select allowClear>
+                          {empPropertyEumn.map(item => {
                             return (
                               <Option key={item.id} value={item.id}>
                                 {item.name}
                               </Option>
                             );
                           })}
-                      </Select>
-                    )}
-                  </Form.Item>
-                </Col>
-                <Col span={5}>
-                  <Form.Item
-                    labelCol={{ span: 6 }}
-                    wrapperCol={{ span: 16 }}
-                    label="部门"
-                    hasFeedback
-                  >
-                    {getFieldDecorator('ipsaDeptId')(
-                      <Select allowClear>
-                        {depList.length &&
-                          depList.map(item => {
+                        </Select>
+                      )}
+                    </Form.Item>
+                  </Col>
+                  <Col span={6}>
+                    <Form.Item
+                      labelCol={{ span: 14 }}
+                      wrapperCol={{ span: 10 }}
+                      label="交付经理"
+                      hasFeedback
+                    >
+                      {getFieldDecorator('deliveryManagerName')(
+                        <Select allowClear>
+                          {dmData.map(item => {
                             return (
                               <Option key={item.id} value={item.id}>
-                                {item.name}
+                                {item.username}
                               </Option>
                             );
                           })}
-                      </Select>
-                    )}
-                  </Form.Item>
-                </Col>
-                <Col span={4}>
-                  <Form.Item
-                    labelCol={{ span: 6 }}
-                    wrapperCol={{ span: 14 }}
-                    label="性别"
-                    hasFeedback
-                  >
-                    {getFieldDecorator('gender')(
-                      <Select allowClear>
-                        <Option value="1">男</Option>
-                        <Option value="0">女</Option>
-                      </Select>
-                    )}
-                  </Form.Item>
-                </Col>
-                <Col span={5}>
-                  <Form.Item
-                    labelCol={{ span: 6 }}
-                    wrapperCol={{ span: 18 }}
-                    label="入职日期"
-                    hasFeedback
-                  >
-                    {getFieldDecorator('joiningDay')(<DatePicker />)}
-                  </Form.Item>
-                </Col>
-                <Col span={4}>
-                  <Form.Item
-                    labelCol={{ span: 7 }}
-                    wrapperCol={{ span: 15 }}
-                    label="人员性质"
-                    hasFeedback
-                  >
-                    {getFieldDecorator('empProperty')(
-                      <Select allowClear>
-                        {empPropertyEumn.map(item => {
-                          return (
-                            <Option key={item.id} value={item.id}>
-                              {item.name}
-                            </Option>
-                          );
-                        })}
-                      </Select>
-                    )}
-                  </Form.Item>
-                </Col>
-                <Col span={2} style={{ textAlign: 'right' }}>
-                  <Button
-                    type="primary"
-                    style={{
-                      marginTop: '3px'
-                    }}
-                    onClick={this.handleSearchList.bind(this)}
-                  >
-                    查询
-                  </Button>
-                </Col>
-              </Form>
+                        </Select>
+                      )}
+                    </Form.Item>
+                  </Col>
+                </Form>
+              </Col>
+              <Col span={2} style={{ textAlign: 'right' }}>
+                <Button
+                  type="primary"
+                  style={{
+                    marginTop: '3px',
+                    marginRight: '15%'
+                  }}
+                  onClick={this.handleSearchList.bind(this)}
+                >
+                  查询
+                </Button>
+              </Col>
             </Row>
           </Col>
           <Col
@@ -561,6 +609,7 @@ class BasicInformation extends Component {
           <Col className="basic-paging" span={24}>
             <Pagination
               total={total}
+              current={currentPageData.currentPage}
               onChange={page => {
                 this.handleTableChange(page);
               }}

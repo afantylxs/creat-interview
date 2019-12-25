@@ -53,6 +53,11 @@ export const changeGradeData = payload => ({
   payload
 });
 
+export const changeCurrentPageData = payload => ({
+  type: constants.CURRENTPAGEDATA,
+  payload
+});
+
 //获取基础信息列表
 export const queryEmployeeBaseInfoList = payload => {
   return dispatch => {
@@ -82,26 +87,39 @@ export const queryEmployeeBaseInfoList = payload => {
 
 //新增基础信息
 export const saveEmployeeBaseInfo = payload => {
-  return dispatch => {
-    fetch.post('/api/base/saveEmployeeBaseInfo.json', payload).then(res => {
-      if (res.success) {
-        dispatch(
-          changeBasicVisible({
-            basicVisible: false,
-            record: {}
-          })
-        );
-        dispatch(queryEmployeeBaseInfoList());
-      }
-    });
+  return (dispatch, getState) => {
+    const { currentPageData } = getState().basic;
+    const arg0 = {
+      currentPage: currentPageData.currentPage,
+      pageSize: 10
+    };
+    fetch
+      .post('/api/base/saveEmployeeBaseInfo.json', payload)
+      .then(res => {
+        if (res.success) {
+          dispatch(
+            changeBasicVisible({
+              basicVisible: false,
+              record: {}
+            })
+          );
+          dispatch(queryEmployeeBaseInfoList(arg0));
+        }
+      })
+      .catch(err => {
+        message.error(err);
+      });
   };
 };
 
 //编辑基础信息
 export const updateEmployeeBaseInfo = payload => {
-  console.log('编辑payload', payload);
-
-  return dispatch => {
+  return (dispatch, getState) => {
+    const { currentPageData } = getState().basic;
+    const arg0 = {
+      currentPage: currentPageData.currentPage,
+      pageSize: 10
+    };
     fetch
       .post('/api/base/updateEmployeeBaseInfo.json', payload)
       .then(res => {
@@ -113,11 +131,16 @@ export const updateEmployeeBaseInfo = payload => {
             })
           );
           message.success('修改成功');
-          dispatch(queryEmployeeBaseInfoList());
+          dispatch(queryEmployeeBaseInfoList(arg0));
         }
       })
       .catch(err => {
-        message.error(err.data.message);
+        console.log('err', err);
+        if (err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了');
+        }
       });
   };
 };

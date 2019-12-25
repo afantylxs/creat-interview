@@ -8,11 +8,15 @@ const { Option } = Select;
 
 const data = [
   {
-    key: '1',
-    empName: 'John Brown',
+    id: '1',
+    empName: '新员工',
     ipsaBuDeptId: 32,
-    ipsaDeptId: 'New York No. 1 Lake Park',
-    empNo: 111
+    ipsaDeptId: '蚂蚁实施部',
+    empNo: 111,
+    raduatedUniversities: '软通大学',
+    majorCode: 'web前端',
+    educationCode: '高中',
+    uniformFlag: '否'
   }
 ];
 @connect(state => state.educ, actionCreators)
@@ -21,49 +25,49 @@ class EducationInfo extends Component {
     super(props);
     this.columns = [
       {
-        title: '姓名',
-        dataIndex: 'empName',
-        width: '150px'
-      },
-      {
         title: 'BU',
         dataIndex: 'ipsaBuDeptId',
-        width: '150px'
+        width: '15%'
       },
       {
         title: '部门',
         dataIndex: 'ipsaDeptId',
-        width: '150px'
+        width: '15%'
+      },
+      {
+        title: '姓名',
+        dataIndex: 'empName',
+        width: '10%'
       },
       {
         title: '软通工号',
         dataIndex: 'empNo',
-        width: '150px'
+        width: '10%'
       },
       {
         title: '毕业学校',
-        dataIndex: 'w',
-        width: '150px'
+        dataIndex: 'raduatedUniversities',
+        width: '15%'
       },
       {
         title: '专业',
-        dataIndex: 'e',
-        width: '150px'
+        dataIndex: 'majorCode',
+        width: '15%'
       },
       {
         title: '学历',
-        dataIndex: 'r',
-        width: '150px'
+        dataIndex: 'educationCode',
+        width: '6%'
       },
       {
         title: '是否统招本科',
-        dataIndex: 't',
-        width: '150px'
+        dataIndex: 'uniformFlag',
+        width: '9%'
       },
       {
         title: '操作',
         dataIndex: 'action',
-        width: '150px',
+        width: '5%',
         render: (text, record) => {
           return (
             <Button onClick={this.handleShowModal.bind(this)}>编辑</Button>
@@ -179,7 +183,11 @@ class EducationInfo extends Component {
             </Row>
           </Col>
           <Col span={24}>
-            <Table columns={columns} dataSource={data} />
+            <Table
+              rowKey={(record, index) => index}
+              columns={columns}
+              dataSource={data}
+            />
           </Col>
         </Row>
         <EducationModal />

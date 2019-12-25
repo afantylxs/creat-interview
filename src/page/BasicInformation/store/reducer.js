@@ -2,6 +2,19 @@ import * as constants from './constants';
 
 const defaultState = {
   basicVisible: false,
+  currentPageData: {
+    currentPage: 1,
+    pageSize: 10,
+    keyword: '',
+    ipsaBuDeptId: '',
+    ipsaDeptId: '',
+    gender: '',
+    joiningDay: '',
+    empProperty: '',
+    joiningDayStartTime: '',
+    joiningDayEndTime: '',
+    deliveryManagerId: ''
+  },
   basicRecord: {},
   basicList: [],
   rsData: [],
@@ -17,7 +30,6 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   const { type, payload } = action;
-  const total = 2;
   switch (type) {
     case constants.CHANGE_BASICVISIBLE:
       return {
@@ -43,6 +55,10 @@ export default (state = defaultState, action) => {
       return { ...state, manageList: payload };
     case constants.CHANGE_GRADELIST:
       return { ...state, gradeList: payload };
+    case constants.CURRENTPAGEDATA:
+      console.log('payload', payload);
+
+      return { ...state, currentPageData: payload };
     default:
       return state;
   }
