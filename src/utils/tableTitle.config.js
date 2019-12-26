@@ -202,22 +202,22 @@ export const projectColumns = [
 export const educationList = [
   {
     title: '毕业学校',
-    dataIndex: 'w',
+    dataIndex: 'graduatedUniversities',
     width: '150px'
   },
   {
     title: '专业',
-    dataIndex: 'e',
+    dataIndex: 'majorCode',
     width: '150px'
   },
   {
     title: '学历',
-    dataIndex: 'r',
+    dataIndex: 'educationCode',
     width: '150px'
   },
   {
     title: '是否统招本科',
-    dataIndex: 't',
+    dataIndex: 'uniformFlag',
     width: '150px'
   }
 ];

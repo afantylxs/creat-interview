@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
-import { Row, Col, Button, Table, Form, Select, Input, Pagination } from 'antd';
+import {
+  Row,
+  Col,
+  Button,
+  Table,
+  Form,
+  Select,
+  Input,
+  Pagination,
+  Upload,
+  message
+} from 'antd';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { actionCreators } from './store';
 import EducationModal from './components/EducationModal.jsx';
@@ -8,19 +20,6 @@ import './index.less';
 const { Search } = Input;
 const { Option } = Select;
 
-const data = [
-  {
-    id: '1',
-    empName: '新员工',
-    ipsaBuDeptId: 32,
-    ipsaDeptId: '蚂蚁实施部',
-    empNo: 111,
-    raduatedUniversities: '软通大学',
-    majorCode: 'web前端',
-    educationCode: '高中',
-    uniformFlag: '否'
-  }
-];
 @connect(state => state.educ, actionCreators)
 class EducationInfo extends Component {
   constructor(props) {
@@ -74,7 +73,7 @@ class EducationInfo extends Component {
           return (
             <span
               className="educ-action-span"
-              onClick={this.handleShowModal.bind(this)}
+              onClick={this.handleShowModal.bind(this, record)}
             >
               编辑
             </span>
@@ -83,19 +82,24 @@ class EducationInfo extends Component {
       }
     ];
   }
-  handleShowModal = () => {
-    const { changeEducationVisible } = this.props;
+
+  //打开编辑框
+  handleShowModal = record => {
+    const { changeEducationVisible, dictInfo } = this.props;
     changeEducationVisible({
-      educVisible: true
+      educVisible: true,
+      record
     });
+    dictInfo();
   };
 
-  componentDidMount() {
-    const { deptInfoBu } = this.props;
-    deptInfoBu();
+  async componentDidMount() {
+    const { deptInfoBu, queryEducationRecordInfoList } = this.props;
+    await queryEducationRecordInfoList();
+    await deptInfoBu();
   }
 
-  //
+  //BU列表
   handleChangeBuDeptId = value => {
     const { deptInfo, changeDepList } = this.props;
     if (value) {
@@ -105,9 +109,98 @@ class EducationInfo extends Component {
     }
   };
 
+  handleTableChange = page => {
+    const { queryEducationRecordInfoList, changeCurrentPageData } = this.props;
+    const arg0 = {
+      currentPage: page,
+      pageSize: 10
+    };
+    changeCurrentPageData(arg0);
+    queryEducationRecordInfoList(arg0);
+  };
+
+  //导入数据提醒
+  handleChangeFile = ({ file, fileList }) => {
+    const { queryEducationRecordInfoList } = this.props;
+
+    if (file && file.status === 'done' && file.response.success) {
+      message.success(
+        file.response.message + '，共导入' + file.response.data + '条数据'
+      );
+      queryEducationRecordInfoList({
+        currentPage: 1,
+        pageSize: 20
+      });
+    } else {
+      if (file && file.status === 'done' && !file.response.success) {
+        message.error('上传失败:' + file.response.message);
+      } else {
+        message.error('上传失败，请联系技术人员');
+      }
+    }
+  };
+
+  //上传前的文件校验
+  handleBeforeUpload = (file, fileList) => {
+    if (
+      file &&
+      file.type !==
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    ) {
+      message.error('请上传以.xlsx为后缀的Excel文件');
+      return;
+    }
+  };
+
+  //导出excel
+  handleDownload = () => {
+    const token = localStorage.getItem('token');
+    console.log('11111');
+
+    const { currentPageData } = this.props;
+    axios({
+      method: 'get',
+      url: '/api/education/import/download',
+      headers: {
+        Authorization: 'Bearer ' + token
+      },
+      params: {
+        educationCode: '',
+        uniformFlag: '',
+        ipsaBuDeptId: '',
+        ipsaDeptId: '',
+        keyword: ''
+      },
+      responseType: 'blob'
+    })
+      .then(res => {
+        if (res.status === 200) {
+          const blob = new Blob([res.data], {
+            type:
+              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'
+          });
+          const url = window.URL.createObjectURL(blob);
+          const aLink = document.createElement('a');
+          aLink.style.display = 'none';
+          aLink.href = url;
+          aLink.setAttribute('download', 'excel.xlsx');
+          document.body.appendChild(aLink);
+          aLink.click();
+          document.body.removeChild(aLink); //下载完成移除元素
+          window.URL.revokeObjectURL(url);
+          message.success('导出成功');
+        } else {
+          message.error('导出失败');
+        }
+      })
+      .catch(err => {
+        message.error('导出失败');
+      });
+  };
   render() {
     const columns = this.columns;
-    const { buList, depList } = this.props;
+    const { buList, depList, educList, total, currentPageData } = this.props;
+    const token = localStorage.getItem('token');
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="education-info">
@@ -123,12 +216,29 @@ class EducationInfo extends Component {
                 />
               </Col>
               <Col span={16} style={{ textAlign: 'right' }}>
-                <Button style={{ marginRight: '7%' }} type="primary">
-                  导入
-                </Button>
-                <Button style={{ marginRight: '2%' }} type="primary">
-                  导出
-                </Button>
+                <div className="educ-upload-btn" style={{ marginRight: '7%' }}>
+                  <Upload
+                    style={{ marginRight: '7%' }}
+                    action="/api/education/import/education.json"
+                    method="post"
+                    headers={{
+                      Authorization: 'Bearer ' + token
+                    }}
+                    showUploadList={false}
+                    onChange={this.handleChangeFile.bind(this)}
+                    beforeUpload={this.handleBeforeUpload.bind(this)}
+                  >
+                    <Button type="primary">导入</Button>
+                  </Upload>
+                </div>
+                <div className="educ-upload-btn">
+                  <Button
+                    onClick={this.handleDownload.bind(this)}
+                    type="primary"
+                  >
+                    导出
+                  </Button>
+                </div>
               </Col>
             </Row>
           </Col>
@@ -237,12 +347,19 @@ class EducationInfo extends Component {
             <Table
               rowKey={(record, index) => index}
               columns={columns}
-              dataSource={data}
+              dataSource={educList}
               pagination={false}
+              scroll={{ y: 400 }}
             />
           </Col>
           <Col className="educ-paging" span={24}>
-            <Pagination total={10} current={1} />
+            <Pagination
+              total={total}
+              current={currentPageData.currentPage}
+              onChange={page => {
+                this.handleTableChange(page);
+              }}
+            />
           </Col>
         </Row>
         <EducationModal />

@@ -20,7 +20,6 @@ fetch.interceptors.request.use(
   },
   error => {
     //请求错误处理
-    console.log('请求错误处理request', error);
     Promise.reject(error);
   }
 );

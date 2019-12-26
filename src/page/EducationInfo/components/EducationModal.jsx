@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Upload, Modal, Form, Icon, Input } from 'antd';
+import { Row, Col, Upload, Modal, Form, Icon, Input, Select } from 'antd';
 import './educModal.less';
 import { actionCreators } from '../store';
 import { educationList } from '../../../utils/tableTitle.config.js';
+import { educationCodeEnum, uniformFlagEnum } from '../../../utils/optionEnum';
+const { Option } = Select;
 
 @connect(state => state.educ, actionCreators)
 class EducationModal extends Component {
   handleCancel = () => {
     const { changeEducationVisible } = this.props;
     changeEducationVisible({
-      educVisible: false
+      educVisible: false,
+      record: {}
     });
   };
 
@@ -24,20 +27,89 @@ class EducationModal extends Component {
 
   // 根据不同的信息渲染不同的输入框
   baseFormInput = key => {
+    const { majorList } = this.props;
+    if (key === 'majorCode') {
+      return (
+        <Select>
+          {majorList.map(item => {
+            //专业下拉列表
+            return (
+              <Option key={item.id} value={item.id}>
+                {item.label}
+              </Option>
+            );
+          })}
+        </Select>
+      );
+    }
+
+    if (key === 'educationCode') {
+      return (
+        <Select>
+          {educationCodeEnum.map(item => {
+            //学位下拉列表
+            return (
+              <Option key={item.key} value={item.key}>
+                {item.label}
+              </Option>
+            );
+          })}
+        </Select>
+      );
+    }
+
+    if (key === 'uniformFlag') {
+      return (
+        <Select>
+          {uniformFlagEnum.map(item => {
+            //统招列表
+            return (
+              <Option key={item.key} value={item.key}>
+                {item.label}
+              </Option>
+            );
+          })}
+        </Select>
+      );
+    }
     return <Input />;
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.educVisible) {
+      this.props.form.resetFields();
+    }
+  }
+
   handleEducationSubmit = () => {
     this.props.form.validateFields((err, values) => {
+      const { educRecord, updateEducationRecordInfoById } = this.props;
       if (!err) {
-        console.log('提');
+        console.log('提', values);
+        const arg0 = {
+          recruitmentUserId: educRecord.recruitmentUserId,
+          majorCode: values.majorCode,
+          recruitmentUserName: educRecord.recruitmentUserName,
+          graduatedUniversities: values.graduatedUniversities,
+          educationCode: values.educationCode,
+          uniformFlag: values.uniformFlag
+        };
+        updateEducationRecordInfoById(arg0);
       }
     });
+  };
+
+  //上传图片
+  handleChangeFile = ({ file, fileList }) => {
+    if (file && file.status === 'done' && file.response.success) {
+      console.log('file', file);
+    }
   };
 
   render() {
     const { educVisible } = this.props;
     const { getFieldDecorator } = this.props.form;
+    const token = localStorage.getItem('token');
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -79,11 +151,15 @@ class EducationModal extends Component {
               </Col>
               <Col span={16}>
                 <Upload
-                  name="avatar"
+                  method="post"
+                  headers={{
+                    Authorization: 'Bearer ' + token
+                  }}
                   listType="picture-card"
                   className="avatar-uploader"
                   showUploadList={false}
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                  action="/api/file/uploadFile.json"
+                  onChange={this.handleChangeFile.bind(this)}
                 >
                   <Icon type={'plus'} />
                   <div className="ant-upload-text">Upload</div>

@@ -249,6 +249,12 @@ class BasicInformation extends Component {
         currentPage: 1,
         pageSize: 20
       });
+    } else {
+      if (file && file.status === 'done' && !file.response.success) {
+        message.error('上传失败:' + file.response.message);
+      } else {
+        message.error('上传失败，请联系技术人员');
+      }
     }
   };
 

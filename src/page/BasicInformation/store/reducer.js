@@ -56,8 +56,6 @@ export default (state = defaultState, action) => {
     case constants.CHANGE_GRADELIST:
       return { ...state, gradeList: payload };
     case constants.CURRENTPAGEDATA:
-      console.log('payload', payload);
-
       return { ...state, currentPageData: payload };
     default:
       return state;

@@ -3,7 +3,15 @@ import * as constants from './constants';
 const defaultState = {
   educVisible: false,
   buList: [],
-  depList: []
+  depList: [],
+  educList: [],
+  total: 1,
+  majorList: [],
+  educRecord: {},
+  currentPageData: {
+    currentPage: 1,
+    pageSize: 10
+  }
 };
 
 export default (state = defaultState, action) => {
@@ -12,7 +20,8 @@ export default (state = defaultState, action) => {
     case constants.CHANGE_EDUCATIONVISIBLE:
       return {
         ...state,
-        educVisible: payload.educVisible
+        educVisible: payload.educVisible,
+        educRecord: payload.record
       };
     case constants.CHANGE_BULIST:
       return {
@@ -23,6 +32,22 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         depList: payload
+      };
+    case constants.CHANGE_EDUCLIST:
+      return {
+        ...state,
+        educList: payload.educList,
+        total: payload.total
+      };
+    case constants.CHANGE_MAGORLIST:
+      return {
+        ...state,
+        majorList: payload
+      };
+    case constants.CHANGE_CURRENTPAGE:
+      return {
+        ...state,
+        currentPageData: payload
       };
     default:
       return state;
