@@ -8,7 +8,10 @@ import { educationList } from '../../../utils/tableTitle.config.js';
 @connect(state => state.educ, actionCreators)
 class EducationModal extends Component {
   handleCancel = () => {
-    console.log('false');
+    const { changeEducationVisible } = this.props;
+    changeEducationVisible({
+      educVisible: false
+    });
   };
 
   // 对输入框进行校验

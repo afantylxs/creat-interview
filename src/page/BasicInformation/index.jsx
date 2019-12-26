@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { findDomNode } from 'react-dom';
 import moment from 'moment';
 import {
   DatePicker,
@@ -138,9 +139,19 @@ class BasicInformation extends Component {
         width: '90px',
         render: (text, record) => {
           return (
-            <Button
+            <span
+              className="basic-action-span"
               onClick={() => {
                 const { changeBasicVisible, deptInfo } = this.props;
+                let onjobKey = '',
+                  onJobLabel = '';
+                if (record.onJob === 0) {
+                  onjobKey = record.onJob;
+                  onJobLabel = '离职';
+                } else if (record.onJob === 1) {
+                  onjobKey = record.onJob;
+                  onJobLabel = '在职';
+                }
                 const newRecord = {
                   id: record.id,
                   empNo: record.empNo,
@@ -183,8 +194,8 @@ class BasicInformation extends Component {
                     label: record.deliveryManagerName
                   },
                   onJob: {
-                    key: record.onJob,
-                    label: record.onJob === 0 ? '离职' : '在职'
+                    key: onjobKey,
+                    label: onJobLabel
                   }
                 };
                 changeBasicVisible({
@@ -195,7 +206,7 @@ class BasicInformation extends Component {
               }}
             >
               编辑
-            </Button>
+            </span>
           );
         }
       }
@@ -208,7 +219,10 @@ class BasicInformation extends Component {
       deptInfoBu,
       queryUserListInfoByRolePermission
     } = this.props;
-    queryEmployeeBaseInfoList();
+    queryEmployeeBaseInfoList({
+      currentPage: 1,
+      pageSize: 10
+    });
     queryUserListInfoByRolePermission('deliveryManager');
     deptInfoBu();
   }
@@ -251,24 +265,32 @@ class BasicInformation extends Component {
   };
   //搜索框调用查询列表
   handleSearchInput = value => {
-    const {
-      queryEmployeeBaseInfoList,
-      changeCurrentPageData,
-      currentPageData
-    } = this.props;
-    const arg0 = {
-      currentPage: 1,
-      pageSize: 10,
-      keyword: value,
-      ipsaBuDeptId: currentPageData.ipsaBuDeptId,
-      ipsaDeptId: currentPageData.ipsaDeptId,
-      gender: currentPageData.gender,
-      joiningDay: currentPageData.joiningDay,
-      empProperty: currentPageData.empProperty,
-      deliveryManagerId: currentPageData.deliveryManagerId
-    };
-    changeCurrentPageData(arg0);
-    queryEmployeeBaseInfoList(arg0);
+    const { queryEmployeeBaseInfoList, changeCurrentPageData } = this.props;
+    this.props.form.validateFields((err, values) => {
+      const dateStart =
+        values.joiningDay && values.joiningDay.length
+          ? moment(values.joiningDay[0]).format('YYYY-MM-DD')
+          : '';
+      const dateEnd =
+        values.joiningDay && values.joiningDay.length
+          ? moment(values.joiningDay[1]).format('YYYY-MM-DD')
+          : '';
+
+      const arg0 = {
+        currentPage: 1,
+        pageSize: 10,
+        ipsaBuDeptId: values.ipsaBuDeptId,
+        ipsaDeptId: values.ipsaDeptId,
+        gender: values.gender,
+        keyword: value,
+        joiningDayStartTime: dateStart,
+        joiningDayEndTime: dateEnd,
+        empProperty: values.empProperty,
+        deliveryManagerId: values.deliveryManagerName
+      };
+      changeCurrentPageData(arg0);
+      queryEmployeeBaseInfoList(arg0);
+    });
   };
 
   handleChangeBuDeptId = value => {
@@ -289,12 +311,14 @@ class BasicInformation extends Component {
         changeCurrentPageData,
         currentPageData
       } = this.props;
-      const dateStart = values.joiningDay
-        ? moment(values.joiningDay[0]).format('YYYY-MM-DD')
-        : '';
-      const dateEnd = values.joiningDay
-        ? moment(values.joiningDay[1]).format('YYYY-MM-DD')
-        : '';
+      const dateStart =
+        values.joiningDay && values.joiningDay.length
+          ? moment(values.joiningDay[0]).format('YYYY-MM-DD')
+          : '';
+      const dateEnd =
+        values.joiningDay && values.joiningDay.length
+          ? moment(values.joiningDay[1]).format('YYYY-MM-DD')
+          : '';
       const arg0 = {
         currentPage: 1,
         pageSize: 10,
@@ -332,14 +356,17 @@ class BasicInformation extends Component {
     };
     changeCurrentPageData(arg0);
     queryEmployeeBaseInfoList(arg0);
+    // const table = ReactDom.findDOMNode(this.table),
+    //   tableBody = table.querySelector('.ant-table-body');
+    // const div = document.getElementsByClassName('basic-content-table');
+
+    // console.log('this.props.refs', this.tableHeight.props.style);
   };
 
   //导出excel
   handleDownload = () => {
     const token = localStorage.getItem('token');
     const { currentPageData } = this.props;
-    console.log('currentPageData', currentPageData);
-
     axios({
       method: 'get',
       url: '/api/base/download',
@@ -406,20 +433,22 @@ class BasicInformation extends Component {
                   enterButton
                 />
               </Col>
-              <Col span={12} style={{ textAlign: 'right' }}>
+              {/* <Col span={12} style={{ textAlign: 'right' }}>
+                
+              </Col> */}
+              <Col span={16} style={{ textAlign: 'right' }}>
                 <Button
                   type="primary"
                   onClick={this.handleShowModel.bind(this)}
+                  style={{ marginRight: '7%' }}
                 >
                   + 新增
                 </Button>
-              </Col>
-              <Col span={4} style={{ textAlign: 'right' }}>
                 <div
                   style={{
                     width: '64px',
                     display: 'inline-block',
-                    marginRight: '19%'
+                    marginRight: '7%'
                   }}
                 >
                   <Upload
@@ -439,7 +468,7 @@ class BasicInformation extends Component {
                   style={{
                     width: '64px',
                     display: 'inline-block',
-                    marginRight: '7%'
+                    marginRight: '2%'
                   }}
                 >
                   <Button
@@ -527,8 +556,8 @@ class BasicInformation extends Component {
                         <RangePicker
                           placeholder={['起始日期', '结束日期']}
                           ranges={{
-                            Today: [moment(), moment()],
-                            'This Month': [
+                            当天: [moment(), moment()],
+                            本月: [
                               moment().startOf('month'),
                               moment().endOf('month')
                             ]
@@ -597,13 +626,17 @@ class BasicInformation extends Component {
             className="basic-content-table"
             style={{ marginTop: '30px' }}
             span={24}
+            ref={el => {
+              this.tableHeight = el;
+            }}
           >
             <Table
               rowKey={(record, index) => index}
               columns={columns}
               dataSource={basicList}
-              scroll={{ x: 1300 }}
+              scroll={{ y: 400, x: 1400 }}
               pagination={false}
+              scrollToFirstRowOnChange={true}
             />
           </Col>
           <Col className="basic-paging" span={24}>

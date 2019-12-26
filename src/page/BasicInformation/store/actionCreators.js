@@ -60,6 +60,7 @@ export const changeCurrentPageData = payload => ({
 
 //获取基础信息列表
 export const queryEmployeeBaseInfoList = payload => {
+  console.log('猎豹payloadr', payload);
   return dispatch => {
     fetch
       .post('/api/base/queryEmployeeBaseInfoList.json', payload)
@@ -80,6 +81,14 @@ export const queryEmployeeBaseInfoList = payload => {
               total
             })
           );
+        }
+      })
+      .catch(err => {
+        console.log('猎豹err', err);
+        if (err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了');
         }
       });
   };
@@ -103,11 +112,18 @@ export const saveEmployeeBaseInfo = payload => {
               record: {}
             })
           );
+          message.success('新员工新增成功');
           dispatch(queryEmployeeBaseInfoList(arg0));
+        } else {
+          message.success('新员工新增失败');
         }
       })
       .catch(err => {
-        message.error(err);
+        if (err.data.message) {
+          message.error('新员工新增失败' + err.data.message);
+        } else {
+          message.error('出错了');
+        }
       });
   };
 };

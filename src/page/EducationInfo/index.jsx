@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Row, Col, Button, Table, Form, Select, Input } from 'antd';
+import { Row, Col, Button, Table, Form, Select, Input, Pagination } from 'antd';
 import { connect } from 'react-redux';
 import { actionCreators } from './store';
 import EducationModal from './components/EducationModal.jsx';
+import { uniformFlagEnum, educationCodeEnum } from '../../utils/optionEnum';
+import './index.less';
 const { Search } = Input;
 const { Option } = Select;
 
@@ -70,7 +72,12 @@ class EducationInfo extends Component {
         width: '5%',
         render: (text, record) => {
           return (
-            <Button onClick={this.handleShowModal.bind(this)}>编辑</Button>
+            <span
+              className="educ-action-span"
+              onClick={this.handleShowModal.bind(this)}
+            >
+              编辑
+            </span>
           );
         }
       }
@@ -82,39 +89,44 @@ class EducationInfo extends Component {
       educVisible: true
     });
   };
+
+  componentDidMount() {
+    const { deptInfoBu } = this.props;
+    deptInfoBu();
+  }
+
+  //
+  handleChangeBuDeptId = value => {
+    const { deptInfo, changeDepList } = this.props;
+    if (value) {
+      deptInfo(value);
+    } else {
+      changeDepList([]);
+    }
+  };
+
   render() {
     const columns = this.columns;
-    const { basicList } = this.props;
+    const { buList, depList } = this.props;
     const { getFieldDecorator } = this.props.form;
-
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 6 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 14 }
-      }
-    };
     return (
-      <div>
+      <div className="education-info">
         <Row style={{ padding: '30px' }}>
-          <Col span={24}>
+          <Col className="educ-operator-set" span={24}>
             <Row>
-              <Col span={12}>
+              <Col span={8}>
                 <Search
-                  style={{ width: '50%' }}
+                  className="educ-seatch-input"
                   placeholder="输入姓名或软通工号"
                   onSearch={value => console.log(value)}
                   enterButton
                 />
               </Col>
-              <Col span={12} style={{ textAlign: 'right' }}>
-                <Button style={{ marginRight: '40px' }} type="primary">
+              <Col span={16} style={{ textAlign: 'right' }}>
+                <Button style={{ marginRight: '7%' }} type="primary">
                   导入
                 </Button>
-                <Button style={{ marginRight: '30px' }} type="primary">
+                <Button style={{ marginRight: '2%' }} type="primary">
                   导出
                 </Button>
               </Col>
@@ -122,47 +134,86 @@ class EducationInfo extends Component {
           </Col>
           <Col style={{ marginTop: '30px' }} span={24}>
             <Row>
-              <Form {...formItemLayout}>
-                <Col span={4}>
-                  <Form.Item label="BU" hasFeedback>
+              <Form>
+                <Col span={5}>
+                  <Form.Item
+                    labelCol={{ span: 3 }}
+                    wrapperCol={{ span: 16 }}
+                    label="BU"
+                    hasFeedback
+                  >
                     {getFieldDecorator('confirm')(
-                      <Select>
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="tom">Tom</Option>
+                      <Select
+                        allowClear
+                        onChange={this.handleChangeBuDeptId.bind(this)}
+                      >
+                        {buList.map(item => {
+                          return (
+                            <Option key={item.id} value={item.id}>
+                              {item.name}
+                            </Option>
+                          );
+                        })}
                       </Select>
                     )}
                   </Form.Item>
                 </Col>
-                <Col span={4}>
-                  <Form.Item label="部门" hasFeedback>
+                <Col span={5}>
+                  <Form.Item
+                    labelCol={{ span: 4 }}
+                    wrapperCol={{ span: 16 }}
+                    label="部门"
+                    hasFeedback
+                  >
                     {getFieldDecorator('bumen')(
-                      <Select>
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="tom">Tom</Option>
+                      <Select allowClear>
+                        {depList.map(item => {
+                          return (
+                            <Option key={item.id} value={item.id}>
+                              {item.name}
+                            </Option>
+                          );
+                        })}
                       </Select>
                     )}
                   </Form.Item>
                 </Col>
                 <Col span={4}>
-                  <Form.Item label="学历" hasFeedback>
+                  <Form.Item
+                    labelCol={{ span: 4 }}
+                    wrapperCol={{ span: 12 }}
+                    label="学历"
+                    hasFeedback
+                  >
                     {getFieldDecorator('sex')(
-                      <Select>
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="tom">Tom</Option>
+                      <Select allowClear>
+                        {educationCodeEnum.map(item => {
+                          return (
+                            <Option key={item.key} value={item.key}>
+                              {item.label}
+                            </Option>
+                          );
+                        })}
                       </Select>
                     )}
                   </Form.Item>
                 </Col>
-                <Col span={8}>
-                  <Form.Item label="是否统招本科" hasFeedback>
+                <Col span={6}>
+                  <Form.Item
+                    labelCol={{ span: 7 }}
+                    wrapperCol={{ span: 9 }}
+                    label="是否统招"
+                    hasFeedback
+                  >
                     {getFieldDecorator('entry')(
-                      <Select>
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="tom">Tom</Option>
+                      <Select allowClear>
+                        {uniformFlagEnum.map(item => {
+                          return (
+                            <Option key={item.key} value={item.key}>
+                              {item.label}
+                            </Option>
+                          );
+                        })}
                       </Select>
                     )}
                   </Form.Item>
@@ -173,7 +224,7 @@ class EducationInfo extends Component {
                     style={{
                       marginTop: '3px',
                       marginLeft: '5%',
-                      marginRight: '30px'
+                      marginRight: '21px'
                     }}
                   >
                     查询
@@ -182,12 +233,16 @@ class EducationInfo extends Component {
               </Form>
             </Row>
           </Col>
-          <Col span={24}>
+          <Col span={24} className="educ-content-table">
             <Table
               rowKey={(record, index) => index}
               columns={columns}
               dataSource={data}
+              pagination={false}
             />
+          </Col>
+          <Col className="educ-paging" span={24}>
+            <Pagination total={10} current={1} />
           </Col>
         </Row>
         <EducationModal />

@@ -9,6 +9,52 @@ export const genderEunm = [
   }
 ];
 
+export const uniformFlagEnum = [
+  {
+    key: 0,
+    label: '非统招'
+  },
+  {
+    key: 1,
+    label: '统招'
+  }
+];
+
+export const educationCodeEnum = [
+  {
+    key: 0,
+    label: '高中'
+  },
+  {
+    key: 1,
+    label: '中专'
+  },
+  {
+    key: 2,
+    label: '大专'
+  },
+  {
+    key: 3,
+    label: '本科'
+  },
+  {
+    key: 4,
+    label: '硕士'
+  },
+  {
+    key: 5,
+    label: '博士'
+  },
+  {
+    key: 6,
+    label: '博士后'
+  },
+  {
+    key: 7,
+    label: '院士'
+  }
+];
+
 export const empPropertyEumn = [
   {
     id: 0,

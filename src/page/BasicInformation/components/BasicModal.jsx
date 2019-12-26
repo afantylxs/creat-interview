@@ -14,7 +14,7 @@ const { Option } = Select;
 
 const inputList = ['empName', 'empNo'];
 const dateList = ['birthday', 'joiningDay', 'correctionTime'];
-const managedisabled = ['directSuperiorName', 'deliveryManagerName'];
+const managedisabled = ['directSuperiorName'];
 
 @connect(state => state.basic, actionCreators)
 class BasicModal extends Component {
@@ -36,7 +36,20 @@ class BasicModal extends Component {
     if (key === 'correctionTime' && !basicRecord.id) {
       return [];
     }
-    return [{ required: true, message: '不能为空' }];
+    return [
+      { required: true, message: '不能为空' },
+      {
+        validator: this.validFunction
+      }
+    ];
+  };
+
+  validFunction = (rule, value, callback) => {
+    if (rule && rule.field === 'ipsaDeptId')
+      if (value instanceof Object && Object.keys(value).length === 0) {
+        callback('不能为空');
+      }
+    callback();
   };
 
   componentDidMount() {
@@ -80,6 +93,7 @@ class BasicModal extends Component {
         labelInValue={true}
         className="basic-select"
         style={{ width: '100%' }}
+        allowClear={key === 'deliveryManagerName' ? true : false}
       >
         {key === 'ipsaBuDeptId' &&
           buList.map(item => {
@@ -174,9 +188,15 @@ class BasicModal extends Component {
   };
 
   handleGetOption = (key, value) => {
-    const { deptInfo, dictInfo } = this.props;
+    const { deptInfo, basicRecord, changeBasicVisible } = this.props;
 
     if (key === 'ipsaBuDeptId') {
+      const newBasicRecord = JSON.parse(JSON.stringify(basicRecord));
+      newBasicRecord.ipsaDeptId = {};
+      changeBasicVisible({
+        basicVisible: true,
+        record: newBasicRecord
+      });
       deptInfo({ id: value.key, tab: 'ipsaPostNo' });
     }
   };
@@ -188,6 +208,8 @@ class BasicModal extends Component {
   handleProjectSubmit = event => {
     event.preventDefault();
     this.props.form.validateFields((err, values) => {
+      console.log('values', values);
+
       if (!err) {
         const {
           saveEmployeeBaseInfo,

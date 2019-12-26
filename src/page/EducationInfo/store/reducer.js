@@ -1,7 +1,9 @@
 import * as constants from './constants';
 
 const defaultState = {
-  educVisible: false
+  educVisible: false,
+  buList: [],
+  depList: []
 };
 
 export default (state = defaultState, action) => {
@@ -11,6 +13,16 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         educVisible: payload.educVisible
+      };
+    case constants.CHANGE_BULIST:
+      return {
+        ...state,
+        buList: payload
+      };
+    case constants.CHANGE_DEPLIST:
+      return {
+        ...state,
+        depList: payload
       };
     default:
       return state;
