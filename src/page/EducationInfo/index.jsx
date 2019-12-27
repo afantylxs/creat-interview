@@ -160,7 +160,6 @@ class EducationInfo extends Component {
   //导入数据提醒
   handleChangeFile = ({ file, fileList }) => {
     const { queryEducationRecordInfoList } = this.props;
-
     if (file && file.status === 'done' && file.response.success) {
       message.success(
         file.response.message + '，共导入' + file.response.data + '条数据'
@@ -173,8 +172,12 @@ class EducationInfo extends Component {
       if (file && file.status === 'done' && !file.response.success) {
         message.error('上传失败:' + file.response.message);
       }
-      if (file && file.status === 'error' && file.error.status === 401) {
-        message.error('导入失败，请重新登录');
+      if (file && file.status === 'error') {
+        if (file.error.status === 401) {
+          message.error('导入失败，请重新登录');
+        } else {
+          message.error('导入失败:' + file.response.message);
+        }
       }
     }
   };

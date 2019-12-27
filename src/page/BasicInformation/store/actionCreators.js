@@ -119,7 +119,7 @@ export const saveEmployeeBaseInfo = payload => {
       })
       .catch(err => {
         if (err.data.message) {
-          message.error('新员工新增失败' + err.data.message);
+          message.error('新员工新增失败：' + err.data.message);
         } else {
           message.error('出错了');
         }
@@ -147,6 +147,8 @@ export const updateEmployeeBaseInfo = payload => {
           );
           message.success('修改成功');
           dispatch(queryEmployeeBaseInfoList(arg0));
+        } else {
+          message.error('修改失败：' + res.message);
         }
       })
       .catch(err => {
