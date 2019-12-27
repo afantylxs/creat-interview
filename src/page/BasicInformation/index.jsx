@@ -356,7 +356,7 @@ class BasicInformation extends Component {
       ipsaBuDeptId: currentPageData.ipsaBuDeptId,
       ipsaDeptId: currentPageData.ipsaDeptId,
       gender: currentPageData.gender,
-      jjoiningDayEndTime: currentPageData.joiningDayEndTime,
+      joiningDayEndTime: currentPageData.joiningDayEndTime,
       joiningDayStartTime: currentPageData.joiningDayStartTime,
       empProperty: currentPageData.empProperty
     };

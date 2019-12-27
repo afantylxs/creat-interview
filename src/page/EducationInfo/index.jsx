@@ -185,8 +185,6 @@ class EducationInfo extends Component {
   //导出excel
   handleDownload = () => {
     const token = localStorage.getItem('token');
-    console.log('11111');
-
     const { currentPageData } = this.props;
     axios({
       method: 'get',
@@ -195,11 +193,11 @@ class EducationInfo extends Component {
         Authorization: 'Bearer ' + token
       },
       params: {
-        educationCode: '',
-        uniformFlag: '',
-        ipsaBuDeptId: '',
-        ipsaDeptId: '',
-        keyword: ''
+        educationCode: currentPageData.educationCode,
+        uniformFlag: currentPageData.uniformFlag,
+        ipsaBuDeptId: currentPageData.ipsaBuDeptId,
+        ipsaDeptId: currentPageData.ipsaDeptId,
+        keyword: currentPageData.keyword
       },
       responseType: 'blob'
     })
@@ -230,13 +228,17 @@ class EducationInfo extends Component {
 
   //搜索框调用查询列表
   handleSearchInput = value => {
-    const { queryEducationRecordInfoList, changeCurrentPageData } = this.props;
+    const {
+      queryEducationRecordInfoList,
+      changeCurrentPageData,
+      currentPageData
+    } = this.props;
     this.props.form.validateFields((err, values) => {
       const arg0 = {
-        educationCode: '',
-        uniformFlag: '',
-        ipsaBuDeptId: '',
-        ipsaDeptId: '',
+        educationCode: currentPageData.educationCode,
+        uniformFlag: currentPageData.uniformFlag,
+        ipsaBuDeptId: currentPageData.ipsaBuDeptId,
+        ipsaDeptId: currentPageData.ipsaDeptId,
         keyword: value
       };
       changeCurrentPageData(arg0);
@@ -247,14 +249,18 @@ class EducationInfo extends Component {
   //查询按钮
   handleSearchList = event => {
     event.preventDefault();
-    const { queryEducationRecordInfoList, changeCurrentPageData } = this.props;
+    const {
+      queryEducationRecordInfoList,
+      changeCurrentPageData,
+      currentPageData
+    } = this.props;
     this.props.form.validateFields((err, values) => {
       const arg0 = {
-        educationCode: '',
-        uniformFlag: '',
-        ipsaBuDeptId: '',
-        ipsaDeptId: '',
-        keyword: ''
+        educationCode: values.educationCode,
+        uniformFlag: values.uniformFlag,
+        ipsaBuDeptId: values.ipsaBuDeptId,
+        ipsaDeptId: values.ipsaDeptId,
+        keyword: currentPageData.keyword
       };
       changeCurrentPageData(arg0);
       queryEducationRecordInfoList(arg0);
@@ -315,7 +321,7 @@ class EducationInfo extends Component {
                     label="BU"
                     hasFeedback
                   >
-                    {getFieldDecorator('confirm')(
+                    {getFieldDecorator('ipsaBuDeptId')(
                       <Select
                         allowClear
                         onChange={this.handleChangeBuDeptId.bind(this)}
@@ -338,7 +344,7 @@ class EducationInfo extends Component {
                     label="部门"
                     hasFeedback
                   >
-                    {getFieldDecorator('bumen')(
+                    {getFieldDecorator('ipsaDeptId')(
                       <Select allowClear>
                         {depList.map(item => {
                           return (
@@ -358,7 +364,7 @@ class EducationInfo extends Component {
                     label="学历"
                     hasFeedback
                   >
-                    {getFieldDecorator('sex')(
+                    {getFieldDecorator('educationCode')(
                       <Select allowClear>
                         {educationCodeEnum.map(item => {
                           return (
@@ -378,7 +384,7 @@ class EducationInfo extends Component {
                     label="是否统招"
                     hasFeedback
                   >
-                    {getFieldDecorator('entry')(
+                    {getFieldDecorator('uniformFlag')(
                       <Select allowClear>
                         {uniformFlagEnum.map(item => {
                           return (

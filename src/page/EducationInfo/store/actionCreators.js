@@ -66,12 +66,14 @@ export const deptInfo = payload => {
       .then(res => {
         if (res.success) {
           const depList = res.data;
-          // if (payload.id) {
-          //   dispatch(changeDepModalList(depList));
-          // } else {
-          //   dispatch(changeDepList(depList));
-          // }
           dispatch(changeDepList(depList));
+        }
+      })
+      .catch(err => {
+        if (err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了');
         }
       });
   };
@@ -116,7 +118,8 @@ export const dictInfo = payload => {
         if (res.success) {
           const data = res.data;
           dispatch(changeDircInfoList(data));
-          console.log('res', res);
+        } else {
+          message.error(res.message && res.message);
         }
       })
       .catch(err => {
@@ -134,16 +137,27 @@ export const updateEducationRecordInfoById = payload => {
     fetch
       .post('/api/education/updateEducationRecordInfoById.json', payload)
       .then(res => {
-        console.log('res', res);
         if (res.success) {
-          const data = res.data;
-          console.log('res', res);
+          message.success('学历编辑成功');
+          dispatch(
+            changeEducationVisible({
+              educVisible: false,
+              record: {}
+            })
+          );
+          dispatch(
+            queryEducationRecordInfoList({
+              currentPage: 1,
+              pageSize: 10
+            })
+          );
+        } else {
+          message.error('学历编辑失败：' + res.message && res.message);
         }
       })
       .catch(err => {
-        console.log('猎豹err', err);
         if (err.data.message) {
-          message.error(err.data.message);
+          message.error('学历编辑失败' + err.data.message);
         } else {
           message.error('出错了');
         }

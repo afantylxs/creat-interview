@@ -26,7 +26,8 @@ class EducationModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imgurl: ''
+      imgurl: '',
+      fileId: ''
     };
   }
   handleCancel = () => {
@@ -104,16 +105,20 @@ class EducationModal extends Component {
   handleEducationSubmit = () => {
     this.props.form.validateFields((err, values) => {
       const { educRecord, updateEducationRecordInfoById } = this.props;
+      const { fileId } = this.state;
       if (!err) {
-        console.log('提', values);
         const arg0 = {
           recruitmentUserId: educRecord.recruitmentUserId,
           majorCode: values.majorCode,
           recruitmentUserName: educRecord.recruitmentUserName,
           graduatedUniversities: values.graduatedUniversities,
           educationCode: values.educationCode,
-          uniformFlag: values.uniformFlag
+          uniformFlag: values.uniformFlag,
+          avatarIdPath: fileId,
+          id: educRecord.id
         };
+        console.log('提', arg0);
+
         updateEducationRecordInfoById(arg0);
       }
     });
@@ -126,7 +131,8 @@ class EducationModal extends Component {
         console.log('file.response.data.url', file.response.data.url);
 
         this.setState({
-          imgurl: httAddress + file.response.data.url
+          imgurl: httAddress + file.response.data.url,
+          fileId: file.response.data.fileId
         });
       } else {
         message.error(
@@ -139,8 +145,6 @@ class EducationModal extends Component {
   render() {
     const { educVisible } = this.props;
     const { imgurl } = this.state;
-    console.log('imgurl', imgurl);
-
     const { getFieldDecorator } = this.props.form;
     const token = localStorage.getItem('token');
     const formItemLayout = {
@@ -200,7 +204,6 @@ class EducationModal extends Component {
                   ) : (
                     'Upload'
                   )}
-                  {/* <div className="ant-upload-text">Upload</div> */}
                 </Upload>
               </Col>
             </Row>
