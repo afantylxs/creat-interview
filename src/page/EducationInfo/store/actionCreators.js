@@ -94,6 +94,33 @@ export const queryEducationRecordInfoList = payload => {
               total
             })
           );
+        } else {
+          message.error('出错了');
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+
+        // if ( err && err.data.message) {
+        //   message.error(err.data.message);
+        // } else {
+        //   message.error('出错了');
+        // }
+      });
+  };
+};
+
+export const queryEducationRecordInfoById = payload => {
+  return dispatch => {
+    fetch
+      .get('/api/education/queryEducationRecordInfoById.json', {
+        params: {
+          id: payload
+        }
+      })
+      .then(res => {
+        if (res.success) {
+          console.log('res', res);
         }
       })
       .catch(err => {

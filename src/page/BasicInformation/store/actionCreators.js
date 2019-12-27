@@ -84,7 +84,6 @@ export const queryEmployeeBaseInfoList = payload => {
         }
       })
       .catch(err => {
-        console.log('猎豹err', err);
         if (err.data.message) {
           message.error(err.data.message);
         } else {
@@ -115,7 +114,7 @@ export const saveEmployeeBaseInfo = payload => {
           message.success('新员工新增成功');
           dispatch(queryEmployeeBaseInfoList(arg0));
         } else {
-          message.success('新员工新增失败');
+          message.error('新员工新增失败' + res.message);
         }
       })
       .catch(err => {
@@ -151,7 +150,6 @@ export const updateEmployeeBaseInfo = payload => {
         }
       })
       .catch(err => {
-        console.log('err', err);
         if (err.data.message) {
           message.error(err.data.message);
         } else {

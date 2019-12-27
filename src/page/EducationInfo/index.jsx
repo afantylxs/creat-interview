@@ -117,10 +117,16 @@ class EducationInfo extends Component {
 
   //打开编辑框
   handleShowModal = record => {
+    const imgUrl =
+      record.avatar && record.avatar.length ? record.avatar[0].url : '';
+    const imgId =
+      record.avatar && record.avatar.length ? record.avatar[0].id : '';
     const { changeEducationVisible, dictInfo } = this.props;
     changeEducationVisible({
       educVisible: true,
-      record
+      record,
+      imageUrl: imgUrl,
+      fileId: imgId
     });
     dictInfo();
   };
@@ -166,6 +172,9 @@ class EducationInfo extends Component {
     } else {
       if (file && file.status === 'done' && !file.response.success) {
         message.error('上传失败:' + file.response.message);
+      }
+      if (file && file.status === 'error' && file.error.status === 401) {
+        message.error('导入失败，请重新登录');
       }
     }
   };
@@ -239,7 +248,9 @@ class EducationInfo extends Component {
         uniformFlag: currentPageData.uniformFlag,
         ipsaBuDeptId: currentPageData.ipsaBuDeptId,
         ipsaDeptId: currentPageData.ipsaDeptId,
-        keyword: value
+        keyword: value,
+        currentPage: 1,
+        pageSize: 10
       };
       changeCurrentPageData(arg0);
       queryEducationRecordInfoList(arg0);
@@ -260,7 +271,9 @@ class EducationInfo extends Component {
         uniformFlag: values.uniformFlag,
         ipsaBuDeptId: values.ipsaBuDeptId,
         ipsaDeptId: values.ipsaDeptId,
-        keyword: currentPageData.keyword
+        keyword: currentPageData.keyword,
+        currentPage: 1,
+        pageSize: 10
       };
       changeCurrentPageData(arg0);
       queryEducationRecordInfoList(arg0);

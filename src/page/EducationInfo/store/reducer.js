@@ -8,9 +8,16 @@ const defaultState = {
   total: 1,
   majorList: [],
   educRecord: {},
+  imageUrl: '',
+  fileId: '',
   currentPageData: {
     currentPage: 1,
-    pageSize: 10
+    pageSize: 10,
+    keyword: '',
+    ipsaDeptId: '',
+    ipsaBuDeptId: '',
+    uniformFlag: '',
+    educationCode: ''
   }
 };
 
@@ -18,10 +25,14 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
   switch (type) {
     case constants.CHANGE_EDUCATIONVISIBLE:
+      console.log('payload', payload);
+
       return {
         ...state,
         educVisible: payload.educVisible,
-        educRecord: payload.record
+        educRecord: payload.record,
+        imageUrl: payload.imageUrl,
+        fileId: payload.fileId
       };
     case constants.CHANGE_BULIST:
       return {

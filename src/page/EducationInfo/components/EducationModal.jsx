@@ -104,8 +104,7 @@ class EducationModal extends Component {
 
   handleEducationSubmit = () => {
     this.props.form.validateFields((err, values) => {
-      const { educRecord, updateEducationRecordInfoById } = this.props;
-      const { fileId } = this.state;
+      const { educRecord, fileId, updateEducationRecordInfoById } = this.props;
       if (!err) {
         const arg0 = {
           recruitmentUserId: educRecord.recruitmentUserId,
@@ -117,8 +116,6 @@ class EducationModal extends Component {
           avatarIdPath: fileId,
           id: educRecord.id
         };
-        console.log('提', arg0);
-
         updateEducationRecordInfoById(arg0);
       }
     });
@@ -128,10 +125,11 @@ class EducationModal extends Component {
   handleChangeFile = ({ file, fileList }) => {
     if (file && file.status === 'done' && file.response.success) {
       if (file.response.data) {
-        console.log('file.response.data.url', file.response.data.url);
-
-        this.setState({
-          imgurl: httAddress + file.response.data.url,
+        const { changeEducationVisible, educRecord } = this.props;
+        changeEducationVisible({
+          educVisible: true,
+          imageUrl: file.response.data.url,
+          record: educRecord,
           fileId: file.response.data.fileId
         });
       } else {
@@ -140,11 +138,18 @@ class EducationModal extends Component {
         );
       }
     }
+    if (file && file.status === 'done' && !file.response.success) {
+      message.error(
+        '上传图片失败' + file.response.message && file.response.message
+      );
+    }
+    if (file && file.status === 'error' && file.error.status === 401) {
+      message.error('上传失败，请重新登录');
+    }
   };
 
   render() {
-    const { educVisible } = this.props;
-    const { imgurl } = this.state;
+    const { educVisible, educRecord, imageUrl } = this.props;
     const { getFieldDecorator } = this.props.form;
     const token = localStorage.getItem('token');
     const formItemLayout = {
@@ -177,6 +182,7 @@ class EducationModal extends Component {
               return (
                 <Form.Item label={item.title} key={item.dataIndex}>
                   {getFieldDecorator(item.dataIndex, {
+                    initialValue: educRecord[item.dataIndex],
                     rules: this.basicFormRules(item.dataIndex)
                   })(this.baseFormInput(item.dataIndex))}
                 </Form.Item>
@@ -198,9 +204,13 @@ class EducationModal extends Component {
                   action="/api/file/uploadFile.json"
                   onChange={this.handleChangeFile.bind(this)}
                 >
-                  {imgurl ? '' : <Icon type={'plus'} />}
-                  {imgurl ? (
-                    <img src={imgurl} alt="avatar" style={{ width: '100%' }} />
+                  {imageUrl ? '' : <Icon type={'plus'} />}
+                  {imageUrl ? (
+                    <img
+                      src={httAddress + imageUrl}
+                      alt="avatar"
+                      style={{ width: '100%' }}
+                    />
                   ) : (
                     'Upload'
                   )}
