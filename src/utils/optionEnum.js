@@ -1,3 +1,4 @@
+export const httAddress = 'http://47.92.48.141';
 export const genderEunm = [
   {
     value: 1,

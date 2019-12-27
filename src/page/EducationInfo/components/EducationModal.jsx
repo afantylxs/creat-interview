@@ -1,14 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Upload, Modal, Form, Icon, Input, Select } from 'antd';
+import {
+  Row,
+  Col,
+  Upload,
+  Modal,
+  Form,
+  Icon,
+  Input,
+  Select,
+  message
+} from 'antd';
 import './educModal.less';
 import { actionCreators } from '../store';
 import { educationList } from '../../../utils/tableTitle.config.js';
-import { educationCodeEnum, uniformFlagEnum } from '../../../utils/optionEnum';
+import {
+  educationCodeEnum,
+  uniformFlagEnum,
+  httAddress
+} from '../../../utils/optionEnum';
 const { Option } = Select;
 
 @connect(state => state.educ, actionCreators)
 class EducationModal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      imgurl: ''
+    };
+  }
   handleCancel = () => {
     const { changeEducationVisible } = this.props;
     changeEducationVisible({
@@ -102,12 +122,25 @@ class EducationModal extends Component {
   //上传图片
   handleChangeFile = ({ file, fileList }) => {
     if (file && file.status === 'done' && file.response.success) {
-      console.log('file', file);
+      if (file.response.data) {
+        console.log('file.response.data.url', file.response.data.url);
+
+        this.setState({
+          imgurl: httAddress + file.response.data.url
+        });
+      } else {
+        message.error(
+          '上传图片失败' + file.response.message && file.response.message
+        );
+      }
     }
   };
 
   render() {
     const { educVisible } = this.props;
+    const { imgurl } = this.state;
+    console.log('imgurl', imgurl);
+
     const { getFieldDecorator } = this.props.form;
     const token = localStorage.getItem('token');
     const formItemLayout = {
@@ -161,8 +194,13 @@ class EducationModal extends Component {
                   action="/api/file/uploadFile.json"
                   onChange={this.handleChangeFile.bind(this)}
                 >
-                  <Icon type={'plus'} />
-                  <div className="ant-upload-text">Upload</div>
+                  {imgurl ? '' : <Icon type={'plus'} />}
+                  {imgurl ? (
+                    <img src={imgurl} alt="avatar" style={{ width: '100%' }} />
+                  ) : (
+                    'Upload'
+                  )}
+                  {/* <div className="ant-upload-text">Upload</div> */}
                 </Upload>
               </Col>
             </Row>

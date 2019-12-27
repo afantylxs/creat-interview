@@ -27,12 +27,12 @@ class EducationInfo extends Component {
     this.columns = [
       {
         title: 'BU',
-        dataIndex: 'ipsaBuDeptId',
+        dataIndex: 'ipsaBuDeptName',
         width: '15%'
       },
       {
         title: '部门',
-        dataIndex: 'ipsaDeptId',
+        dataIndex: 'ipsaDeptName',
         width: '15%'
       },
       {
@@ -47,23 +47,55 @@ class EducationInfo extends Component {
       },
       {
         title: '毕业学校',
-        dataIndex: 'raduatedUniversities',
+        dataIndex: 'graduatedUniversities',
         width: '15%'
       },
       {
         title: '专业',
-        dataIndex: 'majorCode',
+        dataIndex: 'majorName',
         width: '15%'
       },
       {
         title: '学历',
         dataIndex: 'educationCode',
-        width: '6%'
+        width: '6%',
+        render: (text, record) => {
+          switch (text) {
+            case 0:
+              return <span>高中</span>;
+            case 1:
+              return <span>中专</span>;
+            case 2:
+              return <span>大专</span>;
+            case 3:
+              return <span>本科</span>;
+            case 4:
+              return <span>硕士</span>;
+            case 5:
+              return <span>博士</span>;
+            case 6:
+              return <span>博士后</span>;
+            case 7:
+              return <span>院士</span>;
+            default:
+              break;
+          }
+        }
       },
       {
         title: '是否统招本科',
         dataIndex: 'uniformFlag',
-        width: '9%'
+        width: '9%',
+        render: (text, record) => {
+          switch (text) {
+            case 0:
+              return <span>非统招</span>;
+            case 1:
+              return <span>统招</span>;
+            default:
+              break;
+          }
+        }
       },
       {
         title: '操作',
@@ -134,8 +166,6 @@ class EducationInfo extends Component {
     } else {
       if (file && file.status === 'done' && !file.response.success) {
         message.error('上传失败:' + file.response.message);
-      } else {
-        message.error('上传失败，请联系技术人员');
       }
     }
   };
@@ -160,7 +190,7 @@ class EducationInfo extends Component {
     const { currentPageData } = this.props;
     axios({
       method: 'get',
-      url: '/api/education/import/download',
+      url: '/api/education/download',
       headers: {
         Authorization: 'Bearer ' + token
       },
@@ -197,6 +227,39 @@ class EducationInfo extends Component {
         message.error('导出失败');
       });
   };
+
+  //搜索框调用查询列表
+  handleSearchInput = value => {
+    const { queryEducationRecordInfoList, changeCurrentPageData } = this.props;
+    this.props.form.validateFields((err, values) => {
+      const arg0 = {
+        educationCode: '',
+        uniformFlag: '',
+        ipsaBuDeptId: '',
+        ipsaDeptId: '',
+        keyword: value
+      };
+      changeCurrentPageData(arg0);
+      queryEducationRecordInfoList(arg0);
+    });
+  };
+
+  //查询按钮
+  handleSearchList = event => {
+    event.preventDefault();
+    const { queryEducationRecordInfoList, changeCurrentPageData } = this.props;
+    this.props.form.validateFields((err, values) => {
+      const arg0 = {
+        educationCode: '',
+        uniformFlag: '',
+        ipsaBuDeptId: '',
+        ipsaDeptId: '',
+        keyword: ''
+      };
+      changeCurrentPageData(arg0);
+      queryEducationRecordInfoList(arg0);
+    });
+  };
   render() {
     const columns = this.columns;
     const { buList, depList, educList, total, currentPageData } = this.props;
@@ -211,7 +274,7 @@ class EducationInfo extends Component {
                 <Search
                   className="educ-seatch-input"
                   placeholder="输入姓名或软通工号"
-                  onSearch={value => console.log(value)}
+                  onSearch={value => this.handleSearchInput(value)}
                   enterButton
                 />
               </Col>
@@ -336,6 +399,7 @@ class EducationInfo extends Component {
                       marginLeft: '5%',
                       marginRight: '21px'
                     }}
+                    onClick={this.handleSearchList.bind(this)}
                   >
                     查询
                   </Button>
