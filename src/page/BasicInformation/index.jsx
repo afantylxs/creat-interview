@@ -112,7 +112,27 @@ class BasicInformation extends Component {
       };
       changeCurrentPageData(arg0);
       queryEmployeeBaseInfoList(arg0);
+      this.props.form.resetFields();
     });
+  };
+
+  //修改搜索框的值
+  handleChangeSearchInput = value => {
+    const { changeCurrentPageData } = this.props;
+    const arg0 = {
+      currentPage: 1,
+      pageSize: 10,
+      ipsaBuDeptId: '',
+      ipsaDeptId: '',
+      gender: '',
+      keyword: value.target.value,
+      joiningDayStartTime: '',
+      joiningDayEndTime: '',
+      empProperty: '',
+      deliveryManagerId: '',
+      employeeStatus: ''
+    };
+    changeCurrentPageData(arg0);
   };
 
   handleChangeBuDeptId = value => {
@@ -128,11 +148,7 @@ class BasicInformation extends Component {
   handleSearchList = event => {
     event.preventDefault();
     this.props.form.validateFields((err, values) => {
-      const {
-        queryEmployeeBaseInfoList,
-        changeCurrentPageData,
-        currentPageData
-      } = this.props;
+      const { queryEmployeeBaseInfoList, changeCurrentPageData } = this.props;
       const dateStart =
         values.joiningDay && values.joiningDay.length
           ? moment(values.joiningDay[0]).format('YYYY-MM-DD')
@@ -237,7 +253,6 @@ class BasicInformation extends Component {
     return projectList;
   };
   render() {
-    const columns = this.columns;
     const {
       basicList,
       buList,
@@ -248,7 +263,6 @@ class BasicInformation extends Component {
     } = this.props;
     const { getFieldDecorator } = this.props.form;
     const token = localStorage.getItem('token');
-
     // const { getFieldDecorator } = this.props.form;
     return (
       <div className="basic-information">
@@ -260,7 +274,9 @@ class BasicInformation extends Component {
                   style={{ width: '50%', marginLeft: '20px' }}
                   placeholder="输入姓名或软通工号"
                   onSearch={value => this.handleSearchInput(value)}
+                  onChange={value => this.handleChangeSearchInput(value)}
                   enterButton
+                  value={currentPageData.keyword}
                 />
               </Col>
               <Col span={16} style={{ textAlign: 'right' }}>
@@ -319,7 +335,9 @@ class BasicInformation extends Component {
                       label="BU"
                       hasFeedback
                     >
-                      {getFieldDecorator('ipsaBuDeptId')(
+                      {getFieldDecorator('ipsaBuDeptId', {
+                        initialValue: currentPageData.ipsaBuDeptId
+                      })(
                         <Select
                           allowClear
                           onChange={this.handleChangeBuDeptId.bind(this)}
@@ -343,7 +361,9 @@ class BasicInformation extends Component {
                       label="部门"
                       hasFeedback
                     >
-                      {getFieldDecorator('ipsaDeptId')(
+                      {getFieldDecorator('ipsaDeptId', {
+                        initialValue: currentPageData.ipsaDeptId
+                      })(
                         <Select allowClear>
                           {depList.length &&
                             depList.map(item => {
@@ -364,7 +384,9 @@ class BasicInformation extends Component {
                       label="性别"
                       hasFeedback
                     >
-                      {getFieldDecorator('gender')(
+                      {getFieldDecorator('gender', {
+                        initialValue: currentPageData.gender
+                      })(
                         <Select allowClear>
                           <Option value="1">男</Option>
                           <Option value="0">女</Option>
@@ -379,7 +401,9 @@ class BasicInformation extends Component {
                       label="入职日期"
                       hasFeedback
                     >
-                      {getFieldDecorator('joiningDay')(
+                      {getFieldDecorator('joiningDay', {
+                        initialValue: currentPageData.joiningDay
+                      })(
                         <RangePicker
                           placeholder={['起始日期', '结束日期']}
                           ranges={{
@@ -400,7 +424,9 @@ class BasicInformation extends Component {
                       label="人员性质"
                       hasFeedback
                     >
-                      {getFieldDecorator('empProperty')(
+                      {getFieldDecorator('empProperty', {
+                        initialValue: currentPageData.empProperty
+                      })(
                         <Select allowClear>
                           {empPropertyEumn.map(item => {
                             return (
@@ -420,7 +446,9 @@ class BasicInformation extends Component {
                       label="交付经理"
                       hasFeedback
                     >
-                      {getFieldDecorator('deliveryManagerName')(
+                      {getFieldDecorator('deliveryManagerName', {
+                        initialValue: currentPageData.deliveryManagerName
+                      })(
                         <Select allowClear>
                           {dmData.map(item => {
                             return (
