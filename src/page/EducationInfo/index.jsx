@@ -122,14 +122,8 @@ class EducationInfo extends Component {
 
   //打开编辑框
   handleShowModal = record => {
-    // const imgUrl =
-    //   record.avatar && record.avatar.length ? record.avatar[0].url : '';
-    // const imgId =
-    //   record.avatar && record.avatar.length ? record.avatar[0].id : '';
     const { changeEducationVisible, dictInfo } = this.props;
     const imgUrl = [];
-    console.log('record.avatar', Array.isArray(record.avatar));
-
     record.avatar &&
       record.avatar.length &&
       record.avatar.forEach(item => {

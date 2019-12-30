@@ -41,10 +41,7 @@ class EducationModal extends Component {
 
   // 对输入框进行校验
   basicFormRules = key => {
-    if (key === 'deliver') {
-      return [{ required: true, message: '不能为空' }];
-    }
-    return [];
+    return [{ required: true, message: '不能为空' }];
   };
 
   // 根据不同的信息渲染不同的输入框
@@ -120,6 +117,10 @@ class EducationModal extends Component {
         newfiledID = newfiledID.substring(0, newfiledID.length - 1);
       }
       if (!err) {
+        if (!newfiledID) {
+          message.error('证据必须上传');
+          return;
+        }
         const arg0 = {
           recruitmentUserId: educRecord.recruitmentUserId,
           majorCode: values.majorCode,
