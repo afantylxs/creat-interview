@@ -16,7 +16,11 @@ import qs from 'qs';
 import { connect } from 'react-redux';
 import { actionCreators } from './store';
 import EducationModal from './components/EducationModal.jsx';
-import { uniformFlagEnum, educationCodeEnum } from '../../utils/optionEnum';
+import {
+  uniformFlagEnum,
+  educationCodeEnum,
+  httAddress
+} from '../../utils/optionEnum';
 import './index.less';
 const { Search } = Input;
 const { Option } = Select;
@@ -118,16 +122,32 @@ class EducationInfo extends Component {
 
   //打开编辑框
   handleShowModal = record => {
-    const imgUrl =
-      record.avatar && record.avatar.length ? record.avatar[0].url : '';
-    const imgId =
-      record.avatar && record.avatar.length ? record.avatar[0].id : '';
+    // const imgUrl =
+    //   record.avatar && record.avatar.length ? record.avatar[0].url : '';
+    // const imgId =
+    //   record.avatar && record.avatar.length ? record.avatar[0].id : '';
     const { changeEducationVisible, dictInfo } = this.props;
+    const imgUrl = [];
+    console.log('record.avatar', Array.isArray(record.avatar));
+
+    record.avatar &&
+      record.avatar.length &&
+      record.avatar.forEach(item => {
+        if (item) {
+          imgUrl.push({
+            fileId: item.id,
+            uid: item.id,
+            name: 'image.png',
+            status: 'done',
+            url: httAddress + item.url
+          });
+        }
+      });
     changeEducationVisible({
       educVisible: true,
       record,
       imageUrl: imgUrl,
-      fileId: imgId
+      fileId: ''
     });
     dictInfo();
   };
@@ -154,10 +174,19 @@ class EducationInfo extends Component {
   };
 
   handleTableChange = page => {
-    const { queryEducationRecordInfoList, changeCurrentPageData } = this.props;
+    const {
+      queryEducationRecordInfoList,
+      changeCurrentPageData,
+      currentPageData
+    } = this.props;
     const arg0 = {
       currentPage: page,
-      pageSize: 10
+      pageSize: 10,
+      educationCode: currentPageData.educationCode,
+      uniformFlag: currentPageData.uniformFlag,
+      ipsaBuDeptId: currentPageData.ipsaBuDeptId,
+      ipsaDeptId: currentPageData.ipsaDeptId,
+      keyword: currentPageData.keyword
     };
     changeCurrentPageData(arg0);
     queryEducationRecordInfoList(arg0);
@@ -246,41 +275,53 @@ class EducationInfo extends Component {
 
   //搜索框调用查询列表
   handleSearchInput = value => {
-    const {
-      queryEducationRecordInfoList,
-      changeCurrentPageData,
-      currentPageData
-    } = this.props;
+    const { queryEducationRecordInfoList, changeCurrentPageData } = this.props;
     this.props.form.validateFields((err, values) => {
       const arg0 = {
-        educationCode: currentPageData.educationCode,
-        uniformFlag: currentPageData.uniformFlag,
-        ipsaBuDeptId: currentPageData.ipsaBuDeptId,
-        ipsaDeptId: currentPageData.ipsaDeptId,
+        educationCode: '',
+        uniformFlag: '',
+        ipsaBuDeptId: '',
+        ipsaDeptId: '',
         keyword: value,
         currentPage: 1,
         pageSize: 10
       };
       changeCurrentPageData(arg0);
       queryEducationRecordInfoList(arg0);
+      this.props.form.resetFields();
     });
+  };
+
+  //修改搜索框的值
+  handleChangeSearchInput = value => {
+    const { changeCurrentPageData } = this.props;
+    const arg0 = {
+      currentPage: 1,
+      pageSize: 10,
+      ipsaBuDeptId: '',
+      ipsaDeptId: '',
+      gender: '',
+      keyword: value.target.value,
+      joiningDayStartTime: '',
+      joiningDayEndTime: '',
+      empProperty: '',
+      deliveryManagerId: '',
+      employeeStatus: ''
+    };
+    changeCurrentPageData(arg0);
   };
 
   //查询按钮
   handleSearchList = event => {
     event.preventDefault();
-    const {
-      queryEducationRecordInfoList,
-      changeCurrentPageData,
-      currentPageData
-    } = this.props;
+    const { queryEducationRecordInfoList, changeCurrentPageData } = this.props;
     this.props.form.validateFields((err, values) => {
       const arg0 = {
         educationCode: values.educationCode,
         uniformFlag: values.uniformFlag,
         ipsaBuDeptId: values.ipsaBuDeptId,
         ipsaDeptId: values.ipsaDeptId,
-        keyword: currentPageData.keyword,
+        keyword: '',
         currentPage: 1,
         pageSize: 10
       };
@@ -303,7 +344,9 @@ class EducationInfo extends Component {
                   className="educ-seatch-input"
                   placeholder="输入姓名或软通工号"
                   onSearch={value => this.handleSearchInput(value)}
+                  onChange={value => this.handleChangeSearchInput(value)}
                   enterButton
+                  value={currentPageData.keyword}
                 />
               </Col>
               <Col span={16} style={{ textAlign: 'right' }}>
@@ -343,7 +386,9 @@ class EducationInfo extends Component {
                     label="BU"
                     hasFeedback
                   >
-                    {getFieldDecorator('ipsaBuDeptId')(
+                    {getFieldDecorator('ipsaBuDeptId', {
+                      initialValue: currentPageData.ipsaBuDeptId
+                    })(
                       <Select
                         allowClear
                         onChange={this.handleChangeBuDeptId.bind(this)}
@@ -366,7 +411,9 @@ class EducationInfo extends Component {
                     label="部门"
                     hasFeedback
                   >
-                    {getFieldDecorator('ipsaDeptId')(
+                    {getFieldDecorator('ipsaDeptId', {
+                      initialValue: currentPageData.ipsaDeptId
+                    })(
                       <Select allowClear>
                         {depList.map(item => {
                           return (
@@ -386,7 +433,9 @@ class EducationInfo extends Component {
                     label="学历"
                     hasFeedback
                   >
-                    {getFieldDecorator('educationCode')(
+                    {getFieldDecorator('educationCode', {
+                      initialValue: currentPageData.educationCode
+                    })(
                       <Select allowClear>
                         {educationCodeEnum.map(item => {
                           return (
@@ -406,7 +455,9 @@ class EducationInfo extends Component {
                     label="是否统招"
                     hasFeedback
                   >
-                    {getFieldDecorator('uniformFlag')(
+                    {getFieldDecorator('uniformFlag', {
+                      initialValue: currentPageData.uniformFlag
+                    })(
                       <Select allowClear>
                         {uniformFlagEnum.map(item => {
                           return (
@@ -440,7 +491,6 @@ class EducationInfo extends Component {
               columns={columns}
               dataSource={educList}
               pagination={false}
-              scroll={{ y: 395 }}
             />
           </Col>
           <Col className="educ-paging" span={24}>

@@ -59,7 +59,7 @@ export const basicColumnsFunction = that => {
     {
       title: 'Grade代码',
       dataIndex: 'ipsaGradeName',
-      width: '80px'
+      width: '90px'
     },
     {
       title: '是否在职',

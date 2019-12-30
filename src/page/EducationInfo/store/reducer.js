@@ -8,7 +8,7 @@ const defaultState = {
   total: 1,
   majorList: [],
   educRecord: {},
-  imageUrl: '',
+  imageUrl: [],
   fileId: '',
   currentPageData: {
     currentPage: 1,
@@ -25,8 +25,6 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
   switch (type) {
     case constants.CHANGE_EDUCATIONVISIBLE:
-      console.log('payload', payload);
-
       return {
         ...state,
         educVisible: payload.educVisible,

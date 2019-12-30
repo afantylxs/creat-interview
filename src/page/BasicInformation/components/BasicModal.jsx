@@ -33,7 +33,7 @@ class BasicModal extends Component {
     if (key === 'deliveryManagerName') {
       return [];
     }
-    if (key === 'correctionTime' && !basicRecord.id) {
+    if (key === 'correctionTime') {
       return [];
     }
     return [
@@ -79,7 +79,6 @@ class BasicModal extends Component {
     if (dateList.indexOf(key) !== -1) {
       return (
         <DatePicker
-          disabled={key === 'correctionTime' && !basicRecord.id && true}
           placeholder="请选择日期"
           style={{ width: '100%' }}
           onChange={this.handleChangeDate.bind(this, key)}
@@ -198,6 +197,7 @@ class BasicModal extends Component {
         record: newBasicRecord
       });
       deptInfo({ id: value.key, tab: 'ipsaPostNo' });
+      this.props.form.resetFields();
     }
   };
 
@@ -217,6 +217,8 @@ class BasicModal extends Component {
           updateEmployeeBaseInfo,
           basicVisible
         } = this.props;
+        console.log('basicRecord', basicRecord);
+
         const arg0 = {
           empName: values.empName,
           ipsaBuDeptId: values.ipsaBuDeptId ? values.ipsaBuDeptId.key : '',

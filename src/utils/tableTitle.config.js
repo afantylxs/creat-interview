@@ -93,7 +93,7 @@ export const educationList = [
     width: '150px'
   },
   {
-    title: '是否统招本科',
+    title: '是否统招',
     dataIndex: 'uniformFlag',
     width: '150px'
   }

@@ -26,15 +26,16 @@ class EducationModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imgurl: '',
-      fileId: ''
+      previewVisible: false,
+      previewImage: ''
     };
   }
   handleCancel = () => {
     const { changeEducationVisible } = this.props;
     changeEducationVisible({
       educVisible: false,
-      record: {}
+      record: {},
+      imageUrl: []
     });
   };
 
@@ -104,7 +105,20 @@ class EducationModal extends Component {
 
   handleEducationSubmit = () => {
     this.props.form.validateFields((err, values) => {
-      const { educRecord, fileId, updateEducationRecordInfoById } = this.props;
+      const {
+        educRecord,
+        updateEducationRecordInfoById,
+        imageUrl
+      } = this.props;
+      let newfiledID = '';
+      for (let i = 0, len = imageUrl.length; i < len; i++) {
+        newfiledID += imageUrl[i].fileId
+          ? imageUrl[i].fileId + '$'
+          : imageUrl[i].response.data.fileId + '$';
+      }
+      if (newfiledID.substring(newfiledID.length - 1) === '$') {
+        newfiledID = newfiledID.substring(0, newfiledID.length - 1);
+      }
       if (!err) {
         const arg0 = {
           recruitmentUserId: educRecord.recruitmentUserId,
@@ -113,7 +127,7 @@ class EducationModal extends Component {
           graduatedUniversities: values.graduatedUniversities,
           educationCode: values.educationCode,
           uniformFlag: values.uniformFlag,
-          avatarIdPath: fileId,
+          avatarIdPath: newfiledID,
           id: educRecord.id
         };
         updateEducationRecordInfoById(arg0);
@@ -123,14 +137,27 @@ class EducationModal extends Component {
 
   //上传图片
   handleChangeFile = ({ file, fileList }) => {
+    const { changeEducationVisible, educRecord, imageUrl } = this.props;
+
     if (file && file.status === 'done' && file.response.success) {
       if (file.response.data) {
-        const { changeEducationVisible, educRecord } = this.props;
+        const newImageUrl = [];
+        imageUrl.forEach(item => {
+          if (item.response) {
+            newImageUrl.push({
+              uid: item.response.data.fileId,
+              name: 'image.png',
+              status: 'done',
+              url: httAddress + item.response.data.url
+            });
+          }
+          newImageUrl.push(item);
+        });
         changeEducationVisible({
           educVisible: true,
-          imageUrl: file.response.data.url,
+          imageUrl,
           record: educRecord,
-          fileId: file.response.data.fileId
+          fileId: newImageUrl
         });
       } else {
         message.error(
@@ -146,6 +173,17 @@ class EducationModal extends Component {
     if (file && file.status === 'error' && file.error.status === 401) {
       message.error('上传失败，请重新登录');
     }
+
+    changeEducationVisible({
+      educVisible: true,
+      imageUrl: fileList,
+      record: educRecord
+      // fileId: file.response.data.fileId
+    });
+  };
+
+  handlePreview = file => {
+    console.log('handlePreviewfile', file);
   };
 
   render() {
@@ -162,6 +200,13 @@ class EducationModal extends Component {
         sm: { span: 16 }
       }
     };
+
+    const uploadButton = (
+      <div>
+        <Icon type="plus" />
+        <div className="ant-upload-text">Upload</div>
+      </div>
+    );
     return (
       <div className="basic-modal">
         <Modal
@@ -200,20 +245,13 @@ class EducationModal extends Component {
                   }}
                   listType="picture-card"
                   className="avatar-uploader"
-                  showUploadList={false}
+                  // showUploadList={false}
+                  fileList={imageUrl}
                   action="/api/file/uploadFile.json"
                   onChange={this.handleChangeFile.bind(this)}
+                  onPreview={this.handlePreview.bind(this)}
                 >
-                  {imageUrl ? '' : <Icon type={'plus'} />}
-                  {imageUrl ? (
-                    <img
-                      src={httAddress + imageUrl}
-                      alt="avatar"
-                      style={{ width: '100%' }}
-                    />
-                  ) : (
-                    'Upload'
-                  )}
+                  {imageUrl.length >= 3 ? null : uploadButton}
                 </Upload>
               </Col>
             </Row>

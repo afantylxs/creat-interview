@@ -146,7 +146,8 @@ export const updateEducationRecordInfoById = payload => {
           dispatch(
             changeEducationVisible({
               educVisible: false,
-              record: {}
+              record: {},
+              imageUrl: []
             })
           );
           dispatch(
