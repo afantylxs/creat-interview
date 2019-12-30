@@ -5,7 +5,7 @@ import BirthdayReminder from './components/BirthdayReminder.jsx';
 import FieldNumber from './components/FieldNumber.jsx';
 import Rejular from './components/Rejular.jsx';
 import './index.less';
-const homeList = ['提醒事项', '生日提醒', '转正提醒', '场地人数'];
+const homeList = ['提醒事项', '转正提醒', '生日提醒', '场地人数'];
 
 export default class Home extends Component {
   render() {
@@ -24,8 +24,8 @@ export default class Home extends Component {
                 <div className="layout-home-info">
                   <div>
                     {(item === '提醒事项' && <Reminder />) ||
-                      (item === '生日提醒' && <BirthdayReminder />) ||
                       (item === '场地人数' && <FieldNumber />) ||
+                      (item === '生日提醒' && <BirthdayReminder />) ||
                       (item === '转正提醒' && <Rejular />)}
                   </div>
                 </div>

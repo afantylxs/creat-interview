@@ -13,11 +13,11 @@ export const genderEunm = [
 export const uniformFlagEnum = [
   {
     key: 0,
-    label: '非统招'
+    label: '非'
   },
   {
     key: 1,
-    label: '统招'
+    label: '是'
   }
 ];
 

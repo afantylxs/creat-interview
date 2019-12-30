@@ -65,7 +65,7 @@ export const queryEmployeeBaseInfoList = payload => {
     fetch
       .post('/api/base/queryEmployeeBaseInfoList.json', payload)
       .then(res => {
-        if (res.success) {
+        if (res && res.success) {
           const basiclist = res.data.data;
           const total = res.data.total;
           basiclist.forEach(item => {
@@ -104,7 +104,7 @@ export const saveEmployeeBaseInfo = payload => {
     fetch
       .post('/api/base/saveEmployeeBaseInfo.json', payload)
       .then(res => {
-        if (res.success) {
+        if (res && res.success) {
           dispatch(
             changeBasicVisible({
               basicVisible: false,
@@ -138,7 +138,7 @@ export const updateEmployeeBaseInfo = payload => {
     fetch
       .post('/api/base/updateEmployeeBaseInfo.json', payload)
       .then(res => {
-        if (res.success) {
+        if (res && res.success) {
           dispatch(
             changeBasicVisible({
               basicVisible: false,
@@ -165,7 +165,7 @@ export const updateEmployeeBaseInfo = payload => {
 export const deptInfoBu = payload => {
   return dispatch => {
     fetch.get('/api/deptInfo/bu').then(res => {
-      if (res.success) {
+      if (res && res.success) {
         const buList = res.data;
         dispatch(changeBuList(buList));
       }
@@ -183,7 +183,7 @@ export const queryUserListInfoByRolePermission = payload => {
         }
       })
       .then(res => {
-        if (res.success) {
+        if (res && res.success) {
           const roleData = res.data;
           switch (payload) {
             case 'recruitmentConsultant':
@@ -218,7 +218,7 @@ export const searchEmployeeBaseInfoList = payload => {
         }
       })
       .then(res => {
-        if (res.success) {
+        if (res && res.success) {
           const basiclist = res.data.data;
           dispatch(changeBasicList(basiclist));
         }
@@ -236,7 +236,7 @@ export const deptInfo = payload => {
         }
       })
       .then(res => {
-        if (res.success) {
+        if (res && res.success) {
           const depList = res.data;
           if (payload.id) {
             dispatch(changeDepModalList(depList));
@@ -258,9 +258,7 @@ export const dictInfo = payload => {
         }
       })
       .then(res => {
-        console.log('res111', res);
-
-        if (res.success) {
+        if (res && res.success) {
           const dicList = res.data;
           switch (payload) {
             case 'general_position':

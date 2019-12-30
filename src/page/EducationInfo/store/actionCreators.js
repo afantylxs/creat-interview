@@ -37,7 +37,7 @@ export const deptInfoBu = payload => {
     fetch
       .get('/api/deptInfo/bu')
       .then(res => {
-        if (res.success) {
+        if (res && res.success) {
           const buList = res.data;
           dispatch(changeBuList(buList));
         } else {
@@ -64,7 +64,7 @@ export const deptInfo = payload => {
         }
       })
       .then(res => {
-        if (res.success) {
+        if (res && res.success) {
           const depList = res.data;
           dispatch(changeDepList(depList));
         }
@@ -85,7 +85,7 @@ export const queryEducationRecordInfoList = payload => {
     fetch
       .post('/api/education/queryEducationRecordInfoList.json', payload)
       .then(res => {
-        if (res.success) {
+        if (res && res.success) {
           const educList = res.data.data;
           const total = res.data.total;
           dispatch(
@@ -100,35 +100,12 @@ export const queryEducationRecordInfoList = payload => {
       })
       .catch(err => {
         console.log('err', err);
-
+        message.error('出错了');
         // if ( err && err.data.message) {
         //   message.error(err.data.message);
         // } else {
         //   message.error('出错了');
         // }
-      });
-  };
-};
-
-export const queryEducationRecordInfoById = payload => {
-  return dispatch => {
-    fetch
-      .get('/api/education/queryEducationRecordInfoById.json', {
-        params: {
-          id: payload
-        }
-      })
-      .then(res => {
-        if (res.success) {
-          console.log('res', res);
-        }
-      })
-      .catch(err => {
-        if (err.data.message) {
-          message.error(err.data.message);
-        } else {
-          message.error('出错了');
-        }
       });
   };
 };
@@ -142,7 +119,7 @@ export const dictInfo = payload => {
         }
       })
       .then(res => {
-        if (res.success) {
+        if (res && res.success) {
           const data = res.data;
           dispatch(changeDircInfoList(data));
         } else {
@@ -164,7 +141,7 @@ export const updateEducationRecordInfoById = payload => {
     fetch
       .post('/api/education/updateEducationRecordInfoById.json', payload)
       .then(res => {
-        if (res.success) {
+        if (res && res.success) {
           message.success('学历编辑成功');
           dispatch(
             changeEducationVisible({

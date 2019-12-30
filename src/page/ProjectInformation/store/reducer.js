@@ -2,7 +2,11 @@ import * as constants from './constants';
 
 const defaultState = {
   projectVisible: false,
-  projectRecord: {}
+  projectRecord: {},
+  buList: [],
+  depList: [],
+  projectDataList: [],
+  total: 1
 };
 
 export default (state = defaultState, action) => {
@@ -13,6 +17,22 @@ export default (state = defaultState, action) => {
         ...state,
         projectVisible: payload.projectVisible,
         projectRecord: payload.record
+      };
+    case constants.CHANGE_BULIST:
+      return {
+        ...state,
+        buList: payload
+      };
+    case constants.CHANGE_DEPLIST:
+      return {
+        ...state,
+        depList: payload
+      };
+    case constants.CHANGE_PROJECTDATALIST:
+      return {
+        ...state,
+        projectDataList: payload.data,
+        total: payload.total
       };
     default:
       return state;

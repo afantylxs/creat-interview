@@ -154,7 +154,7 @@ class BasicModal extends Component {
             //上级主管列表
             return (
               <Option key={item.id} value={item.id}>
-                {item.username}
+                {item.empName}
               </Option>
             );
           })}
@@ -163,7 +163,7 @@ class BasicModal extends Component {
             //交付下拉列表
             return (
               <Option key={item.id} value={item.id}>
-                {item.username}
+                {item.empName}
               </Option>
             );
           })}

@@ -12,6 +12,7 @@ import {
   message
 } from 'antd';
 import axios from 'axios';
+import qs from 'qs';
 import { connect } from 'react-redux';
 import { actionCreators } from './store';
 import EducationModal from './components/EducationModal.jsx';
@@ -83,15 +84,15 @@ class EducationInfo extends Component {
         }
       },
       {
-        title: '是否统招本科',
+        title: '是否统招',
         dataIndex: 'uniformFlag',
         width: '9%',
         render: (text, record) => {
           switch (text) {
             case 0:
-              return <span>非统招</span>;
+              return <span>非</span>;
             case 1:
-              return <span>统招</span>;
+              return <span>是</span>;
             default:
               break;
           }
@@ -131,10 +132,15 @@ class EducationInfo extends Component {
     dictInfo();
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     const { deptInfoBu, queryEducationRecordInfoList } = this.props;
-    await queryEducationRecordInfoList();
-    await deptInfoBu();
+    const newStatusFlag = qs.parse(this.props.location.search.split('?')[1]);
+    queryEducationRecordInfoList({
+      currentPage: 1,
+      pageSize: 10,
+      statusFlag: newStatusFlag.statusFlag ? 2 : ''
+    });
+    deptInfoBu();
   }
 
   //BU列表
@@ -289,7 +295,7 @@ class EducationInfo extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="education-info">
-        <Row style={{ padding: '30px' }}>
+        <Row style={{ padding: '20px' }}>
           <Col className="educ-operator-set" span={24}>
             <Row>
               <Col span={8}>
@@ -353,10 +359,10 @@ class EducationInfo extends Component {
                     )}
                   </Form.Item>
                 </Col>
-                <Col span={5}>
+                <Col span={6}>
                   <Form.Item
                     labelCol={{ span: 4 }}
-                    wrapperCol={{ span: 16 }}
+                    wrapperCol={{ span: 14 }}
                     label="部门"
                     hasFeedback
                   >
@@ -393,7 +399,7 @@ class EducationInfo extends Component {
                     )}
                   </Form.Item>
                 </Col>
-                <Col span={6}>
+                <Col span={7}>
                   <Form.Item
                     labelCol={{ span: 7 }}
                     wrapperCol={{ span: 9 }}
@@ -413,13 +419,12 @@ class EducationInfo extends Component {
                     )}
                   </Form.Item>
                 </Col>
-                <Col span={4} style={{ textAlign: 'right' }}>
+                <Col span={2} style={{ textAlign: 'right' }}>
                   <Button
                     type="primary"
                     style={{
                       marginTop: '3px',
-                      marginLeft: '5%',
-                      marginRight: '21px'
+                      marginRight: '15%'
                     }}
                     onClick={this.handleSearchList.bind(this)}
                   >
@@ -435,7 +440,7 @@ class EducationInfo extends Component {
               columns={columns}
               dataSource={educList}
               pagination={false}
-              scroll={{ y: 400 }}
+              scroll={{ y: 395 }}
             />
           </Col>
           <Col className="educ-paging" span={24}>

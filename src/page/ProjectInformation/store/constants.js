@@ -1,1 +1,4 @@
 export const CHANGE_PROJECTVISIBLE = 'project/CHANGE_BASICVISIBLE';
+export const CHANGE_BULIST = 'project/CHANGE_BULIST';
+export const CHANGE_DEPLIST = 'project/CHANGE_DEPLIST';
+export const CHANGE_PROJECTDATALIST = 'project/CHANGE_PROJECTDATALIST';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { findDomNode } from 'react-dom';
+import qs from 'qs';
 import moment from 'moment';
 import {
   DatePicker,
@@ -19,210 +19,36 @@ import axios from 'axios';
 import BasicModal from './components/BasicModal.jsx';
 import { empPropertyEumn } from '../../utils/optionEnum';
 import { actionCreators } from './store';
+import { basicColumnsFunction } from './basicColumns';
 import './index.less';
 const { Search } = Input;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 @connect(state => state.basic, actionCreators)
 class BasicInformation extends Component {
-  constructor(props) {
-    super(props);
-    this.columns = [
-      {
-        title: 'BU',
-        dataIndex: 'ipsaBuDeptName',
-        width: '150px'
-      },
-      {
-        title: '部门',
-        dataIndex: 'ipsaDeptName',
-        width: '150px'
-      },
-      {
-        title: '姓名',
-        dataIndex: 'empName',
-        width: '100px'
-      },
-      {
-        title: '软通工号',
-        dataIndex: 'empNo',
-        width: '100px'
-      },
-      {
-        title: '性别',
-        dataIndex: 'gender',
-        width: '80px',
-        render: (text, record) => {
-          switch (text) {
-            case 1:
-              return <span>男</span>;
-            case 0:
-              return <span>女</span>;
-            default:
-              break;
-          }
-        }
-      },
-      {
-        title: '出生日期',
-        dataIndex: 'birthday',
-        width: '150px'
-      },
-      {
-        title: '入职日期',
-        dataIndex: 'joiningDay',
-        width: '150px'
-      },
-      {
-        title: '转正日期',
-        dataIndex: 'correctionTime',
-        width: '150px'
-      },
-      {
-        title: '通用职位',
-        dataIndex: 'ipsaPostName',
-        width: '150px'
-      },
-      {
-        title: 'Grade代码',
-        dataIndex: 'ipsaGradeName',
-        width: '80px'
-      },
-      {
-        title: '是否在职',
-        dataIndex: 'onJob',
-        width: '90px',
-        render: (text, record) => {
-          switch (text) {
-            case 0:
-              return <span>离职</span>;
-            case 1:
-              return <span>在职</span>;
-            default:
-              break;
-          }
-        }
-      },
-      {
-        title: '人员性质',
-        dataIndex: 'empProperty',
-        width: '100px',
-        render: (text, record) => {
-          switch (text) {
-            case 0:
-              return <span>正式员工</span>;
-            case 1:
-              return <span>试用期</span>;
-            case 2:
-              return <span>实习期</span>;
-            case 3:
-              return <span>兼职员工</span>;
-
-            default:
-              break;
-          }
-        }
-      },
-      {
-        title: '直属上级',
-        dataIndex: 'directSuperiorName',
-        width: '100px'
-      },
-      {
-        title: '交付经理',
-        dataIndex: 'deliveryManagerName',
-        width: '100px'
-      },
-      {
-        title: '操作',
-        dataIndex: 'action',
-        width: '90px',
-        render: (text, record) => {
-          return (
-            <span
-              className="basic-action-span"
-              onClick={() => {
-                const { changeBasicVisible, deptInfo } = this.props;
-                let onjobKey = '',
-                  onJobLabel = '';
-                if (record.onJob === 0) {
-                  onjobKey = record.onJob;
-                  onJobLabel = '离职';
-                } else if (record.onJob === 1) {
-                  onjobKey = record.onJob;
-                  onJobLabel = '在职';
-                }
-                const newRecord = {
-                  id: record.id,
-                  empNo: record.empNo,
-                  empName: record.empName,
-                  ipsaBuDeptId: {
-                    key: record.ipsaBuDeptId,
-                    label: record.ipsaBuDeptName
-                  },
-                  ipsaDeptId: {
-                    key: record.ipsaDeptId,
-                    label: record.ipsaDeptName
-                  },
-                  gender: {
-                    key: record.gender,
-                    label: record.gender === 1 ? '男' : '女'
-                  },
-                  birthday: record.birthday,
-                  joiningDay: record.joiningDay,
-                  ipsaPostNo: {
-                    key: record.ipsaPostNo,
-                    label: record.ipsaPostName
-                  },
-                  ipsaGradeCode: {
-                    key: record.ipsaGradeCode,
-                    label: record.ipsaGradeName
-                  },
-                  correctionTime: record.correctionTime
-                    ? record.correctionTime
-                    : '',
-                  empProperty: {
-                    key: record.empProperty,
-                    label: record.empProperty
-                  },
-                  directSuperiorName: {
-                    key: record.directSuperiorId,
-                    label: record.directSuperiorName
-                  },
-                  deliveryManagerName: {
-                    key: record.deliveryManagerId,
-                    label: record.deliveryManagerName
-                  },
-                  onJob: {
-                    key: onjobKey,
-                    label: onJobLabel
-                  }
-                };
-                changeBasicVisible({
-                  basicVisible: true,
-                  record: newRecord
-                });
-                deptInfo({ id: record.ipsaBuDeptId });
-              }}
-            >
-              编辑
-            </span>
-          );
-        }
-      }
-    ];
-  }
-
   componentDidMount() {
     const {
       queryEmployeeBaseInfoList,
       deptInfoBu,
-      queryUserListInfoByRolePermission
+      queryUserListInfoByRolePermission,
+      changeCurrentPageData
     } = this.props;
-    queryEmployeeBaseInfoList({
+    const newEntmonth = qs.parse(this.props.location.search.split('?')[1]);
+    const arg0 = {
       currentPage: 1,
-      pageSize: 10
-    });
+      pageSize: 10,
+      ipsaBuDeptId: '',
+      ipsaDeptId: '',
+      gender: '',
+      keyword: '',
+      joiningDayStartTime: '',
+      joiningDayEndTime: '',
+      empProperty: '',
+      deliveryManagerId: '',
+      employeeStatus: newEntmonth.entmonth ? 1 : ''
+    };
+    changeCurrentPageData(arg0);
+    queryEmployeeBaseInfoList(arg0);
     queryUserListInfoByRolePermission('deliveryManager');
     deptInfoBu();
   }
@@ -252,8 +78,6 @@ class BasicInformation extends Component {
     } else {
       if (file && file.status === 'done' && !file.response.success) {
         message.error('上传失败:' + file.response.message);
-      } else {
-        message.error('上传失败，请联系技术人员');
       }
     }
   };
@@ -273,26 +97,18 @@ class BasicInformation extends Component {
   handleSearchInput = value => {
     const { queryEmployeeBaseInfoList, changeCurrentPageData } = this.props;
     this.props.form.validateFields((err, values) => {
-      const dateStart =
-        values.joiningDay && values.joiningDay.length
-          ? moment(values.joiningDay[0]).format('YYYY-MM-DD')
-          : '';
-      const dateEnd =
-        values.joiningDay && values.joiningDay.length
-          ? moment(values.joiningDay[1]).format('YYYY-MM-DD')
-          : '';
-
       const arg0 = {
         currentPage: 1,
         pageSize: 10,
-        ipsaBuDeptId: values.ipsaBuDeptId,
-        ipsaDeptId: values.ipsaDeptId,
-        gender: values.gender,
+        ipsaBuDeptId: '',
+        ipsaDeptId: '',
+        gender: '',
         keyword: value,
-        joiningDayStartTime: dateStart,
-        joiningDayEndTime: dateEnd,
-        empProperty: values.empProperty,
-        deliveryManagerId: values.deliveryManagerName
+        joiningDayStartTime: '',
+        joiningDayEndTime: '',
+        empProperty: '',
+        deliveryManagerId: '',
+        employeeStatus: ''
       };
       changeCurrentPageData(arg0);
       queryEmployeeBaseInfoList(arg0);
@@ -331,11 +147,12 @@ class BasicInformation extends Component {
         ipsaBuDeptId: values.ipsaBuDeptId,
         ipsaDeptId: values.ipsaDeptId,
         gender: values.gender,
-        keyword: currentPageData.keyword,
+        keyword: '',
         joiningDayStartTime: dateStart,
         joiningDayEndTime: dateEnd,
         empProperty: values.empProperty,
-        deliveryManagerId: values.deliveryManagerName
+        deliveryManagerId: values.deliveryManagerName,
+        employeeStatus: ''
       };
       changeCurrentPageData(arg0);
       queryEmployeeBaseInfoList(arg0);
@@ -355,18 +172,15 @@ class BasicInformation extends Component {
       keyword: currentPageData.keyword,
       ipsaBuDeptId: currentPageData.ipsaBuDeptId,
       ipsaDeptId: currentPageData.ipsaDeptId,
+      deliveryManagerId: currentPageData.deliveryManagerId,
       gender: currentPageData.gender,
       joiningDayEndTime: currentPageData.joiningDayEndTime,
       joiningDayStartTime: currentPageData.joiningDayStartTime,
-      empProperty: currentPageData.empProperty
+      empProperty: currentPageData.empProperty,
+      employeeStatus: currentPageData.employeeStatus
     };
     changeCurrentPageData(arg0);
     queryEmployeeBaseInfoList(arg0);
-    // const table = ReactDom.findDOMNode(this.table),
-    //   tableBody = table.querySelector('.ant-table-body');
-    // const div = document.getElementsByClassName('basic-content-table');
-
-    // console.log('this.props.refs', this.tableHeight.props.style);
   };
 
   //导出excel
@@ -380,11 +194,14 @@ class BasicInformation extends Component {
         Authorization: 'Bearer ' + token
       },
       params: {
+        keyword: currentPageData.keyword,
         ipsaBuDeptId: currentPageData.ipsaBuDeptId,
         ipsaDeptId: currentPageData.ipsaDeptId,
+        deliveryManagerId: currentPageData.deliveryManagerId,
         gender: currentPageData.gender,
         joiningDayEndTime: currentPageData.joiningDayEndTime,
-        joiningDayStartTime: currentPageData.joiningDayStartTime
+        joiningDayStartTime: currentPageData.joiningDayStartTime,
+        empProperty: currentPageData.empProperty
       },
       responseType: 'blob'
     })
@@ -412,6 +229,13 @@ class BasicInformation extends Component {
         message.error('导出失败');
       });
   };
+
+  //表格列表
+  handleGetColumns = () => {
+    const that = this;
+    const projectList = basicColumnsFunction(that);
+    return projectList;
+  };
   render() {
     const columns = this.columns;
     const {
@@ -428,7 +252,7 @@ class BasicInformation extends Component {
     // const { getFieldDecorator } = this.props.form;
     return (
       <div className="basic-information">
-        <Row style={{ padding: '30px' }}>
+        <Row style={{ padding: '20px' }}>
           <Col span={24}>
             <Row className="basic-operator-set">
               <Col span={8}>
@@ -439,9 +263,6 @@ class BasicInformation extends Component {
                   enterButton
                 />
               </Col>
-              {/* <Col span={12} style={{ textAlign: 'right' }}>
-                
-              </Col> */}
               <Col span={16} style={{ textAlign: 'right' }}>
                 <Button
                   type="primary"
@@ -487,11 +308,11 @@ class BasicInformation extends Component {
               </Col>
             </Row>
           </Col>
-          <Col style={{ marginTop: '30px' }} span={24}>
+          <Col style={{ marginTop: '5px' }} span={24}>
             <Row>
               <Col span={22}>
                 <Form>
-                  <Col span={6}>
+                  <Col span={6} className="basic-from-search-btn">
                     <Form.Item
                       labelCol={{ span: 5 }}
                       wrapperCol={{ span: 18 }}
@@ -604,7 +425,7 @@ class BasicInformation extends Component {
                           {dmData.map(item => {
                             return (
                               <Option key={item.id} value={item.id}>
-                                {item.username}
+                                {item.empName}
                               </Option>
                             );
                           })}
@@ -630,7 +451,7 @@ class BasicInformation extends Component {
           </Col>
           <Col
             className="basic-content-table"
-            style={{ marginTop: '30px' }}
+            style={{ marginTop: '5px' }}
             span={24}
             ref={el => {
               this.tableHeight = el;
@@ -638,11 +459,9 @@ class BasicInformation extends Component {
           >
             <Table
               rowKey={(record, index) => index}
-              columns={columns}
+              columns={this.handleGetColumns()}
               dataSource={basicList}
-              scroll={{ y: 400, x: 1400 }}
               pagination={false}
-              scrollToFirstRowOnChange={true}
             />
           </Col>
           <Col className="basic-paging" span={24}>
@@ -655,6 +474,7 @@ class BasicInformation extends Component {
             />
           </Col>
         </Row>
+
         <BasicModal />
       </div>
     );
