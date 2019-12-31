@@ -45,10 +45,10 @@ export const deptInfoBu = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err.data && err.data.message) {
           message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -70,10 +70,10 @@ export const deptInfo = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err.data && err.data.message) {
           message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -99,13 +99,11 @@ export const queryEducationRecordInfoList = payload => {
         }
       })
       .catch(err => {
-        console.log('err', err);
-        message.error('出错了');
-        // if ( err && err.data.message) {
-        //   message.error(err.data.message);
-        // } else {
-        //   message.error('出错了');
-        // }
+        if (err.data && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了，请稍后再试');
+        }
       });
   };
 };
@@ -127,10 +125,10 @@ export const dictInfo = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err.data && err.data.message) {
           message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -161,10 +159,10 @@ export const updateEducationRecordInfoById = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
-          message.error('学历编辑失败' + err.data.message);
+        if (err.data && err.data.message) {
+          message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };

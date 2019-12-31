@@ -223,7 +223,9 @@ class BasicModal extends Component {
           birthdayFormat: moment(values.birthday).format('YYYY-MM-DD'),
           joiningDayFormat: moment(values.joiningDay).format('YYYY-MM-DD'),
           correctionTimeFormat: basicRecord.id
-            ? moment(values.correctionTime).format('YYYY-MM-DD')
+            ? values.correctionTime
+              ? moment(values.correctionTime).format('YYYY-MM-DD')
+              : ''
             : '',
           ipsaPostNo: values.ipsaPostNo ? values.ipsaPostNo.key : '',
           ipsaGradeCode: values.ipsaGradeCode ? values.ipsaGradeCode.key : '',
@@ -248,6 +250,7 @@ class BasicModal extends Component {
             ? values.recruitmentUserId.label
             : ''
         };
+        console.log('values', values);
 
         if (basicRecord.id) {
           arg0.id = basicRecord.id;

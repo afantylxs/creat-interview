@@ -37,10 +37,14 @@ fetch.interceptors.response.use(
   error => {
     //响应错误处理
     if (error && error.response && error.response.status === 401) {
-      message.error('请重新登录');
+      const data = {
+        data: {
+          message: '请重新登录'
+        }
+      };
       localStorage.setItem('token', null);
       localStorage.setItem('flag', false);
-      return Promise.reject(error.response);
+      return Promise.reject(data);
     }
     return Promise.reject(error.response);
   }

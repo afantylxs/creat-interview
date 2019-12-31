@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
+import {
+  HashRouter,
+  Route,
+  Switch,
+  Redirect,
+  withRouter
+} from 'react-router-dom';
 import Home from '../Home'; //首页
 import Header from '../../components/Header'; //头部导航栏
 import Login from '../Login'; //登录页面
@@ -26,6 +31,7 @@ const routerList = [
 ];
 class Layout extends Component {
   render() {
+    const flag = localStorage.getItem('flag');
     const { pathname } = this.props.location;
     return (
       <div style={{ minWidth: '1300px' }}>
@@ -33,7 +39,11 @@ class Layout extends Component {
         {routerList.includes(pathname) && <Header />}
         <Switch>
           <Route exact path="/login" component={Login} />
-          <Route exact path="/" component={Home} />
+          {flag === 'false' ? (
+            <Redirect to="/login" />
+          ) : (
+            <Route exact path="/" component={Home} />
+          )}
           <Route exact path="/home" component={Home} />
           <Route path="/basic" component={BasicInformation} />
           <Route path="/education" component={EducationInfo} />

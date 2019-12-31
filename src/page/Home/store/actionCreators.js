@@ -52,10 +52,10 @@ export const getBirthdayList = () => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err.data && err.data.message) {
           message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -80,10 +80,10 @@ export const getRejularList = () => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err.data && err.data.message) {
           message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -108,10 +108,10 @@ export const getFieldList = () => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err.data && err.data.message) {
           message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -131,10 +131,10 @@ export const getReminderList = () => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err.data && err.data.message) {
           message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -154,10 +154,10 @@ export const queryMyToDoProject = () => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err.data && err.data.message) {
           message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -177,10 +177,10 @@ export const queryMyToDoEducation = () => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err.data && err.data.message) {
           message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };
