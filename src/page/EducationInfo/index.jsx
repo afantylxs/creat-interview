@@ -177,12 +177,14 @@ class EducationInfo extends Component {
     }
   };
 
+  //分页查询
   handleTableChange = page => {
     const {
       queryEducationRecordInfoList,
       changeCurrentPageData,
       currentPageData
     } = this.props;
+    const educStatusFlag = localStorage.getItem('educStatusFlag');
     const arg0 = {
       currentPage: page,
       pageSize: 10,
@@ -190,7 +192,8 @@ class EducationInfo extends Component {
       uniformFlag: currentPageData.uniformFlag,
       ipsaBuDeptId: currentPageData.ipsaBuDeptId,
       ipsaDeptId: currentPageData.ipsaDeptId,
-      keyword: currentPageData.keyword
+      keyword: currentPageData.keyword,
+      statusFlag: educStatusFlag
     };
     changeCurrentPageData(arg0);
     queryEducationRecordInfoList(arg0);

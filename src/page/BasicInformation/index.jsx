@@ -193,6 +193,7 @@ class BasicInformation extends Component {
       changeCurrentPageData,
       currentPageData
     } = this.props;
+    const entmonth = localStorage.getItem('entmonth');
     const arg0 = {
       currentPage: page,
       pageSize: 10,
@@ -204,7 +205,7 @@ class BasicInformation extends Component {
       joiningDayEndTime: currentPageData.joiningDayEndTime,
       joiningDayStartTime: currentPageData.joiningDayStartTime,
       empProperty: currentPageData.empProperty,
-      employeeStatus: currentPageData.employeeStatus
+      employeeStatus: entmonth
     };
     changeCurrentPageData(arg0);
     queryEmployeeBaseInfoList(arg0);
