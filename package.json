@@ -61,6 +61,7 @@
     "webpack-manifest-plugin": "2.1.1",
     "workbox-webpack-plugin": "4.3.1"
   },
+  "homepage": ".",
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
@@ -134,7 +135,9 @@
       "react-app"
     ],
     "plugins": [
-      ["@babel/plugin-proposal-decorators", { "legacy": true }]
+      ["@babel/plugin-proposal-decorators", {
+        "legacy": true
+      }]
     ]
   },
   "devDependencies": {

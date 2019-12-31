@@ -208,17 +208,12 @@ class BasicModal extends Component {
   handleProjectSubmit = event => {
     event.preventDefault();
     this.props.form.validateFields((err, values) => {
-      console.log('values', values);
-
       if (!err) {
         const {
           saveEmployeeBaseInfo,
           basicRecord,
-          updateEmployeeBaseInfo,
-          basicVisible
+          updateEmployeeBaseInfo
         } = this.props;
-        console.log('basicRecord', basicRecord);
-
         const arg0 = {
           empName: values.empName,
           ipsaBuDeptId: values.ipsaBuDeptId ? values.ipsaBuDeptId.key : '',

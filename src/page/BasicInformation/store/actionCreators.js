@@ -60,7 +60,6 @@ export const changeCurrentPageData = payload => ({
 
 //获取基础信息列表
 export const queryEmployeeBaseInfoList = payload => {
-  console.log('猎豹payloadr', payload);
   return dispatch => {
     fetch
       .post('/api/base/queryEmployeeBaseInfoList.json', payload)
@@ -84,10 +83,10 @@ export const queryEmployeeBaseInfoList = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err.data && err.data.message) {
           message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -118,10 +117,10 @@ export const saveEmployeeBaseInfo = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err.data && err.data.message) {
           message.error('新员工新增失败：' + err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -152,10 +151,10 @@ export const updateEmployeeBaseInfo = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err.data && err.data.message) {
           message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -164,12 +163,21 @@ export const updateEmployeeBaseInfo = payload => {
 //查询BU列表
 export const deptInfoBu = payload => {
   return dispatch => {
-    fetch.get('/api/deptInfo/bu').then(res => {
-      if (res && res.success) {
-        const buList = res.data;
-        dispatch(changeBuList(buList));
-      }
-    });
+    fetch
+      .get('/api/deptInfo/bu')
+      .then(res => {
+        if (res && res.success) {
+          const buList = res.data;
+          dispatch(changeBuList(buList));
+        }
+      })
+      .catch(err => {
+        if (err.data && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了，请稍后再试');
+        }
+      });
   };
 };
 
@@ -201,7 +209,11 @@ export const queryUserListInfoByRolePermission = payload => {
         }
       })
       .catch(err => {
-        message.error(err.data.message);
+        if (err.data && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了，请稍后再试');
+        }
       });
   };
 };
@@ -221,6 +233,13 @@ export const searchEmployeeBaseInfoList = payload => {
         if (res && res.success) {
           const basiclist = res.data.data;
           dispatch(changeBasicList(basiclist));
+        }
+      })
+      .catch(err => {
+        if (err.data && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -243,6 +262,13 @@ export const deptInfo = payload => {
           } else {
             dispatch(changeDepList(depList));
           }
+        }
+      })
+      .catch(err => {
+        if (err.data && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -270,6 +296,13 @@ export const dictInfo = payload => {
             default:
               break;
           }
+        }
+      })
+      .catch(err => {
+        if (err.data && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了，请稍后再试');
         }
       });
   };

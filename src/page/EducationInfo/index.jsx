@@ -9,7 +9,8 @@ import {
   Input,
   Pagination,
   Upload,
-  message
+  message,
+  Tooltip
 } from 'antd';
 import axios from 'axios';
 import qs from 'qs';
@@ -159,9 +160,18 @@ class EducationInfo extends Component {
 
   //BU列表
   handleChangeBuDeptId = value => {
-    const { deptInfo, changeDepList } = this.props;
+    const {
+      deptInfo,
+      changeDepList,
+      changeCurrentPageData,
+      currentPageData
+    } = this.props;
     if (value) {
+      const newCurrentPageData = JSON.parse(JSON.stringify(currentPageData));
+      newCurrentPageData.ipsaDeptId = '';
+      changeCurrentPageData(newCurrentPageData);
       deptInfo(value);
+      this.props.form.resetFields();
     } else {
       changeDepList([]);
     }
@@ -292,15 +302,11 @@ class EducationInfo extends Component {
     const arg0 = {
       currentPage: 1,
       pageSize: 10,
-      ipsaBuDeptId: '',
-      ipsaDeptId: '',
-      gender: '',
       keyword: value.target.value,
-      joiningDayStartTime: '',
-      joiningDayEndTime: '',
-      empProperty: '',
-      deliveryManagerId: '',
-      employeeStatus: ''
+      educationCode: '',
+      uniformFlag: '',
+      ipsaBuDeptId: '',
+      ipsaDeptId: ''
     };
     changeCurrentPageData(arg0);
   };
@@ -323,6 +329,21 @@ class EducationInfo extends Component {
       queryEducationRecordInfoList(arg0);
     });
   };
+
+  //组件销毁清空搜索
+  componentWillUnmount() {
+    const { changeCurrentPageData } = this.props;
+    const arg0 = {
+      currentPage: 1,
+      pageSize: 10,
+      keyword: '',
+      educationCode: '',
+      uniformFlag: '',
+      ipsaBuDeptId: '',
+      ipsaDeptId: ''
+    };
+    changeCurrentPageData(arg0);
+  }
   render() {
     const columns = this.columns;
     const { buList, depList, educList, total, currentPageData } = this.props;
@@ -347,6 +368,7 @@ class EducationInfo extends Component {
                 <div className="educ-upload-btn" style={{ marginRight: '7%' }}>
                   <Upload
                     style={{ marginRight: '7%' }}
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                     action="/api/education/import/education.json"
                     method="post"
                     headers={{
@@ -356,7 +378,9 @@ class EducationInfo extends Component {
                     onChange={this.handleChangeFile.bind(this)}
                     beforeUpload={this.handleBeforeUpload.bind(this)}
                   >
-                    <Button type="primary">导入</Button>
+                    <Tooltip title="支持导入.xlsx文件">
+                      <Button type="primary">导入</Button>
+                    </Tooltip>
                   </Upload>
                 </div>
                 <div className="educ-upload-btn">

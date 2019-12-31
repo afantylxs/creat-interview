@@ -13,7 +13,8 @@ import {
   Select,
   Input,
   Pagination,
-  message
+  message,
+  Tooltip
 } from 'antd';
 import axios from 'axios';
 import BasicModal from './components/BasicModal.jsx';
@@ -136,9 +137,18 @@ class BasicInformation extends Component {
   };
 
   handleChangeBuDeptId = value => {
-    const { deptInfo, changeDepList } = this.props;
+    const {
+      deptInfo,
+      changeDepList,
+      changeCurrentPageData,
+      currentPageData
+    } = this.props;
     if (value) {
+      const newCurrentPageData = JSON.parse(JSON.stringify(currentPageData));
+      newCurrentPageData.ipsaDeptId = '';
+      changeCurrentPageData(newCurrentPageData);
       deptInfo(value);
+      this.props.form.resetFields();
     } else {
       changeDepList([]);
     }
@@ -252,6 +262,25 @@ class BasicInformation extends Component {
     const projectList = basicColumnsFunction(that);
     return projectList;
   };
+
+  //组件销毁清空搜索
+  componentWillUnmount() {
+    const { changeCurrentPageData } = this.props;
+    const arg0 = {
+      currentPage: 1,
+      pageSize: 10,
+      ipsaBuDeptId: '',
+      ipsaDeptId: '',
+      gender: '',
+      keyword: '',
+      joiningDayStartTime: '',
+      joiningDayEndTime: '',
+      empProperty: '',
+      deliveryManagerId: '',
+      employeeStatus: ''
+    };
+    changeCurrentPageData(arg0);
+  }
   render() {
     const {
       basicList,
@@ -295,6 +324,7 @@ class BasicInformation extends Component {
                   }}
                 >
                   <Upload
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                     action="/api/base/import/employeeBaseInfo.json"
                     method="post"
                     headers={{
@@ -304,7 +334,9 @@ class BasicInformation extends Component {
                     onChange={this.handleChangeFile.bind(this)}
                     beforeUpload={this.handleBeforeUpload.bind(this)}
                   >
-                    <Button type="primary">导入</Button>
+                    <Tooltip title="支持导入.xlsx文件">
+                      <Button type="primary">导入</Button>
+                    </Tooltip>
                   </Upload>
                 </div>
                 <div

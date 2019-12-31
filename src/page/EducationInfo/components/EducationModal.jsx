@@ -240,6 +240,7 @@ class EducationModal extends Component {
               </Col>
               <Col span={16}>
                 <Upload
+                  accept="image/png,image/jpeg"
                   method="post"
                   headers={{
                     Authorization: 'Bearer ' + token
