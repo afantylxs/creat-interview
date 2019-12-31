@@ -40,7 +40,7 @@ class Menus extends Component {
           <Menu.Item key="education">
             <Link to="/education">学历信息</Link>
           </Menu.Item>
-          {/* <Menu.Item key="project">
+          <Menu.Item key="project">
             <Link to="/project">项目信息</Link>
           </Menu.Item>
           <Menu.Item key="department">
@@ -51,7 +51,7 @@ class Menus extends Component {
           </Menu.Item>
           <Menu.Item key="analysis">
             <Link to="/analysis">数据分析</Link>
-          </Menu.Item> */}
+          </Menu.Item>
         </Menu>
       </div>
     );

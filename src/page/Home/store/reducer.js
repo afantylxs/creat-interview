@@ -6,14 +6,19 @@ const defaultState = {
   fieldList: [],
   reminderList: {},
   myTodoList: [],
-  myTodoeducationData: ''
+  myTodoeducationData: '',
+  regularTotal: 1
 };
 
 export default (state = defaultState, action) => {
   const { type, payload } = action;
   switch (type) {
     case constants.REGULAR_DETAIL:
-      return { ...state, rejularList: payload };
+      return {
+        ...state,
+        rejularList: payload.data,
+        regularTotal: payload.regularTotal
+      };
     case constants.BIRTHDAY_DETAIL:
       return { ...state, birthdayList: payload };
     case constants.FIELD_DETAIL:

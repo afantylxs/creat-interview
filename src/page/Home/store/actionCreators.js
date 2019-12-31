@@ -67,14 +67,18 @@ export const getRejularList = () => {
     fetch
       .get('api/home/queryWillRegularEmployee.json', {
         params: {
-          pageSize: 3,
+          pageSize: 6,
           currentPage: 1
         }
       })
       .then(res => {
         if (res && res.success) {
           const { data } = res;
-          dispatch(changeRejularList(data.data));
+          const arg0 = {
+            data: data.data,
+            regularTotal: data.total
+          };
+          dispatch(changeRejularList(arg0));
         } else {
           message.error('获取列表失败');
         }

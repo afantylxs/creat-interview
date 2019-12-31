@@ -15,7 +15,9 @@ class Rejular extends Component {
     getRejularList();
   }
   render() {
-    const { rejularList } = this.props;
+    const { rejularList, regularTotal } = this.props;
+    console.log('regularTotal', regularTotal);
+
     return (
       <div className="rejular" style={{ padding: '10px' }}>
         {rejularList.map((item, index) => {
@@ -28,7 +30,7 @@ class Rejular extends Component {
           );
         })}
         <div className="rejular-pagination">
-          <Pagination defaultCurrent={1} total={rejularList.length} />
+          <Pagination current={1} pageSize={6} total={regularTotal} />
         </div>
       </div>
     );
