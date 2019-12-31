@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import qs from 'qs';
 import moment from 'moment';
 import {
   DatePicker,
@@ -34,7 +33,7 @@ class BasicInformation extends Component {
       queryUserListInfoByRolePermission,
       changeCurrentPageData
     } = this.props;
-    const newEntmonth = qs.parse(this.props.location.search.split('?')[1]);
+    const entmonth = localStorage.getItem('entmonth');
     const arg0 = {
       currentPage: 1,
       pageSize: 10,
@@ -46,7 +45,7 @@ class BasicInformation extends Component {
       joiningDayEndTime: '',
       empProperty: '',
       deliveryManagerId: '',
-      employeeStatus: newEntmonth.entmonth ? 1 : ''
+      employeeStatus: entmonth
     };
     changeCurrentPageData(arg0);
     queryEmployeeBaseInfoList(arg0);
@@ -112,6 +111,7 @@ class BasicInformation extends Component {
         employeeStatus: ''
       };
       changeCurrentPageData(arg0);
+      localStorage.setItem('entmonth', '');
       queryEmployeeBaseInfoList(arg0);
       this.props.form.resetFields();
     });
@@ -181,6 +181,7 @@ class BasicInformation extends Component {
         employeeStatus: ''
       };
       changeCurrentPageData(arg0);
+      localStorage.setItem('entmonth', '');
       queryEmployeeBaseInfoList(arg0);
     });
   };
@@ -212,7 +213,9 @@ class BasicInformation extends Component {
   //导出excel
   handleDownload = () => {
     const token = localStorage.getItem('token');
+    const entmonth = localStorage.getItem('entmonth');
     const { currentPageData } = this.props;
+
     axios({
       method: 'get',
       url: '/api/base/download',
@@ -227,7 +230,8 @@ class BasicInformation extends Component {
         gender: currentPageData.gender,
         joiningDayEndTime: currentPageData.joiningDayEndTime,
         joiningDayStartTime: currentPageData.joiningDayStartTime,
-        empProperty: currentPageData.empProperty
+        empProperty: currentPageData.empProperty,
+        employeeStatus: entmonth
       },
       responseType: 'blob'
     })
@@ -280,6 +284,7 @@ class BasicInformation extends Component {
       employeeStatus: ''
     };
     changeCurrentPageData(arg0);
+    localStorage.setItem('entmonth', '');
   }
   render() {
     const {

@@ -149,11 +149,11 @@ class EducationInfo extends Component {
 
   componentDidMount() {
     const { deptInfoBu, queryEducationRecordInfoList } = this.props;
-    const newStatusFlag = qs.parse(this.props.location.search.split('?')[1]);
+    const educStatusFlag = localStorage.getItem('educStatusFlag');
     queryEducationRecordInfoList({
       currentPage: 1,
       pageSize: 10,
-      statusFlag: newStatusFlag.statusFlag ? 2 : ''
+      statusFlag: educStatusFlag
     });
     deptInfoBu();
   }
@@ -237,6 +237,7 @@ class EducationInfo extends Component {
   handleDownload = () => {
     const token = localStorage.getItem('token');
     const { currentPageData } = this.props;
+    const educStatusFlag = localStorage.getItem('educStatusFlag');
     axios({
       method: 'get',
       url: '/api/education/download',
@@ -248,7 +249,8 @@ class EducationInfo extends Component {
         uniformFlag: currentPageData.uniformFlag,
         ipsaBuDeptId: currentPageData.ipsaBuDeptId,
         ipsaDeptId: currentPageData.ipsaDeptId,
-        keyword: currentPageData.keyword
+        keyword: currentPageData.keyword,
+        statusFlag: educStatusFlag
       },
       responseType: 'blob'
     })
@@ -291,6 +293,7 @@ class EducationInfo extends Component {
         pageSize: 10
       };
       changeCurrentPageData(arg0);
+      localStorage.setItem('educStatusFlag', '');
       queryEducationRecordInfoList(arg0);
       this.props.form.resetFields();
     });
@@ -326,6 +329,7 @@ class EducationInfo extends Component {
         pageSize: 10
       };
       changeCurrentPageData(arg0);
+      localStorage.setItem('educStatusFlag', '');
       queryEducationRecordInfoList(arg0);
     });
   };
@@ -343,6 +347,7 @@ class EducationInfo extends Component {
       ipsaDeptId: ''
     };
     changeCurrentPageData(arg0);
+    localStorage.setItem('educStatusFlag', '');
   }
   render() {
     const columns = this.columns;
