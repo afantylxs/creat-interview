@@ -5,64 +5,39 @@ import { Row, Col, Button, Select, Modal, Form, DatePicker, Input } from 'antd';
 import './projectModal.less';
 import { actionCreators } from '../store';
 const { Option } = Select;
-const arr = ['阿里', '蚂蚁'];
-const brr = ['北京MAG阿里实施部4606', '西安MAG阿里管理部0136'];
-
-const basicListArray = [
-  {
-    label: 'BU',
-    key: 'bu'
-  },
-  {
-    label: '部门',
-    key: 'bumen'
-  },
-  {
-    label: '软通工号',
-    key: 'workId'
-  },
-  {
-    label: '姓名',
-    key: 'name'
-  },
-  {
-    label: '性别',
-    key: 'sex'
-  },
-  {
-    label: '出生日期',
-    key: 'bieth'
-  },
-  {
-    label: '入职日期',
-    key: 'entry'
-  },
-  {
-    label: '通用职位',
-    key: 'currency'
-  },
-  {
-    label: 'Grade代码',
-    key: 'code'
-  },
-  {
-    label: '人员性质',
-    key: 'nature'
-  },
-  {
-    label: '直属上级',
-    key: 'superior'
-  },
-  {
-    label: '交付经理',
-    key: 'deliver'
-  }
-];
-const inputList = ['workId', 'name', 'code'];
-const dateList = ['bieth', 'entry'];
 
 @connect(state => state.project, actionCreators)
 class ProjectModal extends Component {
+  //获取一类岗位
+  handleFocusFirstCategoryId = () => {
+    const { dictInfo } = this.props;
+    dictInfo('job_class_1');
+  };
+
+  //获取二类岗位
+  handleFocusSecondCategoryId = () => {
+    const { dictInfo } = this.props;
+    dictInfo('job_class_2');
+  };
+
+  //获取三类岗位
+  handleFocusThirdCategoryId = () => {
+    const { dictInfo } = this.props;
+    dictInfo('job_class_3');
+  };
+
+  //获取层级
+  handleFocusaliGradeCode = () => {
+    const { dictInfo } = this.props;
+    dictInfo('job_class_level');
+  };
+
+  //获取工作城市
+  handleFocusWorkCity = () => {
+    const { dictInfo } = this.props;
+    dictInfo('work_city');
+  };
+
   handleCancel = () => {
     const { changeProjectVisible } = this.props;
     changeProjectVisible({
@@ -71,48 +46,15 @@ class ProjectModal extends Component {
     });
   };
 
-  // 对输入框进行校验
-  basicFormRules = key => {
-    if (key === 'deliver') {
-      return [{ required: true, message: '不能为空' }];
-    }
-    return [];
-  };
-
-  // 根据不同的信息渲染不同的输入框
-  baseFormInput = key => {
-    if (inputList.indexOf(key) !== -1) {
-      return <Input />;
-    }
-    if (dateList.indexOf(key) !== -1) {
-      return (
-        <DatePicker
-          placeholder="请选择日期"
-          style={{ width: '100%' }}
-          onChange={this.handleChangeDate.bind(this, key)}
-        />
-      );
-    }
-    return (
-      <Select className="project-select" style={{ width: '100%' }}>
-        {key === 'bu' && <Option value="jack">阿里</Option>}
-        {key === 'bumen' && <Option value="bumen">部门</Option>}
-        {key === 'sex' && <Option value="men">男</Option>}
-        {key === 'currency' && <Option value="currency">高级视觉设计师</Option>}
-        {key === 'code' && <Option value="code">p7</Option>}
-        {key === 'nature' && <Option value="nature">正式员工</Option>}
-        {key === 'superior' && <Option value="superior">权威光</Option>}
-        {key === 'deliver' && <Option value="deliver">闫海军</Option>}
-      </Select>
-    );
-  };
-
-  handleChangeDate = (key, date, dateString) => {
-    console.log('date', date, 'dateString', dateString, 'key', key);
-  };
-
   render() {
-    const { projectVisible } = this.props;
+    const {
+      projectVisible,
+      firstCategoryidList,
+      secondCategoryidList,
+      thirdCategoryidList,
+      aliGradeCodeList,
+      workCityList
+    } = this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -127,32 +69,388 @@ class ProjectModal extends Component {
     return (
       <div className="project-modal">
         <Modal
-          title="添加新员工"
+          title="编辑项目信息"
           visible={projectVisible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           className="project-add-modal"
+          okText="提交"
+          cancelText="取消"
         >
-          <Form
-            {...formItemLayout}
-            onSubmit={this.handleSubmit}
-            className="project-form"
-          >
-            {basicListArray.map((item, index) => {
-              const { projectRecord } = this.props;
-              return (
-                <Form.Item label={item.label} key={index}>
-                  {getFieldDecorator(item.key, {
-                    initialValue:
-                      item.key === 'bieth' || item.key === 'entry'
-                        ? moment(projectRecord[item.key])
-                        : projectRecord[item.key],
-                    rules: this.basicFormRules(item.key)
-                  })(this.baseFormInput(item.key))}
+          <Row>
+            <Form
+              {...formItemLayout}
+              onSubmit={this.handleSubmit}
+              className="project-form"
+            >
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 7 }}
+                  // wrapperCol={{ span: 15 }}
+                  label="阿里工号"
+                  hasFeedback
+                >
+                  {getFieldDecorator('aliNo')(<Input />)}
                 </Form.Item>
-              );
-            })}
-          </Form>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 7 }}
+                  // wrapperCol={{ span: 16 }}
+                  label="入项时间"
+                  hasFeedback
+                >
+                  {getFieldDecorator('joiningProjTimeFormat')(
+                    <DatePicker
+                      showToday={false}
+                      placeholder="请选择入项时间"
+                      // onChange={this.onChange.bind(this)}
+                    />
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 9 }}
+                  // wrapperCol={{ span: 15 }}
+                  label="一类岗位"
+                  hasFeedback
+                >
+                  {getFieldDecorator('firstCategoryId')(
+                    <Select
+                      allowClear
+                      onFocus={this.handleFocusFirstCategoryId.bind(this)}
+                    >
+                      {firstCategoryidList.map(item => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.label}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 6 }}
+                  // wrapperCol={{ span: 16 }}
+                  label="二类岗位"
+                  hasFeedback
+                >
+                  {getFieldDecorator('secondCategoryId')(
+                    <Select
+                      allowClear
+                      onFocus={this.handleFocusSecondCategoryId.bind(this)}
+                    >
+                      {secondCategoryidList.map(item => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.label}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 6 }}
+                  // wrapperCol={{ span: 16 }}
+                  label="三类岗位"
+                  hasFeedback
+                >
+                  {getFieldDecorator('thirdJobId')(
+                    <Select
+                      allowClear
+                      onFocus={this.handleFocusThirdCategoryId.bind(this)}
+                    >
+                      {thirdCategoryidList.map(item => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.label}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 7 }}
+                  // wrapperCol={{ span: 15 }}
+                  label="层级"
+                  hasFeedback
+                >
+                  {getFieldDecorator('aliGradeCode')(
+                    <Select
+                      allowClear
+                      onFocus={this.handleFocusaliGradeCode.bind(this)}
+                    >
+                      {aliGradeCodeList.map(item => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.label}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 7 }}
+                  // wrapperCol={{ span: 16 }}
+                  label="技术方向"
+                  hasFeedback
+                >
+                  {getFieldDecorator('techDirection')(
+                    <Select allowClear>
+                      <Option value="jack">Jack</Option>
+                      <Option value="lucy">Lucy</Option>
+                      <Option value="tom">Tom</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 9 }}
+                  // wrapperCol={{ span: 15 }}
+                  label="框架"
+                  hasFeedback
+                >
+                  {getFieldDecorator('aliFrameId')(
+                    <Select allowClear>
+                      <Option value="jack">财务及内控</Option>
+                      <Option value="lucy">Lucy</Option>
+                      <Option value="tom">Tom</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 6 }}
+                  // wrapperCol={{ span: 16 }}
+                  label="事业群"
+                  hasFeedback
+                >
+                  {getFieldDecorator('careerGroupId')(
+                    <Select allowClear>
+                      <Option value="jack">Jack</Option>
+                      <Option value="lucy">Lucy</Option>
+                      <Option value="tom">Tom</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 6 }}
+                  // wrapperCol={{ span: 16 }}
+                  label="事业部"
+                  hasFeedback
+                >
+                  {getFieldDecorator('careerDeptId')(
+                    <Select allowClear>
+                      <Option value="jack">Jack</Option>
+                      <Option value="lucy">Lucy</Option>
+                      <Option value="tom">Tom</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 7 }}
+                  // wrapperCol={{ span: 15 }}
+                  label="阿里部门"
+                  hasFeedback
+                >
+                  {getFieldDecorator('deptId')(
+                    <Select allowClear>
+                      <Option value="jack">Jack</Option>
+                      <Option value="lucy">Lucy</Option>
+                      <Option value="tom">Tom</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 7 }}
+                  // wrapperCol={{ span: 16 }}
+                  label="项目名称"
+                  hasFeedback
+                >
+                  {getFieldDecorator('xmmc')(
+                    <Select allowClear>
+                      <Option value="jack">Jack</Option>
+                      <Option value="lucy">Lucy</Option>
+                      <Option value="tom">Tom</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 9 }}
+                  // wrapperCol={{ span: 15 }}
+                  label="业务线名称"
+                  hasFeedback
+                >
+                  {getFieldDecorator('businessLine')(
+                    <Select allowClear>
+                      <Option value="jack">财务及内控</Option>
+                      <Option value="lucy">Lucy</Option>
+                      <Option value="tom">Tom</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 6 }}
+                  // wrapperCol={{ span: 16 }}
+                  label="项目类型"
+                  hasFeedback
+                >
+                  {getFieldDecorator('projetType')(
+                    <Select allowClear>
+                      <Option value="0">EP</Option>
+                      <Option value="1">TM</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 6 }}
+                  // wrapperCol={{ span: 16 }}
+                  label="项目时长"
+                  hasFeedback
+                >
+                  {getFieldDecorator('projetDurationType')(
+                    <Select allowClear>
+                      <Option value="0">短期</Option>
+                      <Option value="1">长期</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 7 }}
+                  // wrapperCol={{ span: 15 }}
+                  label="是否IDU"
+                  hasFeedback
+                >
+                  {getFieldDecorator('iduFlag')(
+                    <Select allowClear>
+                      <Option value="0">否</Option>
+                      <Option value="1">是</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 7 }}
+                  // wrapperCol={{ span: 16 }}
+                  label="是否TL"
+                  hasFeedback
+                >
+                  {getFieldDecorator('tlFlag')(
+                    <Select allowClear>
+                      <Option value="0">否</Option>
+                      <Option value="1">是</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 9 }}
+                  // wrapperCol={{ span: 15 }}
+                  label="工作城市"
+                  hasFeedback
+                  onFocus={this.handleFocusWorkCity.bind(this)}
+                >
+                  {getFieldDecorator('workCity')(
+                    <Select allowClear>
+                      {workCityList.map(item => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.label}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 6 }}
+                  // wrapperCol={{ span: 15 }}
+                  label="办公场地"
+                  hasFeedback
+                >
+                  {getFieldDecorator('workAddress')(<Input />)}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 6 }}
+                  // wrapperCol={{ span: 15 }}
+                  label="资源状态"
+                  hasFeedback
+                >
+                  {getFieldDecorator('resourceStatus')(
+                    <Select allowClear>
+                      <Option value="0">闲置</Option>
+                      <Option value="1">在岗</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 7 }}
+                  // wrapperCol={{ span: 10 }}
+                  label="是否骨干"
+                  hasFeedback
+                >
+                  {getFieldDecorator('backboneFlag')(
+                    <Select allowClear>
+                      <Option value="0">否</Option>
+                      <Option value="1">是</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  // labelCol={{ span: 6 }}
+                  // wrapperCol={{ span: 10 }}
+                  label="是否收费"
+                  hasFeedback
+                >
+                  {getFieldDecorator('chargeFlag')(
+                    <Select allowClear>
+                      <Option value="0">否</Option>
+                      <Option value="1">是</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+            </Form>
+          </Row>
         </Modal>
       </div>
     );

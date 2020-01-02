@@ -21,6 +21,32 @@ export const changeProjectDataList = payload => ({
   type: constants.CHANGE_PROJECTDATALIST,
   payload
 });
+
+export const changeFocusFirstCategoryId = payload => ({
+  type: constants.CHANGE_FIRSTCATEGORYID,
+  payload
+});
+
+export const changeFocusSecondCategoryId = payload => ({
+  type: constants.CHANGE_SECONDCATEGORYID,
+  payload
+});
+
+export const changeFocusThirdCategoryId = payload => ({
+  type: constants.CHANGE_THIRDCATEGORYID,
+  payload
+});
+
+export const changeFocusAliGradeCategoryId = payload => ({
+  type: constants.CHANGE_ALIGRADECODE,
+  payload
+});
+
+export const changeFocusWorkCity = payload => ({
+  type: constants.CHANGE_WORKCITY,
+  payload
+});
+
 //查询BU列表
 export const deptInfoBu = payload => {
   return dispatch => {
@@ -94,6 +120,51 @@ export const queryProjectRecordInfoList = payload => {
           message.error(err.data.message);
         } else {
           message.error('出错了');
+        }
+      });
+  };
+};
+
+//字典查询
+export const dictInfo = payload => {
+  return dispatch => {
+    fetch
+      .get('/api/dictInfo/name', {
+        params: {
+          dictName: payload
+        }
+      })
+      .then(res => {
+        if (res && res.success) {
+          const dicList = res.data;
+          switch (payload) {
+            case 'job_class_1':
+              dispatch(changeFocusFirstCategoryId(dicList));
+              break;
+            case 'job_class_2':
+              dispatch(changeFocusSecondCategoryId(dicList));
+              break;
+            case 'job_class_3':
+              dispatch(changeFocusThirdCategoryId(dicList));
+              break;
+            case 'job_class_level':
+              dispatch(changeFocusAliGradeCategoryId(dicList));
+              break;
+            case 'work_city':
+              dispatch(changeFocusWorkCity(dicList));
+              break;
+            default:
+              break;
+          }
+        } else {
+          message.error('获取一类岗位失败');
+        }
+      })
+      .catch(err => {
+        if (err.data && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了，请稍后再试');
         }
       });
   };

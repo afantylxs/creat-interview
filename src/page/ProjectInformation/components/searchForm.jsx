@@ -21,9 +21,48 @@ class SearchForm extends Component {
       changeDepList([]);
     }
   };
+
+  //获取一类岗位
+  handleFocusFirstCategoryId = () => {
+    const { dictInfo } = this.props;
+    dictInfo('job_class_1');
+  };
+
+  //获取二类岗位
+  handleFocusSecondCategoryId = () => {
+    const { dictInfo } = this.props;
+    dictInfo('job_class_2');
+  };
+
+  //获取三类岗位
+  handleFocusThirdCategoryId = () => {
+    const { dictInfo } = this.props;
+    dictInfo('job_class_3');
+  };
+
+  //获取层级
+  handleFocusaliGradeCode = () => {
+    const { dictInfo } = this.props;
+    dictInfo('job_class_level');
+  };
+
+  //获取工作城市
+  handleFocusWorkCity = () => {
+    const { dictInfo } = this.props;
+    dictInfo('work_city');
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { buList, depList } = this.props;
+    const {
+      buList,
+      depList,
+      firstCategoryidList,
+      secondCategoryidList,
+      thirdCategoryidList,
+      aliGradeCodeList,
+      workCityList
+    } = this.props;
     return (
       <div className="project-search-from">
         <Row>
@@ -112,10 +151,17 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('firstCategoryId')(
-                    <Select allowClear>
-                      <Option value="jack">财务及内控</Option>
-                      <Option value="lucy">Lucy</Option>
-                      <Option value="tom">Tom</Option>
+                    <Select
+                      allowClear
+                      onFocus={this.handleFocusFirstCategoryId.bind(this)}
+                    >
+                      {firstCategoryidList.map(item => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.label}
+                          </Option>
+                        );
+                      })}
                     </Select>
                   )}
                 </Form.Item>
@@ -128,10 +174,17 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('secondCategoryId')(
-                    <Select allowClear>
-                      <Option value="jack">Jack</Option>
-                      <Option value="lucy">Lucy</Option>
-                      <Option value="tom">Tom</Option>
+                    <Select
+                      allowClear
+                      onFocus={this.handleFocusSecondCategoryId.bind(this)}
+                    >
+                      {secondCategoryidList.map(item => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.label}
+                          </Option>
+                        );
+                      })}
                     </Select>
                   )}
                 </Form.Item>
@@ -144,10 +197,17 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('thirdJobId')(
-                    <Select allowClear>
-                      <Option value="jack">Jack</Option>
-                      <Option value="lucy">Lucy</Option>
-                      <Option value="tom">Tom</Option>
+                    <Select
+                      allowClear
+                      onFocus={this.handleFocusThirdCategoryId.bind(this)}
+                    >
+                      {thirdCategoryidList.map(item => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.label}
+                          </Option>
+                        );
+                      })}
                     </Select>
                   )}
                 </Form.Item>
@@ -160,10 +220,17 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('aliGradeCode')(
-                    <Select allowClear>
-                      <Option value="jack">Jack</Option>
-                      <Option value="lucy">Lucy</Option>
-                      <Option value="tom">Tom</Option>
+                    <Select
+                      allowClear
+                      onFocus={this.handleFocusaliGradeCode.bind(this)}
+                    >
+                      {aliGradeCodeList.map(item => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.label}
+                          </Option>
+                        );
+                      })}
                     </Select>
                   )}
                 </Form.Item>
@@ -346,12 +413,17 @@ class SearchForm extends Component {
                   wrapperCol={{ span: 15 }}
                   label="工作城市"
                   hasFeedback
+                  onFocus={this.handleFocusWorkCity.bind(this)}
                 >
                   {getFieldDecorator('workCity')(
                     <Select allowClear>
-                      <Option value="jack">财务及内控</Option>
-                      <Option value="lucy">Lucy</Option>
-                      <Option value="tom">Tom</Option>
+                      {workCityList.map(item => {
+                        return (
+                          <Option key={item.id} value={item.id}>
+                            {item.label}
+                          </Option>
+                        );
+                      })}
                     </Select>
                   )}
                 </Form.Item>

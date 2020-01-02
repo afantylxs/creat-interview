@@ -6,7 +6,12 @@ const defaultState = {
   buList: [],
   depList: [],
   projectDataList: [],
-  total: 1
+  total: 1,
+  firstCategoryidList: [],
+  secondCategoryidList: [],
+  thirdCategoryidList: [],
+  aliGradeCodeList: [],
+  workCityList: []
 };
 
 export default (state = defaultState, action) => {
@@ -33,6 +38,31 @@ export default (state = defaultState, action) => {
         ...state,
         projectDataList: payload.data,
         total: payload.total
+      };
+    case constants.CHANGE_FIRSTCATEGORYID:
+      return {
+        ...state,
+        firstCategoryidList: payload
+      };
+    case constants.CHANGE_SECONDCATEGORYID:
+      return {
+        ...state,
+        secondCategoryidList: payload
+      };
+    case constants.CHANGE_THIRDCATEGORYID:
+      return {
+        ...state,
+        thirdCategoryidList: payload
+      };
+    case constants.CHANGE_ALIGRADECODE:
+      return {
+        ...state,
+        aliGradeCodeList: payload
+      };
+    case constants.CHANGE_WORKCITY:
+      return {
+        ...state,
+        workCityList: payload
       };
     default:
       return state;

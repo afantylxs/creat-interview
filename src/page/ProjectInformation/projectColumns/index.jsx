@@ -1,3 +1,5 @@
+import React from 'react';
+import { Button } from 'antd';
 export const projectColumnsFunction = that => {
   const projectList = [
     {
@@ -8,7 +10,7 @@ export const projectColumnsFunction = that => {
     {
       title: '部门',
       dataIndex: 'ipsaDeptName',
-      width: '150px'
+      width: '180px'
     },
     {
       title: '姓名',
@@ -124,6 +126,26 @@ export const projectColumnsFunction = that => {
       title: '是否收费',
       dataIndex: 'chargeFlag',
       width: '70px'
+    },
+    {
+      title: '操作',
+      dataIndex: 'action',
+      width: '70px',
+      render: (text, record) => {
+        const { changeProjectVisible } = that.props;
+        return (
+          <Button
+            onClick={() => {
+              changeProjectVisible({
+                projectVisible: true,
+                record
+              });
+            }}
+          >
+            编辑
+          </Button>
+        );
+      }
     }
   ];
   return projectList;
