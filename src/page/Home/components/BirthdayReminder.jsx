@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Table, message } from 'antd';
+import { Table } from 'antd';
 import { connect } from 'react-redux';
-import axios from 'axios';
 // import fetch from '../../../utils/axios.config';
 import './birthdayReminder.less';
 import { actionCreators } from '../store';
@@ -18,25 +17,6 @@ const columns = [
     dataIndex: 'birthdayMonthTotal',
     width: '50%',
     key: 2
-  }
-];
-
-const data = [
-  {
-    birthdayMonthCode: '3月',
-    birthdayMonthTotal: 10
-  },
-  {
-    birthdayMonthCode: '4月',
-    birthdayMonthTotal: 10
-  },
-  {
-    birthdayMonthCode: '5月',
-    birthdayMonthTotal: 10
-  },
-  {
-    birthdayMonthCode: '6月',
-    birthdayMonthTotal: 10
   }
 ];
 

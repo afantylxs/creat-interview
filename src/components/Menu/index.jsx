@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { NavLink, Link, withRouter } from 'react-router-dom';
-import { Menu, Row, Col } from 'antd';
+import { Link, withRouter } from 'react-router-dom';
+import { Menu } from 'antd';
 import './index.less';
-const { SubMenu } = Menu;
 
 class Menus extends Component {
   selectRouterAactive = () => {

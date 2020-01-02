@@ -5,9 +5,16 @@ import { Row, Col, Button, Select, Modal, Form, DatePicker, Input } from 'antd';
 import './projectModal.less';
 import { actionCreators } from '../store';
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 @connect(state => state.project, actionCreators)
 class ProjectModal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      shortTime: null
+    };
+  }
   //获取一类岗位
   handleFocusFirstCategoryId = () => {
     const { dictInfo } = this.props;
@@ -46,6 +53,51 @@ class ProjectModal extends Component {
     });
   };
 
+  handleOk = () => {
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        const arg0 = {
+          aliNo: values.aliNo,
+          projectName: values.projectName,
+          projectId: values.projectId,
+          managerId: '',
+          managerName: '',
+          firstCategoryId: values.firstCategoryId,
+          secondCategoryId: values.secondCategoryId,
+          thirdJobId: values.thirdJobId,
+          aliGradeCode: values.aliGradeCode,
+          techDirection: values.techDirection,
+          aliFrameId: values.aliFrameId,
+          careerGroupId: values.careerGroupId,
+          groupDeptId: values.groupDeptId,
+          careerDeptId: values.careerDeptId,
+          deptId: values.deptId,
+          businessLine: values.businessLine,
+          projetDurationType: values.projetDurationType,
+          projetType: values.projetType,
+          iduFlag: values.iduFlag,
+          tlFlag: values.tlFlag,
+          workCity: values.workCity,
+          workAddress: values.workAddress,
+          resourceStatus: values.resourceStatus,
+          backboneFlag: values.backboneFlag,
+          chargeFlag: values.chargeFlag,
+          leaveProjReasonId: values.leaveProjReasonId,
+          leaveProjType: values.leaveProjType
+        };
+        console.log('values', values, 'arg0------', arg0);
+      }
+    });
+  };
+
+  //选择项目时长
+  handleChangeprojetType = value => {
+    console.log('value', value);
+    this.setState({
+      shortTime: value
+    });
+  };
+
   render() {
     const {
       projectVisible,
@@ -55,6 +107,9 @@ class ProjectModal extends Component {
       aliGradeCodeList,
       workCityList
     } = this.props;
+    const { shortTime } = this.state;
+    console.log('shortTime', shortTime === '0');
+
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -84,22 +139,12 @@ class ProjectModal extends Component {
               className="project-form"
             >
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 7 }}
-                  // wrapperCol={{ span: 15 }}
-                  label="阿里工号"
-                  hasFeedback
-                >
+                <Form.Item label="阿里工号" hasFeedback>
                   {getFieldDecorator('aliNo')(<Input />)}
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 7 }}
-                  // wrapperCol={{ span: 16 }}
-                  label="入项时间"
-                  hasFeedback
-                >
+                <Form.Item label="入项时间" hasFeedback>
                   {getFieldDecorator('joiningProjTimeFormat')(
                     <DatePicker
                       showToday={false}
@@ -110,12 +155,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 9 }}
-                  // wrapperCol={{ span: 15 }}
-                  label="一类岗位"
-                  hasFeedback
-                >
+                <Form.Item label="一类岗位" hasFeedback>
                   {getFieldDecorator('firstCategoryId')(
                     <Select
                       allowClear
@@ -133,12 +173,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 6 }}
-                  // wrapperCol={{ span: 16 }}
-                  label="二类岗位"
-                  hasFeedback
-                >
+                <Form.Item label="二类岗位" hasFeedback>
                   {getFieldDecorator('secondCategoryId')(
                     <Select
                       allowClear
@@ -156,12 +191,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 6 }}
-                  // wrapperCol={{ span: 16 }}
-                  label="三类岗位"
-                  hasFeedback
-                >
+                <Form.Item label="三类岗位" hasFeedback>
                   {getFieldDecorator('thirdJobId')(
                     <Select
                       allowClear
@@ -179,12 +209,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 7 }}
-                  // wrapperCol={{ span: 15 }}
-                  label="层级"
-                  hasFeedback
-                >
+                <Form.Item label="层级" hasFeedback>
                   {getFieldDecorator('aliGradeCode')(
                     <Select
                       allowClear
@@ -202,12 +227,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 7 }}
-                  // wrapperCol={{ span: 16 }}
-                  label="技术方向"
-                  hasFeedback
-                >
+                <Form.Item label="技术方向" hasFeedback>
                   {getFieldDecorator('techDirection')(
                     <Select allowClear>
                       <Option value="jack">Jack</Option>
@@ -218,12 +238,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 9 }}
-                  // wrapperCol={{ span: 15 }}
-                  label="框架"
-                  hasFeedback
-                >
+                <Form.Item label="框架" hasFeedback>
                   {getFieldDecorator('aliFrameId')(
                     <Select allowClear>
                       <Option value="jack">财务及内控</Option>
@@ -234,12 +249,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 6 }}
-                  // wrapperCol={{ span: 16 }}
-                  label="事业群"
-                  hasFeedback
-                >
+                <Form.Item label="事业群" hasFeedback>
                   {getFieldDecorator('careerGroupId')(
                     <Select allowClear>
                       <Option value="jack">Jack</Option>
@@ -250,12 +260,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 6 }}
-                  // wrapperCol={{ span: 16 }}
-                  label="事业部"
-                  hasFeedback
-                >
+                <Form.Item label="事业部" hasFeedback>
                   {getFieldDecorator('careerDeptId')(
                     <Select allowClear>
                       <Option value="jack">Jack</Option>
@@ -266,12 +271,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 7 }}
-                  // wrapperCol={{ span: 15 }}
-                  label="阿里部门"
-                  hasFeedback
-                >
+                <Form.Item label="阿里部门" hasFeedback>
                   {getFieldDecorator('deptId')(
                     <Select allowClear>
                       <Option value="jack">Jack</Option>
@@ -282,12 +282,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 7 }}
-                  // wrapperCol={{ span: 16 }}
-                  label="项目名称"
-                  hasFeedback
-                >
+                <Form.Item label="项目名称" hasFeedback>
                   {getFieldDecorator('xmmc')(
                     <Select allowClear>
                       <Option value="jack">Jack</Option>
@@ -298,12 +293,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 9 }}
-                  // wrapperCol={{ span: 15 }}
-                  label="业务线名称"
-                  hasFeedback
-                >
+                <Form.Item label="业务线名称" hasFeedback>
                   {getFieldDecorator('businessLine')(
                     <Select allowClear>
                       <Option value="jack">财务及内控</Option>
@@ -314,12 +304,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 6 }}
-                  // wrapperCol={{ span: 16 }}
-                  label="项目类型"
-                  hasFeedback
-                >
+                <Form.Item label="项目类型" hasFeedback>
                   {getFieldDecorator('projetType')(
                     <Select allowClear>
                       <Option value="0">EP</Option>
@@ -328,28 +313,39 @@ class ProjectModal extends Component {
                   )}
                 </Form.Item>
               </Col>
+
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 6 }}
-                  // wrapperCol={{ span: 16 }}
-                  label="项目时长"
-                  hasFeedback
-                >
+                <Form.Item label="项目时长" hasFeedback>
                   {getFieldDecorator('projetDurationType')(
-                    <Select allowClear>
+                    <Select allowClear onChange={this.handleChangeprojetType}>
                       <Option value="0">短期</Option>
                       <Option value="1">长期</Option>
                     </Select>
                   )}
                 </Form.Item>
               </Col>
+              {shortTime === '0' ? (
+                <Col>
+                  <Form.Item label="短期起始" hasFeedback>
+                    {getFieldDecorator('shortTime')(
+                      <RangePicker
+                        placeholder={['起始日期', '结束日期']}
+                        ranges={{
+                          当天: [moment(), moment()],
+                          本月: [
+                            moment().startOf('month'),
+                            moment().endOf('month')
+                          ]
+                        }}
+                      />
+                    )}
+                  </Form.Item>
+                </Col>
+              ) : (
+                ''
+              )}
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 7 }}
-                  // wrapperCol={{ span: 15 }}
-                  label="是否IDU"
-                  hasFeedback
-                >
+                <Form.Item label="是否IDU" hasFeedback>
                   {getFieldDecorator('iduFlag')(
                     <Select allowClear>
                       <Option value="0">否</Option>
@@ -359,12 +355,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 7 }}
-                  // wrapperCol={{ span: 16 }}
-                  label="是否TL"
-                  hasFeedback
-                >
+                <Form.Item label="是否TL" hasFeedback>
                   {getFieldDecorator('tlFlag')(
                     <Select allowClear>
                       <Option value="0">否</Option>
@@ -375,8 +366,6 @@ class ProjectModal extends Component {
               </Col>
               <Col>
                 <Form.Item
-                  // labelCol={{ span: 9 }}
-                  // wrapperCol={{ span: 15 }}
                   label="工作城市"
                   hasFeedback
                   onFocus={this.handleFocusWorkCity.bind(this)}
@@ -395,22 +384,12 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 6 }}
-                  // wrapperCol={{ span: 15 }}
-                  label="办公场地"
-                  hasFeedback
-                >
+                <Form.Item label="办公场地" hasFeedback>
                   {getFieldDecorator('workAddress')(<Input />)}
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 6 }}
-                  // wrapperCol={{ span: 15 }}
-                  label="资源状态"
-                  hasFeedback
-                >
+                <Form.Item label="资源状态" hasFeedback>
                   {getFieldDecorator('resourceStatus')(
                     <Select allowClear>
                       <Option value="0">闲置</Option>
@@ -420,12 +399,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 7 }}
-                  // wrapperCol={{ span: 10 }}
-                  label="是否骨干"
-                  hasFeedback
-                >
+                <Form.Item label="是否骨干" hasFeedback>
                   {getFieldDecorator('backboneFlag')(
                     <Select allowClear>
                       <Option value="0">否</Option>
@@ -435,12 +409,7 @@ class ProjectModal extends Component {
                 </Form.Item>
               </Col>
               <Col>
-                <Form.Item
-                  // labelCol={{ span: 6 }}
-                  // wrapperCol={{ span: 10 }}
-                  label="是否收费"
-                  hasFeedback
-                >
+                <Form.Item label="是否收费" hasFeedback>
                   {getFieldDecorator('chargeFlag')(
                     <Select allowClear>
                       <Option value="0">否</Option>

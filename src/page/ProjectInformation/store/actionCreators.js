@@ -47,6 +47,11 @@ export const changeFocusWorkCity = payload => ({
   payload
 });
 
+export const changeCurrentPageData = payload => ({
+  type: constants.CHANGE_PROJECTPAGE,
+  payload
+});
+
 //查询BU列表
 export const deptInfoBu = payload => {
   return dispatch => {
@@ -99,13 +104,9 @@ export const deptInfo = payload => {
 export const queryProjectRecordInfoList = payload => {
   return dispatch => {
     fetch
-      .post('/api/project/queryProjectRecordInfoList.json', {
-        currentPage: 1,
-        pageSize: 10
-      })
+      .post('/api/project/queryProjectRecordInfoList.json', payload)
       .then(res => {
         if (res && res.success && res.data) {
-          console.log('res', res);
           const { data, total } = res.data;
           dispatch(
             changeProjectDataList({
@@ -161,7 +162,7 @@ export const dictInfo = payload => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');

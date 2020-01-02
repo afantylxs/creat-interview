@@ -13,7 +13,6 @@ import {
   Tooltip
 } from 'antd';
 import axios from 'axios';
-import qs from 'qs';
 import { connect } from 'react-redux';
 import { actionCreators } from './store';
 import EducationModal from './components/EducationModal.jsx';

@@ -27,11 +27,25 @@ class ProjectInformation extends Component {
   componentDidMount() {
     const { deptInfoBu, queryProjectRecordInfoList } = this.props;
     deptInfoBu();
-    queryProjectRecordInfoList();
+    queryProjectRecordInfoList({
+      currentPage: 1,
+      pageSize: 10
+    });
   }
 
+  //分页查询
+  handleTableChange = page => {
+    const { queryProjectRecordInfoList, changeCurrentPageData } = this.props;
+    const arg0 = {
+      currentPage: page,
+      pageSize: 10
+    };
+    changeCurrentPageData(arg0);
+    queryProjectRecordInfoList(arg0);
+  };
+
   render() {
-    const { projectDataList, total } = this.props;
+    const { projectDataList, total, currentPageData } = this.props;
     return (
       <div className="project-information">
         <Row style={{ padding: '20px' }}>
@@ -68,7 +82,13 @@ class ProjectInformation extends Component {
             />
           </Col>
           <Col className="project-paging" span={24}>
-            <Pagination total={total} current={1} />
+            <Pagination
+              total={total}
+              current={currentPageData.currentPage}
+              onChange={page => {
+                this.handleTableChange(page);
+              }}
+            />
           </Col>
         </Row>
         <ProjectModal />

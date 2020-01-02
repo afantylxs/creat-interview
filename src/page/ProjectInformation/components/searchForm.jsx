@@ -17,6 +17,7 @@ class SearchForm extends Component {
     const { deptInfo, changeDepList } = this.props;
     if (value) {
       deptInfo(value);
+      this.props.form.resetFields();
     } else {
       changeDepList([]);
     }

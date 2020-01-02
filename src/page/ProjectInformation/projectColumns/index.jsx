@@ -34,22 +34,22 @@ export const projectColumnsFunction = that => {
     },
     {
       title: '一类岗位',
-      dataIndex: 'firstCategoryId',
+      dataIndex: 'firstCategoryName',
       width: '100px'
     },
     {
       title: '二类岗位',
-      dataIndex: 'secondCategoryId',
+      dataIndex: 'secondCategoryName',
       width: '100px'
     },
     {
       title: '三类岗位',
-      dataIndex: 'thirdJobId',
+      dataIndex: 'thirdJobName',
       width: '100px'
     },
     {
       title: '层级',
-      dataIndex: 'aliGradeCode',
+      dataIndex: 'aliGradeCodeName',
       width: '80px'
     },
     {
@@ -59,12 +59,12 @@ export const projectColumnsFunction = that => {
     },
     {
       title: '框架',
-      dataIndex: 'aliFrameId',
+      dataIndex: 'aliFrameName',
       width: '80px'
     },
     {
       title: '事业群',
-      dataIndex: 'careerGroupId',
+      dataIndex: 'careerGroupName',
       width: '100px'
     },
     {
@@ -74,7 +74,7 @@ export const projectColumnsFunction = that => {
     },
     {
       title: '项目名称',
-      dataIndex: 'xmmc',
+      dataIndex: 'projectName',
       width: '100px'
     },
     {
@@ -104,7 +104,7 @@ export const projectColumnsFunction = that => {
     },
     {
       title: '工作城市',
-      dataIndex: 'workcity',
+      dataIndex: 'workCityName',
       width: '100px'
     },
     {
@@ -131,6 +131,7 @@ export const projectColumnsFunction = that => {
       title: '操作',
       dataIndex: 'action',
       width: '70px',
+      fixed: 'right',
       render: (text, record) => {
         const { changeProjectVisible } = that.props;
         return (

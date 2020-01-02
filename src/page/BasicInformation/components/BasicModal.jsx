@@ -29,7 +29,6 @@ class BasicModal extends Component {
 
   // 对输入框进行校验
   basicFormRules = key => {
-    const { basicRecord } = this.props;
     if (key === 'deliveryManagerName') {
       return [];
     }
@@ -69,8 +68,7 @@ class BasicModal extends Component {
       dicList,
       dicModalList,
       manageList,
-      gradeList,
-      basicRecord
+      gradeList
     } = this.props;
 
     if (inputList.indexOf(key) !== -1) {

@@ -11,7 +11,7 @@ class Rejular extends Component {
     this.state = {};
   }
   componentDidMount() {
-    const { getRejularList, changeRejularList } = this.props;
+    const { getRejularList } = this.props;
     getRejularList();
   }
   render() {

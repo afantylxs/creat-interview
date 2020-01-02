@@ -11,7 +11,11 @@ const defaultState = {
   secondCategoryidList: [],
   thirdCategoryidList: [],
   aliGradeCodeList: [],
-  workCityList: []
+  workCityList: [],
+  currentPageData: {
+    currentPage: 1,
+    pageSize: 10
+  }
 };
 
 export default (state = defaultState, action) => {
@@ -63,6 +67,11 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         workCityList: payload
+      };
+    case constants.CHANGE_PROJECTPAGE:
+      return {
+        ...state,
+        currentPageData: payload
       };
     default:
       return state;
