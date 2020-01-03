@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
+import moment from 'moment';
 export const projectColumnsFunction = that => {
   const projectList = [
     {
@@ -29,8 +30,11 @@ export const projectColumnsFunction = that => {
     },
     {
       title: '入项时间',
-      dataIndex: 'joiningProjTimeFormat',
-      width: '100px'
+      dataIndex: 'joiningProjTime',
+      width: '100px',
+      render: (text, record) => {
+        return <span>{text ? moment(text).format('YYYY-MM-DD') : ''}</span>;
+      }
     },
     {
       title: '一类岗位',
@@ -68,8 +72,18 @@ export const projectColumnsFunction = that => {
       width: '100px'
     },
     {
+      title: '事业群本部',
+      dataIndex: 'groupDeptName',
+      width: '80px'
+    },
+    {
       title: '事业部',
-      dataIndex: 'careerDeptId',
+      dataIndex: 'careerDeptName',
+      width: '100px'
+    },
+    {
+      title: '阿里部门',
+      dataIndex: 'deptName',
       width: '100px'
     },
     {
@@ -85,22 +99,70 @@ export const projectColumnsFunction = that => {
     {
       title: '项目类型',
       dataIndex: 'projetType',
-      width: '80px'
+      width: '80px',
+      render: (text, record) => {
+        switch (text) {
+          case 0:
+            return <span>FP</span>;
+
+          case 1:
+            return <span>TM</span>;
+
+          default:
+            break;
+        }
+      }
     },
     {
       title: '项目时长',
       dataIndex: 'projetDurationType',
-      width: '80px'
+      width: '80px',
+      render: (text, record) => {
+        switch (text) {
+          case 0:
+            return <span>短期</span>;
+
+          case 1:
+            return <span>长期</span>;
+
+          default:
+            break;
+        }
+      }
     },
     {
       title: '是否IDU',
       dataIndex: 'iduFlag',
-      width: '70px'
+      width: '70px',
+      render: (text, record) => {
+        switch (text) {
+          case 0:
+            return <span>否</span>;
+
+          case 1:
+            return <span>是</span>;
+
+          default:
+            break;
+        }
+      }
     },
     {
       title: '是否TL',
       dataIndex: 'tlFlag',
-      width: '70px'
+      width: '70px',
+      render: (text, record) => {
+        switch (text) {
+          case 0:
+            return <span>否</span>;
+
+          case 1:
+            return <span>是</span>;
+
+          default:
+            break;
+        }
+      }
     },
     {
       title: '工作城市',
@@ -115,17 +177,53 @@ export const projectColumnsFunction = that => {
     {
       title: '资源状态',
       dataIndex: 'resourceStatus',
-      width: '80px'
+      width: '80px',
+      render: (text, record) => {
+        switch (text) {
+          case 0:
+            return <span>闲置</span>;
+
+          case 1:
+            return <span>在岗</span>;
+
+          default:
+            break;
+        }
+      }
     },
     {
       title: '是否骨干',
       dataIndex: 'backboneFlag',
-      width: '70px'
+      width: '70px',
+      render: (text, record) => {
+        switch (text) {
+          case 0:
+            return <span>否</span>;
+
+          case 1:
+            return <span>是</span>;
+
+          default:
+            break;
+        }
+      }
     },
     {
       title: '是否收费',
       dataIndex: 'chargeFlag',
-      width: '70px'
+      width: '70px',
+      render: (text, record) => {
+        switch (text) {
+          case 0:
+            return <span>否</span>;
+
+          case 1:
+            return <span>是</span>;
+
+          default:
+            break;
+        }
+      }
     },
     {
       title: '操作',
@@ -134,12 +232,56 @@ export const projectColumnsFunction = that => {
       fixed: 'right',
       render: (text, record) => {
         const { changeProjectVisible } = that.props;
+
         return (
           <Button
             onClick={() => {
+              const newRecord = JSON.parse(JSON.stringify(record));
+              newRecord.projectId = {
+                key: record.projectId ? record.projectId : '',
+                label: record.projectName ? record.projectName : ''
+              };
+              newRecord.firstCategoryId = {
+                key: record.firstCategoryId ? record.firstCategoryId : '',
+                label: record.firstCategoryName ? record.firstCategoryName : ''
+              };
+              newRecord.secondCategoryId = {
+                key: record.secondCategoryId ? record.secondCategoryId : '',
+                label: record.secondCategoryName
+                  ? record.secondCategoryName
+                  : ''
+              };
+              newRecord.thirdJobId = {
+                key: record.thirdJobId ? record.thirdJobId : '',
+                label: record.thirdJobName ? record.thirdJobName : ''
+              };
+              newRecord.aliGradeCode = {
+                key: record.aliGradeCode ? record.aliGradeCode : '',
+                label: record.aliGradeCodeName ? record.aliGradeCodeName : ''
+              };
+              newRecord.aliFrameId = {
+                key: record.aliFrameId ? record.aliFrameId : '',
+                label: record.aliFrameName ? record.aliFrameName : ''
+              };
+              newRecord.careerGroupId = {
+                key: record.careerGroupId ? record.careerGroupId : '',
+                label: record.careerGroupName ? record.careerGroupName : ''
+              };
+              newRecord.groupDeptId = {
+                key: record.groupDeptId ? record.groupDeptId : '',
+                label: record.groupDeptName ? record.groupDeptName : ''
+              };
+              newRecord.careerDeptId = {
+                key: record.careerDeptId ? record.careerDeptId : '',
+                label: record.careerDeptName ? record.careerDeptName : ''
+              };
+              newRecord.deptId = {
+                key: record.deptId ? record.deptId : '',
+                label: record.deptName ? record.deptName : ''
+              };
               changeProjectVisible({
                 projectVisible: true,
-                record
+                record: newRecord
               });
             }}
           >

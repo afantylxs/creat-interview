@@ -52,6 +52,41 @@ export const changeCurrentPageData = payload => ({
   payload
 });
 
+export const changeFocusProjectList = payload => ({
+  type: constants.CHANGE_NEWPROJECTDATALIST,
+  payload
+});
+
+export const changeFocusIframe = payload => ({
+  type: constants.CHANGE_IFRAME,
+  payload
+});
+
+export const changeCareerGroupId = payload => ({
+  type: constants.CHANGE_CAREERGROUP,
+  payload
+});
+
+export const changeGroupDeptId = payload => ({
+  type: constants.CHANGE_GROUPDEPT,
+  payload
+});
+
+export const changeCareerDeptId = payload => ({
+  type: constants.CHANGE_CAREERDEPT,
+  payload
+});
+
+export const changeDeptId = payload => ({
+  type: constants.CHANGE_DEPTID,
+  payload
+});
+
+export const changeSaveSearchSubmit = payload => ({
+  type: constants.CHANGE_SAVESEARCHSUBMIT,
+  payload
+});
+
 //查询BU列表
 export const deptInfoBu = payload => {
   return dispatch => {
@@ -81,17 +116,38 @@ export const deptInfo = payload => {
     fetch
       .get('/api/deptInfo/pid', {
         params: {
-          pid: payload.id ? payload.id : payload
+          pid: payload.value ? payload.value : ''
         }
       })
       .then(res => {
         if (res && res.success) {
           const depList = res.data;
-          dispatch(changeDepList(depList));
+          switch (payload.flag) {
+            case 'aliFrameId':
+              dispatch(changeCareerGroupId(depList));
+              break;
+            case 'zero':
+              dispatch(changeFocusIframe(depList));
+              break;
+            case 'careerGroupId':
+              dispatch(changeGroupDeptId(depList));
+              break;
+            case 'groupDeptId':
+              dispatch(changeCareerDeptId(depList));
+              break;
+            case 'careerDeptId':
+              dispatch(changeDeptId(depList));
+              break;
+            case 'bu':
+              dispatch(changeDepList(depList));
+              break;
+            default:
+              break;
+          }
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了');
@@ -114,6 +170,52 @@ export const queryProjectRecordInfoList = payload => {
               total
             })
           );
+        }
+      })
+      .catch(err => {
+        if (err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了');
+        }
+      });
+  };
+};
+
+//获取框架
+export const deptInfoIframe = payload => {
+  console.log('payload', payload);
+
+  return dispatch => {
+    fetch
+      .get('/api/deptInfo/frame', {
+        params: {
+          pid: payload.value
+        }
+      })
+      .then(res => {
+        if (res && res.success && res.data) {
+          console.log('res', res);
+          const { data } = res;
+          switch (payload.flag) {
+            case 'aliFrameId':
+              dispatch(changeCareerGroupId(data));
+              break;
+            case 'zero':
+              dispatch(changeFocusIframe(data));
+              break;
+            case 'careerGroupId':
+              dispatch(changeGroupDeptId(data));
+              break;
+            case 'groupDeptId':
+              dispatch(changeCareerDeptId(data));
+              break;
+            case 'careerDeptId':
+              dispatch(changeDeptId(data));
+              break;
+            default:
+              break;
+          }
         }
       })
       .catch(err => {
@@ -154,6 +256,9 @@ export const dictInfo = payload => {
             case 'work_city':
               dispatch(changeFocusWorkCity(dicList));
               break;
+            case 'project_list':
+              dispatch(changeFocusProjectList(dicList));
+              break;
             default:
               break;
           }
@@ -166,6 +271,40 @@ export const dictInfo = payload => {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
+        }
+      });
+  };
+};
+
+//修改项目信息接口
+export const updateProjectRecordInfoById = payload => {
+  return dispatch => {
+    fetch
+      .post('/api/project/updateProjectRecordInfoById.json', payload)
+      .then(res => {
+        if (res && res.success) {
+          message.success('编辑成功');
+          dispatch(
+            changeProjectVisible({
+              projectVisible: false,
+              record: {}
+            })
+          );
+          dispatch(
+            queryProjectRecordInfoList({
+              currentPage: 1,
+              pageSize: 10
+            })
+          );
+        } else {
+          message.error('提交失败：' + res.message);
+        }
+      })
+      .catch(err => {
+        if (err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了');
         }
       });
   };

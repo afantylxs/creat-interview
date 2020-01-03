@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Input, Col, Button, Form, Select, DatePicker } from 'antd';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { actionCreators } from '../store';
 import './searchForm.less';
 
@@ -16,7 +17,11 @@ class SearchForm extends Component {
   handleChangeBuDeptId = value => {
     const { deptInfo, changeDepList } = this.props;
     if (value) {
-      deptInfo(value);
+      const arg0 = {
+        flag: 'bu',
+        value
+      };
+      deptInfo(arg0);
       this.props.form.resetFields();
     } else {
       changeDepList([]);
@@ -53,16 +58,107 @@ class SearchForm extends Component {
     dictInfo('work_city');
   };
 
+  //获取项目名称
+  handleFocusProjectList = () => {
+    const { dictInfo } = this.props;
+    dictInfo('project_list');
+  };
+
+  //获取框架
+  handleFocusIframe = () => {
+    const { deptInfoIframe } = this.props;
+    const arg0 = {
+      value: '',
+      flag: 'zero'
+    };
+    deptInfoIframe(arg0);
+  };
+
+  handleChangeIftame = (value, key) => {
+    if (key) {
+      const { deptInfo } = this.props;
+      const arg0 = {
+        value: key,
+        flag: value
+      };
+      deptInfo(arg0);
+    }
+    if (!key) {
+      const {
+        changeCareerGroupId,
+        changeCareerDeptId,
+        changeGroupDeptId,
+        changeDeptId
+      } = this.props;
+      changeCareerGroupId([]);
+      changeCareerDeptId([]);
+      changeGroupDeptId([]);
+      changeDeptId([]);
+      this.props.form.resetFields();
+    }
+  };
+
+  handleSearchSubmit = () => {
+    this.props.form.validateFields((err, values) => {
+      const {
+        changeSaveSearchSubmit,
+        queryProjectRecordInfoList,
+        changeCurrentPageData
+      } = this.props;
+      const arg0 = {
+        currentPage: 1,
+        pageSize: 10,
+        aliNo: values.aliNo,
+        ipsaBuDeptId: values.ipsaBuDeptId,
+        ipsaDeptId: values.ipsaDeptId,
+        projectId: values.projectId,
+        joiningProjTimeFormat: values.joiningProjTimeFormat
+          ? moment(values.joiningProjTimeFormat).format('YYYY-MM-DD')
+          : '',
+        firstCategoryId: values.firstCategoryId,
+        secondCategoryId: values.secondCategoryId,
+        thirdJobId: values.thirdJobId,
+        aliGradeCode: values.aliGradeCode,
+        techDirection: values.techDirection,
+        aliFrameId: values.aliFrameId,
+        careerGroupId: values.careerGroupId,
+        groupDeptId: values.groupDeptId,
+        careerDeptId: values.careerDeptId,
+        deptId: values.deptId,
+        projetDurationType: values.projetDurationType,
+        projetType: values.projetType,
+        iduFlag: values.iduFlag,
+        tlFlag: values.tlFlag,
+        workCity: values.workCity,
+        workAddress: values.workAddress,
+        resourceStatus: values.resourceStatus,
+        backboneFlag: values.backboneFlag,
+        chargeFlag: values.chargeFlag
+      };
+      changeSaveSearchSubmit(values);
+      changeCurrentPageData(arg0);
+      queryProjectRecordInfoList(arg0);
+    });
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
+    const that = this;
     const {
       buList,
       depList,
+      currentPageData,
       firstCategoryidList,
       secondCategoryidList,
       thirdCategoryidList,
       aliGradeCodeList,
-      workCityList
+      workCityList,
+      newProjectList,
+      iframeList = [],
+      careerGroupList = [],
+      groupdeptList = [],
+      careerdepList = [],
+      deptIdList = []
     } = this.props;
     return (
       <div className="project-search-from">
@@ -76,7 +172,9 @@ class SearchForm extends Component {
                   label="BU"
                   hasFeedback
                 >
-                  {getFieldDecorator('ipsaBuDeptId')(
+                  {getFieldDecorator('ipsaBuDeptId', {
+                    initialValue: currentPageData.ipsaBuDeptId
+                  })(
                     <Select
                       allowClear
                       onChange={this.handleChangeBuDeptId.bind(this)}
@@ -99,7 +197,9 @@ class SearchForm extends Component {
                   label="部门"
                   hasFeedback
                 >
-                  {getFieldDecorator('ipsaDeptId')(
+                  {getFieldDecorator('ipsaDeptId', {
+                    initialValue: currentPageData.ipsaDeptId
+                  })(
                     <Select allowClear>
                       {depList.map(item => {
                         return (
@@ -119,23 +219,23 @@ class SearchForm extends Component {
                   label="阿里工号"
                   hasFeedback
                 >
-                  {getFieldDecorator('aliNo')(
-                    <Select allowClear>
-                      <Option value="jack">Jack</Option>
-                      <Option value="lucy">Lucy</Option>
-                      <Option value="tom">Tom</Option>
-                    </Select>
-                  )}
+                  {getFieldDecorator('aliNo', {
+                    initialValue: currentPageData.aliNo
+                  })(<Input />)}
                 </Form.Item>
               </Col>
-              <Col span={4}>
+              <Col span={5}>
                 <Form.Item
                   labelCol={{ span: 7 }}
                   wrapperCol={{ span: 16 }}
                   label="入项时间"
                   hasFeedback
                 >
-                  {getFieldDecorator('joiningProjTimeFormat')(
+                  {getFieldDecorator('joiningProjTimeFormat', {
+                    initialValue: currentPageData.joiningProjTimeFormat
+                      ? moment(currentPageData.joiningProjTimeFormat)
+                      : null
+                  })(
                     <DatePicker
                       showToday={false}
                       placeholder="请选择入项时间"
@@ -151,18 +251,21 @@ class SearchForm extends Component {
                   label="一类岗位"
                   hasFeedback
                 >
-                  {getFieldDecorator('firstCategoryId')(
+                  {getFieldDecorator('firstCategoryId', {
+                    initialValue: currentPageData.firstCategoryId
+                  })(
                     <Select
                       allowClear
                       onFocus={this.handleFocusFirstCategoryId.bind(this)}
                     >
-                      {firstCategoryidList.map(item => {
-                        return (
-                          <Option key={item.id} value={item.id}>
-                            {item.label}
-                          </Option>
-                        );
-                      })}
+                      {firstCategoryidList &&
+                        firstCategoryidList.map(item => {
+                          return (
+                            <Option key={item.id} value={item.id}>
+                              {item.label}
+                            </Option>
+                          );
+                        })}
                     </Select>
                   )}
                 </Form.Item>
@@ -174,18 +277,21 @@ class SearchForm extends Component {
                   label="二类岗位"
                   hasFeedback
                 >
-                  {getFieldDecorator('secondCategoryId')(
+                  {getFieldDecorator('secondCategoryId', {
+                    initialValue: currentPageData.secondCategoryId
+                  })(
                     <Select
                       allowClear
                       onFocus={this.handleFocusSecondCategoryId.bind(this)}
                     >
-                      {secondCategoryidList.map(item => {
-                        return (
-                          <Option key={item.id} value={item.id}>
-                            {item.label}
-                          </Option>
-                        );
-                      })}
+                      {secondCategoryidList &&
+                        secondCategoryidList.map(item => {
+                          return (
+                            <Option key={item.id} value={item.id}>
+                              {item.label}
+                            </Option>
+                          );
+                        })}
                     </Select>
                   )}
                 </Form.Item>
@@ -197,18 +303,21 @@ class SearchForm extends Component {
                   label="三类岗位"
                   hasFeedback
                 >
-                  {getFieldDecorator('thirdJobId')(
+                  {getFieldDecorator('thirdJobId', {
+                    initialValue: currentPageData.thirdJobId
+                  })(
                     <Select
                       allowClear
                       onFocus={this.handleFocusThirdCategoryId.bind(this)}
                     >
-                      {thirdCategoryidList.map(item => {
-                        return (
-                          <Option key={item.id} value={item.id}>
-                            {item.label}
-                          </Option>
-                        );
-                      })}
+                      {thirdCategoryidList &&
+                        thirdCategoryidList.map(item => {
+                          return (
+                            <Option key={item.id} value={item.id}>
+                              {item.label}
+                            </Option>
+                          );
+                        })}
                     </Select>
                   )}
                 </Form.Item>
@@ -220,114 +329,51 @@ class SearchForm extends Component {
                   label="层级"
                   hasFeedback
                 >
-                  {getFieldDecorator('aliGradeCode')(
+                  {getFieldDecorator('aliGradeCode', {
+                    initialValue: currentPageData.aliGradeCode
+                  })(
                     <Select
                       allowClear
                       onFocus={this.handleFocusaliGradeCode.bind(this)}
                     >
-                      {aliGradeCodeList.map(item => {
-                        return (
-                          <Option key={item.id} value={item.id}>
-                            {item.label}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={4}>
-                <Form.Item
-                  labelCol={{ span: 7 }}
-                  wrapperCol={{ span: 16 }}
-                  label="技术方向"
-                  hasFeedback
-                >
-                  {getFieldDecorator('techDirection')(
-                    <Select allowClear>
-                      <Option value="jack">Jack</Option>
-                      <Option value="lucy">Lucy</Option>
-                      <Option value="tom">Tom</Option>
+                      {aliGradeCodeList &&
+                        aliGradeCodeList.map(item => {
+                          return (
+                            <Option key={item.id} value={item.id}>
+                              {item.label}
+                            </Option>
+                          );
+                        })}
                     </Select>
                   )}
                 </Form.Item>
               </Col>
               <Col span={5}>
                 <Form.Item
-                  labelCol={{ span: 9 }}
+                  labelCol={{ span: 7 }}
                   wrapperCol={{ span: 15 }}
                   label="框架"
                   hasFeedback
                 >
-                  {getFieldDecorator('aliFrameId')(
-                    <Select allowClear>
-                      <Option value="jack">财务及内控</Option>
-                      <Option value="lucy">Lucy</Option>
-                      <Option value="tom">Tom</Option>
-                    </Select>
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={5}>
-                <Form.Item
-                  labelCol={{ span: 6 }}
-                  wrapperCol={{ span: 16 }}
-                  label="事业群"
-                  hasFeedback
-                >
-                  {getFieldDecorator('careerGroupId')(
-                    <Select allowClear>
-                      <Option value="jack">Jack</Option>
-                      <Option value="lucy">Lucy</Option>
-                      <Option value="tom">Tom</Option>
-                    </Select>
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={5}>
-                <Form.Item
-                  labelCol={{ span: 6 }}
-                  wrapperCol={{ span: 16 }}
-                  label="事业部"
-                  hasFeedback
-                >
-                  {getFieldDecorator('careerDeptId')(
-                    <Select allowClear>
-                      <Option value="jack">Jack</Option>
-                      <Option value="lucy">Lucy</Option>
-                      <Option value="tom">Tom</Option>
-                    </Select>
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={4}>
-                <Form.Item
-                  labelCol={{ span: 7 }}
-                  wrapperCol={{ span: 15 }}
-                  label="阿里部门"
-                  hasFeedback
-                >
-                  {getFieldDecorator('deptId')(
-                    <Select allowClear>
-                      <Option value="jack">Jack</Option>
-                      <Option value="lucy">Lucy</Option>
-                      <Option value="tom">Tom</Option>
-                    </Select>
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={4}>
-                <Form.Item
-                  labelCol={{ span: 7 }}
-                  wrapperCol={{ span: 16 }}
-                  label="项目名称"
-                  hasFeedback
-                >
-                  {getFieldDecorator('xmmc')(
-                    <Select allowClear>
-                      <Option value="jack">Jack</Option>
-                      <Option value="lucy">Lucy</Option>
-                      <Option value="tom">Tom</Option>
+                  {getFieldDecorator('aliFrameId', {
+                    initialValue: currentPageData.ipsaBaliFrameIduDeptId
+                  })(
+                    <Select
+                      allowClear
+                      onFocus={this.handleFocusIframe.bind(this)}
+                      onChange={this.handleChangeIftame.bind(
+                        this,
+                        'aliFrameId'
+                      )}
+                    >
+                      {Array.isArray(iframeList) &&
+                        iframeList.map(item => {
+                          return (
+                            <Option key={item.id} value={item.id}>
+                              {item.name}
+                            </Option>
+                          );
+                        })}
                     </Select>
                   )}
                 </Form.Item>
@@ -336,14 +382,27 @@ class SearchForm extends Component {
                 <Form.Item
                   labelCol={{ span: 9 }}
                   wrapperCol={{ span: 15 }}
-                  label="业务线名称"
+                  label="事业群"
                   hasFeedback
                 >
-                  {getFieldDecorator('businessLine')(
-                    <Select allowClear>
-                      <Option value="jack">财务及内控</Option>
-                      <Option value="lucy">Lucy</Option>
-                      <Option value="tom">Tom</Option>
+                  {getFieldDecorator('careerGroupId', {
+                    initialValue: currentPageData.careerGroupId
+                  })(
+                    <Select
+                      allowClear
+                      onChange={this.handleChangeIftame.bind(
+                        this,
+                        'careerGroupId'
+                      )}
+                    >
+                      {Array.isArray(careerGroupList) &&
+                        careerGroupList.map(item => {
+                          return (
+                            <Option key={item.id} value={item.id}>
+                              {item.label}
+                            </Option>
+                          );
+                        })}
                     </Select>
                   )}
                 </Form.Item>
@@ -352,10 +411,119 @@ class SearchForm extends Component {
                 <Form.Item
                   labelCol={{ span: 6 }}
                   wrapperCol={{ span: 16 }}
+                  label="事业群本部"
+                  hasFeedback
+                >
+                  {getFieldDecorator('groupDeptId', {
+                    initialValue: currentPageData.groupDeptId
+                  })(
+                    <Select
+                      allowClear
+                      onChange={this.handleChangeIftame.bind(
+                        this,
+                        'groupDeptId'
+                      )}
+                    >
+                      {Array.isArray(groupdeptList) &&
+                        groupdeptList.map(item => {
+                          return (
+                            <Option key={item.id} value={item.id}>
+                              {item.label}
+                            </Option>
+                          );
+                        })}
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col span={4}>
+                <Form.Item
+                  labelCol={{ span: 7 }}
+                  wrapperCol={{ span: 15 }}
+                  label="事业部"
+                  hasFeedback
+                >
+                  {getFieldDecorator('careerDeptId', {
+                    initialValue: currentPageData.careerDeptId
+                  })(
+                    <Select
+                      allowClear
+                      onChange={this.handleChangeIftame.bind(
+                        this,
+                        'careerDeptId'
+                      )}
+                    >
+                      {Array.isArray(careerdepList) &&
+                        careerdepList.map(item => {
+                          return (
+                            <Option key={item.id} value={item.id}>
+                              {item.label}
+                            </Option>
+                          );
+                        })}
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col span={5}>
+                <Form.Item
+                  labelCol={{ span: 10 }}
+                  wrapperCol={{ span: 14 }}
+                  label="阿里部门"
+                  hasFeedback
+                >
+                  {getFieldDecorator('deptId', {
+                    initialValue: currentPageData.deptId
+                  })(
+                    <Select allowClear>
+                      {Array.isArray(deptIdList) &&
+                        deptIdList.map(item => {
+                          return (
+                            <Option key={item.id} value={item.id}>
+                              {item.label}
+                            </Option>
+                          );
+                        })}
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col span={5}>
+                <Form.Item
+                  labelCol={{ span: 7 }}
+                  wrapperCol={{ span: 15 }}
+                  label="项目名称"
+                  hasFeedback
+                >
+                  {getFieldDecorator('projectId', {
+                    initialValue: currentPageData.projectId
+                  })(
+                    <Select
+                      allowClear
+                      onFocus={this.handleFocusProjectList.bind(this)}
+                    >
+                      {Array.isArray(newProjectList) &&
+                        newProjectList.map(item => {
+                          return (
+                            <Option key={item.id} value={item.id}>
+                              {item.label}
+                            </Option>
+                          );
+                        })}
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col span={5}>
+                <Form.Item
+                  labelCol={{ span: 9 }}
+                  wrapperCol={{ span: 15 }}
                   label="项目类型"
                   hasFeedback
                 >
-                  {getFieldDecorator('projetType')(
+                  {getFieldDecorator('projetType', {
+                    initialValue: currentPageData.projetType
+                  })(
                     <Select allowClear>
                       <Option value="0">EP</Option>
                       <Option value="1">TM</Option>
@@ -370,7 +538,9 @@ class SearchForm extends Component {
                   label="项目时长"
                   hasFeedback
                 >
-                  {getFieldDecorator('projetDurationType')(
+                  {getFieldDecorator('projetDurationType', {
+                    initialValue: currentPageData.projetDurationType
+                  })(
                     <Select allowClear>
                       <Option value="0">短期</Option>
                       <Option value="1">长期</Option>
@@ -385,22 +555,9 @@ class SearchForm extends Component {
                   label="是否IDU"
                   hasFeedback
                 >
-                  {getFieldDecorator('iduFlag')(
-                    <Select allowClear>
-                      <Option value="0">否</Option>
-                      <Option value="1">是</Option>
-                    </Select>
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={4}>
-                <Form.Item
-                  labelCol={{ span: 7 }}
-                  wrapperCol={{ span: 16 }}
-                  label="是否TL"
-                  hasFeedback
-                >
-                  {getFieldDecorator('tlFlag')(
+                  {getFieldDecorator('iduFlag', {
+                    initialValue: currentPageData.iduFlag
+                  })(
                     <Select allowClear>
                       <Option value="0">否</Option>
                       <Option value="1">是</Option>
@@ -410,13 +567,32 @@ class SearchForm extends Component {
               </Col>
               <Col span={5}>
                 <Form.Item
-                  labelCol={{ span: 9 }}
+                  labelCol={{ span: 10 }}
+                  wrapperCol={{ span: 14 }}
+                  label="是否TL"
+                  hasFeedback
+                >
+                  {getFieldDecorator('tlFlag', {
+                    initialValue: currentPageData.tlFlag
+                  })(
+                    <Select allowClear>
+                      <Option value="0">否</Option>
+                      <Option value="1">是</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col span={5}>
+                <Form.Item
+                  labelCol={{ span: 7 }}
                   wrapperCol={{ span: 15 }}
                   label="工作城市"
                   hasFeedback
                   onFocus={this.handleFocusWorkCity.bind(this)}
                 >
-                  {getFieldDecorator('workCity')(
+                  {getFieldDecorator('workCity', {
+                    initialValue: currentPageData.workCity
+                  })(
                     <Select allowClear>
                       {workCityList.map(item => {
                         return (
@@ -431,12 +607,14 @@ class SearchForm extends Component {
               </Col>
               <Col span={5}>
                 <Form.Item
-                  labelCol={{ span: 6 }}
+                  labelCol={{ span: 9 }}
                   wrapperCol={{ span: 15 }}
                   label="办公场地"
                   hasFeedback
                 >
-                  {getFieldDecorator('workAddress')(<Input />)}
+                  {getFieldDecorator('workAddress', {
+                    initialValue: currentPageData.workAddress
+                  })(<Input />)}
                 </Form.Item>
               </Col>
               <Col span={5}>
@@ -446,7 +624,9 @@ class SearchForm extends Component {
                   label="资源状态"
                   hasFeedback
                 >
-                  {getFieldDecorator('resourceStatus')(
+                  {getFieldDecorator('resourceStatus', {
+                    initialValue: currentPageData.resourceStatus
+                  })(
                     <Select allowClear>
                       <Option value="0">闲置</Option>
                       <Option value="1">在岗</Option>
@@ -461,7 +641,9 @@ class SearchForm extends Component {
                   label="是否骨干"
                   hasFeedback
                 >
-                  {getFieldDecorator('backboneFlag')(
+                  {getFieldDecorator('backboneFlag', {
+                    initialValue: currentPageData.backboneFlag
+                  })(
                     <Select allowClear>
                       <Option value="0">否</Option>
                       <Option value="1">是</Option>
@@ -471,12 +653,14 @@ class SearchForm extends Component {
               </Col>
               <Col span={5}>
                 <Form.Item
-                  labelCol={{ span: 6 }}
+                  labelCol={{ span: 10 }}
                   wrapperCol={{ span: 10 }}
                   label="是否收费"
                   hasFeedback
                 >
-                  {getFieldDecorator('chargeFlag')(
+                  {getFieldDecorator('chargeFlag', {
+                    initialValue: currentPageData.chargeFlag
+                  })(
                     <Select allowClear>
                       <Option value="0">否</Option>
                       <Option value="1">是</Option>
@@ -493,6 +677,7 @@ class SearchForm extends Component {
                 marginTop: '3px',
                 marginRight: '15%'
               }}
+              onClick={this.handleSearchSubmit.bind(this)}
             >
               查询
             </Button>

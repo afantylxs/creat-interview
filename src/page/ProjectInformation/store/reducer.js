@@ -12,9 +12,41 @@ const defaultState = {
   thirdCategoryidList: [],
   aliGradeCodeList: [],
   workCityList: [],
+  newProjectList: [],
+  iframeList: [],
+  careerGroupList: [],
+  groupdeptList: [],
+  careerdepList: [],
+  deptIdList: [],
+  saveSearchData: {},
   currentPageData: {
     currentPage: 1,
-    pageSize: 10
+    pageSize: 10,
+    aliNo: '',
+    ipsaBuDeptId: '',
+    ipsaDeptId: '',
+    projectId: '',
+    joiningProjTimeFormat: '',
+    firstCategoryId: '',
+    secondCategoryId: '',
+    thirdJobId: '',
+    aliGradeCode: '',
+    techDirection: '',
+    aliFrameId: '',
+    careerGroupId: '',
+    groupDeptId: '',
+    careerDeptId: '',
+    deptId: '',
+    projetDurationType: '',
+    projetType: '',
+    iduFlag: '',
+    tlFlag: '',
+    workCity: '',
+    workAddress: '',
+    resourceStatus: '',
+    backboneFlag: '',
+    chargeFlag: '',
+    keyword: ''
   }
 };
 
@@ -72,6 +104,41 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         currentPageData: payload
+      };
+    case constants.CHANGE_NEWPROJECTDATALIST:
+      return {
+        ...state,
+        newProjectList: payload
+      };
+    case constants.CHANGE_IFRAME:
+      return {
+        ...state,
+        iframeList: payload
+      };
+    case constants.CHANGE_CAREERGROUP:
+      return {
+        ...state,
+        careerGroupList: payload
+      };
+    case constants.CHANGE_GROUPDEPT:
+      return {
+        ...state,
+        groupdeptList: payload
+      };
+    case constants.CHANGE_CAREERDEPT:
+      return {
+        ...state,
+        careerdepList: payload
+      };
+    case constants.CHANGE_DEPTID:
+      return {
+        ...state,
+        deptIdList: payload
+      };
+    case constants.CHANGE_SAVESEARCHSUBMIT:
+      return {
+        ...state,
+        saveSearchData: payload
       };
     default:
       return state;

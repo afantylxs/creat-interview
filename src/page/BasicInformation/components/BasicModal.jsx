@@ -248,8 +248,6 @@ class BasicModal extends Component {
             ? values.recruitmentUserId.label
             : ''
         };
-        console.log('values', values);
-
         if (basicRecord.id) {
           arg0.id = basicRecord.id;
           updateEmployeeBaseInfo(arg0);
