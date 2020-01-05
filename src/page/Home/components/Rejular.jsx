@@ -8,16 +8,37 @@ import './rejular.less';
 class Rejular extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      rejularPage: 1
+    };
   }
   componentDidMount() {
     const { getRejularList } = this.props;
-    getRejularList();
+    const arg0 = {
+      pageSize: 6,
+      currentPage: 1
+    };
+    getRejularList(arg0);
   }
+
+  handleChangeRejularPage = page => {
+    const { getRejularList } = this.props;
+    const arg0 = {
+      pageSize: 6,
+      currentPage: page
+    };
+    this.setState(
+      {
+        rejularPage: page
+      },
+      () => {
+        getRejularList(arg0);
+      }
+    );
+  };
   render() {
     const { rejularList, regularTotal } = this.props;
-    console.log('regularTotal', regularTotal);
-
+    const { rejularPage } = this.state;
     return (
       <div className="rejular" style={{ padding: '10px' }}>
         {rejularList.map((item, index) => {
@@ -30,7 +51,12 @@ class Rejular extends Component {
           );
         })}
         <div className="rejular-pagination">
-          <Pagination current={1} pageSize={6} total={regularTotal} />
+          <Pagination
+            current={rejularPage}
+            pageSize={6}
+            total={regularTotal}
+            onChange={this.handleChangeRejularPage.bind(this)}
+          />
         </div>
       </div>
     );

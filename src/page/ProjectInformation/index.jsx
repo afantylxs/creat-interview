@@ -182,8 +182,11 @@ class ProjectInformation extends Component {
 
   //搜索框调用查询列表
   handleSearchInput = value => {
-    const { queryProjectRecordInfoList, changeCurrentPageData } = this.props;
-    const { thats } = this.state;
+    const {
+      queryProjectRecordInfoList,
+      changeCurrentPageData,
+      thats
+    } = this.props;
     const arg0 = {
       currentPage: 1,
       pageSize: 10,
@@ -319,7 +322,7 @@ class ProjectInformation extends Component {
             </Row>
           </Col>
           <Col style={{ marginTop: '5px' }} span={24}>
-            <SearchForm handleSonSearch={this.handleSonSearch} />
+            <SearchForm />
           </Col>
           <Col className="project-content-table" span={24}>
             <Table

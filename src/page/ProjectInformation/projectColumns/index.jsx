@@ -64,32 +64,32 @@ export const projectColumnsFunction = that => {
     {
       title: '框架',
       dataIndex: 'aliFrameName',
-      width: '80px'
+      width: '150px'
     },
     {
       title: '事业群',
       dataIndex: 'careerGroupName',
-      width: '100px'
+      width: '150px'
     },
     {
       title: '事业群本部',
       dataIndex: 'groupDeptName',
-      width: '80px'
+      width: '150px'
     },
     {
       title: '事业部',
       dataIndex: 'careerDeptName',
-      width: '100px'
+      width: '150px'
     },
     {
       title: '阿里部门',
       dataIndex: 'deptName',
-      width: '100px'
+      width: '150px'
     },
     {
       title: '项目名称',
       dataIndex: 'projectName',
-      width: '100px'
+      width: '200px'
     },
     {
       title: '业务线名称',
@@ -279,6 +279,8 @@ export const projectColumnsFunction = that => {
                 key: record.deptId ? record.deptId : '',
                 label: record.deptName ? record.deptName : ''
               };
+              newRecord.shortDate =
+                record.projetDurationType === 0 ? true : false;
               changeProjectVisible({
                 projectVisible: true,
                 record: newRecord

@@ -19,6 +19,7 @@ const defaultState = {
   careerdepList: [],
   deptIdList: [],
   saveSearchData: {},
+  thats: null,
   currentPageData: {
     currentPage: 1,
     pageSize: 10,
@@ -139,6 +140,11 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         saveSearchData: payload
+      };
+    case constants.CHANGE_SAVESEARCHTHIS:
+      return {
+        ...state,
+        thats: payload
       };
     default:
       return state;

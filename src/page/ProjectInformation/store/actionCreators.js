@@ -87,6 +87,13 @@ export const changeSaveSearchSubmit = payload => ({
   payload
 });
 
+//存储搜索框里的this指针
+
+export const handleSaveSearchThis = payload => ({
+  type: constants.CHANGE_SAVESEARCHTHIS,
+  payload
+});
+
 //查询BU列表
 export const deptInfoBu = payload => {
   return dispatch => {

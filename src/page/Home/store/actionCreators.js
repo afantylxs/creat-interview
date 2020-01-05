@@ -62,14 +62,11 @@ export const getBirthdayList = () => {
 };
 
 //获转正列表
-export const getRejularList = () => {
+export const getRejularList = payload => {
   return dispatch => {
     fetch
       .get('api/home/queryWillRegularEmployee.json', {
-        params: {
-          pageSize: 6,
-          currentPage: 1
-        }
+        params: payload
       })
       .then(res => {
         if (res && res.success) {

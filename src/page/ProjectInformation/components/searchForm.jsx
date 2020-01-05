@@ -158,8 +158,10 @@ class SearchForm extends Component {
       careerGroupList = [],
       groupdeptList = [],
       careerdepList = [],
-      deptIdList = []
+      deptIdList = [],
+      handleSaveSearchThis
     } = this.props;
+    handleSaveSearchThis(that);
     return (
       <div className="project-search-from">
         <Row>
