@@ -91,19 +91,22 @@ export const getRejularList = payload => {
 };
 
 //获取场地人数列表
-export const getFieldList = () => {
+export const getFieldList = payload => {
   return dispatch => {
     fetch
       .get('/api/home/queryAreaEmployeeCount.json', {
         params: {
-          pageSize: 3,
-          currentPage: 1
+          payload
         }
       })
       .then(res => {
         if (res && res.success) {
           const { data } = res;
-          dispatch(changeFieldList(data.data));
+          const arg0 = {
+            data: data.data,
+            fieldTotal: data.total
+          };
+          dispatch(changeFieldList(arg0));
         } else {
           message.error('获取列表失败');
         }

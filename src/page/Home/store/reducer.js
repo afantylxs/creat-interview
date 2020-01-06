@@ -7,7 +7,8 @@ const defaultState = {
   reminderList: {},
   myTodoList: [],
   myTodoeducationData: '',
-  regularTotal: 1
+  regularTotal: 1,
+  fieldTotal: 1
 };
 
 export default (state = defaultState, action) => {
@@ -22,7 +23,11 @@ export default (state = defaultState, action) => {
     case constants.BIRTHDAY_DETAIL:
       return { ...state, birthdayList: payload };
     case constants.FIELD_DETAIL:
-      return { ...state, fieldList: payload };
+      return {
+        ...state,
+        fieldList: payload.data,
+        fieldTotal: payload.fieldTotal
+      };
     case constants.REMINDER_DETAIL:
       return { ...state, reminderList: payload };
     case constants.MYTOPROJECT_DETAIL:

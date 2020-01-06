@@ -138,6 +138,7 @@ class SearchForm extends Component {
       changeSaveSearchSubmit(values);
       changeCurrentPageData(arg0);
       queryProjectRecordInfoList(arg0);
+      localStorage.setItem('statusFlag', '');
     });
   };
 

@@ -18,11 +18,11 @@ class Login extends Component {
               localStorage.setItem('flag', true);
               this.props.history.push('/home');
             } else {
-              message.error('登录失败');
+              message.error('登录失败:' + res.data.message);
             }
           })
           .catch(err => {
-            message.error('登录失败' + err);
+            message.error('登录失败：' + err);
           });
       }
     });

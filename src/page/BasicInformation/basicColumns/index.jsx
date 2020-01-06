@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'antd';
 export const basicColumnsFunction = that => {
   const basicTableList = [
     {
@@ -111,9 +112,14 @@ export const basicColumnsFunction = that => {
       dataIndex: 'action',
       width: '90px',
       render: (text, record) => {
+        const permission = localStorage.getItem('permission');
         return (
-          <span
-            className="basic-action-span"
+          <Button
+            disabled={
+              (permission && permission === 'hr') || permission === 'admin'
+                ? false
+                : true
+            }
             onClick={() => {
               const { changeBasicVisible, deptInfo } = that.props;
               let onjobKey = '',
@@ -179,7 +185,7 @@ export const basicColumnsFunction = that => {
             }}
           >
             编辑
-          </span>
+          </Button>
         );
       }
     }

@@ -38,10 +38,12 @@ class ProjectInformation extends Component {
 
   componentDidMount() {
     const { deptInfoBu, queryProjectRecordInfoList } = this.props;
+    const statusFlag = localStorage.getItem('statusFlag');
     deptInfoBu();
     queryProjectRecordInfoList({
       currentPage: 1,
-      pageSize: 10
+      pageSize: 10,
+      statusFlag
     });
   }
 
@@ -52,6 +54,7 @@ class ProjectInformation extends Component {
       changeCurrentPageData,
       currentPageData
     } = this.props;
+    const statusFlag = localStorage.getItem('statusFlag');
     const arg0 = {
       currentPage: page,
       pageSize: 10,
@@ -79,7 +82,8 @@ class ProjectInformation extends Component {
       resourceStatus: currentPageData.resourceStatus,
       backboneFlag: currentPageData.backboneFlag,
       chargeFlag: currentPageData.chargeFlag,
-      keyword: currentPageData.keyword
+      keyword: currentPageData.keyword,
+      statusFlag
     };
     changeCurrentPageData(arg0);
     queryProjectRecordInfoList(arg0);
@@ -89,6 +93,7 @@ class ProjectInformation extends Component {
   handleDownload = () => {
     const token = localStorage.getItem('token');
     const { currentPageData } = this.props;
+    const statusFlag = localStorage.getItem('statusFlag');
     axios({
       method: 'get',
       url: '/api/project/download',
@@ -120,7 +125,8 @@ class ProjectInformation extends Component {
         resourceStatus: currentPageData.resourceStatus,
         backboneFlag: currentPageData.backboneFlag,
         chargeFlag: currentPageData.chargeFlag,
-        keyword: currentPageData.keyword
+        keyword: currentPageData.keyword,
+        statusFlag
       },
       responseType: 'blob'
     })
@@ -151,13 +157,13 @@ class ProjectInformation extends Component {
 
   //导入数据提醒
   handleChangeFile = ({ file, fileList }) => {
-    const { queryEmployeeBaseInfoList } = this.props;
+    const { queryProjectRecordInfoList } = this.props;
 
     if (file && file.status === 'done' && file.response.success) {
       message.success(
         file.response.message + '，共导入' + file.response.data + '条数据'
       );
-      queryEmployeeBaseInfoList({
+      queryProjectRecordInfoList({
         currentPage: 1,
         pageSize: 20
       });
@@ -218,9 +224,11 @@ class ProjectInformation extends Component {
     };
     changeCurrentPageData(arg0);
     queryProjectRecordInfoList(arg0);
+    localStorage.setItem('statusFlag', '');
     thats.props.form.resetFields();
   };
 
+  //修改搜索框的值
   handleChangeSearchInput = value => {
     const { changeCurrentPageData } = this.props;
     const arg0 = {
@@ -255,7 +263,10 @@ class ProjectInformation extends Component {
     changeCurrentPageData(arg0);
   };
 
-  //刷新子组件
+  //组件销毁清空搜索
+  componentWillUnmount() {
+    localStorage.setItem('statusFlag', '');
+  }
 
   render() {
     const {

@@ -27,12 +27,26 @@ class FieldNumber extends Component {
   }
   componentDidMount() {
     const { getFieldList } = this.props;
-    getFieldList();
+    const arg0 = {
+      pageSize: 3,
+      currentPage: 1
+    };
+    getFieldList(arg0);
   }
+  handleChangePage = page => {
+    const { getFieldList } = this.props;
+    const arg0 = {
+      pageSize: 3,
+      currentPage: page
+    };
+    getFieldList(arg0);
+  };
   render() {
-    const { fieldList } = this.props;
+    const { fieldList, fieldTotal } = this.props;
     const paginationObj = {
-      pageSize: 3
+      pageSize: 3,
+      total: fieldTotal,
+      onChange: this.handleChangePage
     };
     return (
       <div className="fieldNumber" style={{ padding: '10px' }}>

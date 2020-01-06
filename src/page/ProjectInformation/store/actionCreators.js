@@ -151,6 +151,8 @@ export const deptInfo = payload => {
             default:
               break;
           }
+        } else {
+          message.error('出错了');
         }
       })
       .catch(err => {
@@ -177,6 +179,8 @@ export const queryProjectRecordInfoList = payload => {
               total
             })
           );
+        } else {
+          message.error('出错了');
         }
       })
       .catch(err => {
@@ -191,8 +195,6 @@ export const queryProjectRecordInfoList = payload => {
 
 //获取框架
 export const deptInfoIframe = payload => {
-  console.log('payload', payload);
-
   return dispatch => {
     fetch
       .get('/api/deptInfo/frame', {
@@ -202,7 +204,6 @@ export const deptInfoIframe = payload => {
       })
       .then(res => {
         if (res && res.success && res.data) {
-          console.log('res', res);
           const { data } = res;
           switch (payload.flag) {
             case 'aliFrameId':
@@ -223,6 +224,8 @@ export const deptInfoIframe = payload => {
             default:
               break;
           }
+        } else {
+          message.error('出错了');
         }
       })
       .catch(err => {

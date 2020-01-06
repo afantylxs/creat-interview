@@ -29,37 +29,55 @@ class Reminder extends Component {
     localStorage.setItem('educStatusFlag', '2');
     this.props.history.push('/education');
   };
+
+  handleGoToProject = () => {
+    localStorage.setItem('statusFlag', '2');
+    this.props.history.push('/project');
+  };
   render() {
     const { reminderList, myTodoList, myTodoeducationData } = this.props;
+    const permission = localStorage.getItem('permission');
     return (
       <Row className="layout-home-reminder" style={{ minWidth: '290px' }}>
-        <Col
-          span={12}
-          onClick={() => this.handlGoToBasic()}
-          className="reminder-content reminder-content-link"
-        >
-          {month}月入职人数
-          <span style={{ color: '#658ef7' }}>
-            {reminderList && reminderList.entryEmpTotal}
-          </span>
-          人
-        </Col>
-        <Col span={12} className="reminder-content reminder-content-link">
-          {month}月离职人数
-          <span style={{ color: '#658ef7' }}>
-            {reminderList && reminderList.leaveEmpTotal}
-          </span>
-          人
-        </Col>
+        {permission !== 'recruitmentConsultant' && (
+          <Col
+            span={12}
+            onClick={() => this.handlGoToBasic()}
+            className="reminder-content reminder-content-link"
+          >
+            {month}月入职人数
+            <span style={{ color: '#658ef7' }}>
+              {reminderList && reminderList.entryEmpTotal}
+            </span>
+            人
+          </Col>
+        )}
+        {permission !== 'recruitmentConsultant' && (
+          <Col span={12} className="reminder-content reminder-content-link">
+            {month}月离职人数
+            <span style={{ color: '#658ef7' }}>
+              {reminderList && reminderList.leaveEmpTotal}
+            </span>
+            人
+          </Col>
+        )}
 
-        <Col span={12} className="reminder-content">
-          待完善项目
-          <span style={{ color: '#658ef7' }}>{myTodoList}</span>人
-        </Col>
-        <Col span={12} className="reminder-content">
-          信息安全提醒
-          <span style={{ color: '#658ef7' }}></span>
-        </Col>
+        {permission !== 'recruitmentConsultant' && (
+          <Col
+            span={12}
+            onClick={() => this.handleGoToProject()}
+            className="reminder-content  reminder-content-link"
+          >
+            待完善项目
+            <span style={{ color: '#658ef7' }}>{myTodoList}</span>人
+          </Col>
+        )}
+        {permission !== 'recruitmentConsultant' && (
+          <Col span={12} className="reminder-content">
+            信息安全提醒
+            <span style={{ color: '#658ef7' }}></span>
+          </Col>
+        )}
         <Col
           onClick={() => this.handlGoToEduc()}
           span={12}

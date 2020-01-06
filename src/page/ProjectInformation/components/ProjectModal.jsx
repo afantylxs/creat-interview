@@ -62,8 +62,6 @@ class ProjectModal extends Component {
   };
 
   handleChangeIftame = (value, key) => {
-    console.log('key', key);
-
     if (key) {
       const { deptInfo } = this.props;
       const arg0 = {
@@ -200,8 +198,6 @@ class ProjectModal extends Component {
       deptId,
       careerGroupId
     } = projectRecord;
-
-    console.log('projectRecord', projectRecord);
 
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
