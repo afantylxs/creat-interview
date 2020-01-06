@@ -13,6 +13,7 @@ import {
 } from 'antd';
 import axios from 'axios';
 import ProjectModal from './components/ProjectModal.jsx';
+import ProjectLeaveModal from './components/ProjectLeaveModal';
 import { actionCreators } from './store';
 import { projectColumnsFunction } from './projectColumns';
 import SearchForm from './components/searchForm.jsx';
@@ -265,6 +266,37 @@ class ProjectInformation extends Component {
 
   //组件销毁清空搜索
   componentWillUnmount() {
+    const { changeCurrentPageData } = this.props;
+    const arg0 = {
+      currentPage: 1,
+      pageSize: 10,
+      aliNo: '',
+      ipsaBuDeptId: '',
+      ipsaDeptId: '',
+      projectId: '',
+      joiningProjTimeFormat: '',
+      firstCategoryId: '',
+      secondCategoryId: '',
+      thirdJobId: '',
+      aliGradeCode: '',
+      techDirection: '',
+      aliFrameId: '',
+      careerGroupId: '',
+      groupDeptId: '',
+      careerDeptId: '',
+      deptId: '',
+      projetDurationType: '',
+      projetType: '',
+      iduFlag: '',
+      tlFlag: '',
+      workCity: '',
+      workAddress: '',
+      resourceStatus: '',
+      backboneFlag: '',
+      chargeFlag: '',
+      keyword: ''
+    };
+    changeCurrentPageData(arg0);
     localStorage.setItem('statusFlag', '');
   }
 
@@ -355,6 +387,7 @@ class ProjectInformation extends Component {
           </Col>
         </Row>
         <ProjectModal />
+        <ProjectLeaveModal />
       </div>
     );
   }

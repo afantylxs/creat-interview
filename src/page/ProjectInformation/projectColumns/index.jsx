@@ -228,67 +228,84 @@ export const projectColumnsFunction = that => {
     {
       title: '操作',
       dataIndex: 'action',
-      width: '70px',
+      width: '200px',
       fixed: 'right',
       render: (text, record) => {
-        const { changeProjectVisible } = that.props;
+        const { changeProjectVisible, changeLeaveProjVisible } = that.props;
 
         return (
-          <Button
-            onClick={() => {
-              const newRecord = JSON.parse(JSON.stringify(record));
-              newRecord.projectId = {
-                key: record.projectId ? record.projectId : '',
-                label: record.projectName ? record.projectName : ''
-              };
-              newRecord.firstCategoryId = {
-                key: record.firstCategoryId ? record.firstCategoryId : '',
-                label: record.firstCategoryName ? record.firstCategoryName : ''
-              };
-              newRecord.secondCategoryId = {
-                key: record.secondCategoryId ? record.secondCategoryId : '',
-                label: record.secondCategoryName
-                  ? record.secondCategoryName
-                  : ''
-              };
-              newRecord.thirdJobId = {
-                key: record.thirdJobId ? record.thirdJobId : '',
-                label: record.thirdJobName ? record.thirdJobName : ''
-              };
-              newRecord.aliGradeCode = {
-                key: record.aliGradeCode ? record.aliGradeCode : '',
-                label: record.aliGradeCodeName ? record.aliGradeCodeName : ''
-              };
-              newRecord.aliFrameId = {
-                key: record.aliFrameId ? record.aliFrameId : '',
-                label: record.aliFrameName ? record.aliFrameName : ''
-              };
-              newRecord.careerGroupId = {
-                key: record.careerGroupId ? record.careerGroupId : '',
-                label: record.careerGroupName ? record.careerGroupName : ''
-              };
-              newRecord.groupDeptId = {
-                key: record.groupDeptId ? record.groupDeptId : '',
-                label: record.groupDeptName ? record.groupDeptName : ''
-              };
-              newRecord.careerDeptId = {
-                key: record.careerDeptId ? record.careerDeptId : '',
-                label: record.careerDeptName ? record.careerDeptName : ''
-              };
-              newRecord.deptId = {
-                key: record.deptId ? record.deptId : '',
-                label: record.deptName ? record.deptName : ''
-              };
-              newRecord.shortDate =
-                record.projetDurationType === 0 ? true : false;
-              changeProjectVisible({
-                projectVisible: true,
-                record: newRecord
-              });
-            }}
-          >
-            编辑
-          </Button>
+          <div>
+            <Button
+              onClick={() => {
+                const newRecord = JSON.parse(JSON.stringify(record));
+                newRecord.projectId = {
+                  key: record.projectId ? record.projectId : '',
+                  label: record.projectName ? record.projectName : ''
+                };
+                newRecord.firstCategoryId = {
+                  key: record.firstCategoryId ? record.firstCategoryId : '',
+                  label: record.firstCategoryName
+                    ? record.firstCategoryName
+                    : ''
+                };
+                newRecord.secondCategoryId = {
+                  key: record.secondCategoryId ? record.secondCategoryId : '',
+                  label: record.secondCategoryName
+                    ? record.secondCategoryName
+                    : ''
+                };
+                newRecord.thirdJobId = {
+                  key: record.thirdJobId ? record.thirdJobId : '',
+                  label: record.thirdJobName ? record.thirdJobName : ''
+                };
+                newRecord.aliGradeCode = {
+                  key: record.aliGradeCode ? record.aliGradeCode : '',
+                  label: record.aliGradeCodeName ? record.aliGradeCodeName : ''
+                };
+                newRecord.aliFrameId = {
+                  key: record.aliFrameId ? record.aliFrameId : '',
+                  label: record.aliFrameName ? record.aliFrameName : ''
+                };
+                newRecord.careerGroupId = {
+                  key: record.careerGroupId ? record.careerGroupId : '',
+                  label: record.careerGroupName ? record.careerGroupName : ''
+                };
+                newRecord.groupDeptId = {
+                  key: record.groupDeptId ? record.groupDeptId : '',
+                  label: record.groupDeptName ? record.groupDeptName : ''
+                };
+                newRecord.careerDeptId = {
+                  key: record.careerDeptId ? record.careerDeptId : '',
+                  label: record.careerDeptName ? record.careerDeptName : ''
+                };
+                newRecord.deptId = {
+                  key: record.deptId ? record.deptId : '',
+                  label: record.deptName ? record.deptName : ''
+                };
+                newRecord.shortDate =
+                  record.projetDurationType === 0 ? true : false;
+                changeProjectVisible({
+                  projectVisible: true,
+                  record: newRecord
+                });
+              }}
+            >
+              编辑项目
+            </Button>
+            <Button
+              style={{ marginLeft: '5px' }}
+              onClick={() => {
+                console.log('111');
+
+                changeLeaveProjVisible({
+                  leaveProjVisible: true,
+                  record
+                });
+              }}
+            >
+              编辑离职
+            </Button>
+          </div>
         );
       }
     }

@@ -7,6 +7,11 @@ export const changeProjectVisible = payload => ({
   payload
 });
 
+export const changeLeaveProjVisible = payload => ({
+  type: constants.CHANGE_LEAVEPROJVISIBLE,
+  payload
+});
+
 export const changeBuList = payload => ({
   type: constants.CHANGE_BULIST,
   payload
@@ -84,6 +89,11 @@ export const changeDeptId = payload => ({
 
 export const changeSaveSearchSubmit = payload => ({
   type: constants.CHANGE_SAVESEARCHSUBMIT,
+  payload
+});
+
+export const changeFocusLeaveProjList = payload => ({
+  type: constants.CHANGE_LEAVEPROJ,
   payload
 });
 
@@ -269,6 +279,9 @@ export const dictInfo = payload => {
             case 'project_list':
               dispatch(changeFocusProjectList(dicList));
               break;
+            case 'leave_proj_reason':
+              dispatch(changeFocusLeaveProjList(dicList));
+              break;
             default:
               break;
           }
@@ -297,6 +310,12 @@ export const updateProjectRecordInfoById = payload => {
           dispatch(
             changeProjectVisible({
               projectVisible: false,
+              record: {}
+            })
+          );
+          dispatch(
+            changeLeaveProjVisible({
+              leaveProjVisible: false,
               record: {}
             })
           );

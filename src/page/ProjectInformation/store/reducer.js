@@ -2,7 +2,9 @@ import * as constants from './constants';
 
 const defaultState = {
   projectVisible: false,
+  leaveProjVisible: false,
   projectRecord: {},
+  leaveProjRecord: {},
   buList: [],
   depList: [],
   projectDataList: [],
@@ -19,6 +21,7 @@ const defaultState = {
   careerdepList: [],
   deptIdList: [],
   saveSearchData: {},
+  leaveProjList: [],
   thats: null,
   currentPageData: {
     currentPage: 1,
@@ -59,6 +62,12 @@ export default (state = defaultState, action) => {
         ...state,
         projectVisible: payload.projectVisible,
         projectRecord: payload.record
+      };
+    case constants.CHANGE_LEAVEPROJVISIBLE:
+      return {
+        ...state,
+        leaveProjVisible: payload.leaveProjVisible,
+        leaveProjRecord: payload.record
       };
     case constants.CHANGE_BULIST:
       return {
@@ -145,6 +154,11 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         thats: payload
+      };
+    case constants.CHANGE_LEAVEPROJ:
+      return {
+        ...state,
+        leaveProjList: payload
       };
     default:
       return state;
