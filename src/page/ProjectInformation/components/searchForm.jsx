@@ -170,8 +170,8 @@ class SearchForm extends Component {
             <Form>
               <Col span={5}>
                 <Form.Item
-                  labelCol={{ span: 6 }}
-                  wrapperCol={{ span: 16 }}
+                  labelCol={{ span: 7 }}
+                  wrapperCol={{ span: 15 }}
                   label="BU"
                   hasFeedback
                 >
@@ -275,8 +275,8 @@ class SearchForm extends Component {
               </Col>
               <Col span={5}>
                 <Form.Item
-                  labelCol={{ span: 6 }}
-                  wrapperCol={{ span: 16 }}
+                  labelCol={{ span: 7 }}
+                  wrapperCol={{ span: 15 }}
                   label="二类岗位"
                   hasFeedback
                 >
@@ -412,8 +412,8 @@ class SearchForm extends Component {
               </Col>
               <Col span={5}>
                 <Form.Item
-                  labelCol={{ span: 6 }}
-                  wrapperCol={{ span: 16 }}
+                  labelCol={{ span: 7 }}
+                  wrapperCol={{ span: 15 }}
                   label="事业群本部"
                   hasFeedback
                 >
@@ -439,10 +439,10 @@ class SearchForm extends Component {
                   )}
                 </Form.Item>
               </Col>
-              <Col span={4}>
+              <Col span={5}>
                 <Form.Item
-                  labelCol={{ span: 7 }}
-                  wrapperCol={{ span: 15 }}
+                  labelCol={{ span: 6 }}
+                  wrapperCol={{ span: 16 }}
                   label="事业部"
                   hasFeedback
                 >
@@ -468,9 +468,9 @@ class SearchForm extends Component {
                   )}
                 </Form.Item>
               </Col>
-              <Col span={5}>
+              <Col span={4}>
                 <Form.Item
-                  labelCol={{ span: 10 }}
+                  labelCol={{ span: 7 }}
                   wrapperCol={{ span: 14 }}
                   label="阿里部门"
                   hasFeedback
@@ -536,8 +536,8 @@ class SearchForm extends Component {
               </Col>
               <Col span={5}>
                 <Form.Item
-                  labelCol={{ span: 6 }}
-                  wrapperCol={{ span: 16 }}
+                  labelCol={{ span: 7 }}
+                  wrapperCol={{ span: 15 }}
                   label="项目时长"
                   hasFeedback
                 >
@@ -551,10 +551,10 @@ class SearchForm extends Component {
                   )}
                 </Form.Item>
               </Col>
-              <Col span={4}>
+              <Col span={5}>
                 <Form.Item
-                  labelCol={{ span: 7 }}
-                  wrapperCol={{ span: 15 }}
+                  labelCol={{ span: 6 }}
+                  wrapperCol={{ span: 10 }}
                   label="是否IDU"
                   hasFeedback
                 >
@@ -568,9 +568,9 @@ class SearchForm extends Component {
                   )}
                 </Form.Item>
               </Col>
-              <Col span={5}>
+              <Col span={4}>
                 <Form.Item
-                  labelCol={{ span: 10 }}
+                  labelCol={{ span: 7 }}
                   wrapperCol={{ span: 14 }}
                   label="是否TL"
                   hasFeedback
@@ -622,7 +622,7 @@ class SearchForm extends Component {
               </Col>
               <Col span={5}>
                 <Form.Item
-                  labelCol={{ span: 6 }}
+                  labelCol={{ span: 7 }}
                   wrapperCol={{ span: 15 }}
                   label="资源状态"
                   hasFeedback
@@ -637,9 +637,9 @@ class SearchForm extends Component {
                   )}
                 </Form.Item>
               </Col>
-              <Col span={4}>
+              <Col span={5}>
                 <Form.Item
-                  labelCol={{ span: 7 }}
+                  labelCol={{ span: 6 }}
                   wrapperCol={{ span: 10 }}
                   label="是否骨干"
                   hasFeedback
@@ -654,9 +654,9 @@ class SearchForm extends Component {
                   )}
                 </Form.Item>
               </Col>
-              <Col span={5}>
+              <Col span={4}>
                 <Form.Item
-                  labelCol={{ span: 10 }}
+                  labelCol={{ span: 7 }}
                   wrapperCol={{ span: 10 }}
                   label="是否收费"
                   hasFeedback
