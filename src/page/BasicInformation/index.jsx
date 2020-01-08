@@ -533,6 +533,7 @@ class BasicInformation extends Component {
           <Col className="basic-paging" span={24}>
             <Pagination
               total={total}
+              showTotal={total => `共 ${total} 条数据`}
               current={currentPageData.currentPage}
               onChange={page => {
                 this.handleTableChange(page);

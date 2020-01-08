@@ -229,7 +229,7 @@ export const projectColumnsFunction = that => {
       title: '操作',
       dataIndex: 'action',
       width: '200px',
-      // fixed: 'right',
+      fixed: 'right',
       render: (text, record) => {
         const { changeProjectVisible, changeLeaveProjVisible } = that.props;
 
@@ -307,7 +307,7 @@ export const projectColumnsFunction = that => {
                 });
               }}
             >
-              编辑离职
+              编辑离项
             </Button>
           </div>
         );

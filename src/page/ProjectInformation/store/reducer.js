@@ -50,7 +50,8 @@ const defaultState = {
     resourceStatus: '',
     backboneFlag: '',
     chargeFlag: '',
-    keyword: ''
+    keyword: '',
+    businessLine: ''
   }
 };
 

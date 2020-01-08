@@ -104,7 +104,7 @@ class ProjectLeaveModal extends Component {
                     >
                       {leaveProjList.map(item => {
                         return (
-                          <Option key={item.id} value={item.id}>
+                          <Option key={item.value} value={item.value}>
                             {item.label}
                           </Option>
                         );

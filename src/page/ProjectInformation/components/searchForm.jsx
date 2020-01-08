@@ -34,12 +34,10 @@ class SearchForm extends Component {
       resourceStatusValue: '',
       backboneFlagValue: '',
       chargeFlagValue: '',
-      joiningProjTimeFormatValue: ''
+      joiningProjTimeFormatValue: '',
+      businessLineValue: ''
     };
   }
-  onChange = (date, dateString) => {
-    console.log(date, dateString);
-  };
 
   //切换BU列表
   handleChangeBuDeptId = value => {
@@ -256,7 +254,8 @@ class SearchForm extends Component {
         workAddress: values.workAddress,
         resourceStatus: values.resourceStatus,
         backboneFlag: values.backboneFlag,
-        chargeFlag: values.chargeFlag
+        chargeFlag: values.chargeFlag,
+        businessLine: values.businessLine
       };
       changeSaveSearchSubmit(values);
       changeCurrentPageData(arg0);
@@ -364,7 +363,44 @@ class SearchForm extends Component {
         chargeFlagValue: key
       });
     }
+
+    if (value === 'businessLine') {
+      this.setState({
+        businessLineValue: key.target.value
+      });
+    }
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentPageData && nextProps.currentPageData.keyword) {
+      this.setState({
+        aliFrameIdValue: '',
+        careerGroupIdValue: '',
+        groupDeptIdValue: '',
+        careerDeptIdValue: '',
+        deptIdValue: '',
+        ipsaBuDeptIdValue: '',
+        ipsaDeptIdValue: '',
+        aliNoValue: '',
+        firstCategoryIdValue: '',
+        secondCategoryIdValue: '',
+        thirdJobIdValue: '',
+        aliGradeCodeValue: '',
+        projectIdValue: '',
+        projetTypeValue: '',
+        projetDurationTypeValue: '',
+        iduFlagValue: '',
+        tlFlagValue: '',
+        workCityValue: '',
+        workAddressValue: '',
+        resourceStatusValue: '',
+        backboneFlagValue: '',
+        chargeFlagValue: '',
+        joiningProjTimeFormatValue: '',
+        businessLineValue: ''
+      });
+    }
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -391,13 +427,13 @@ class SearchForm extends Component {
       workAddressValue = '',
       resourceStatusValue = '',
       backboneFlagValue = '',
-      chargeFlagValue = ''
+      chargeFlagValue = '',
+      businessLineValue = ''
     } = this.state;
     const that = this;
     const {
       buList,
       depList,
-      currentPageData,
       firstCategoryidList,
       secondCategoryidList,
       thirdCategoryidList,
@@ -997,6 +1033,25 @@ class SearchForm extends Component {
                       <Option value="0">否</Option>
                       <Option value="1">是</Option>
                     </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col span={5}>
+                <Form.Item
+                  labelCol={{ span: 7 }}
+                  wrapperCol={{ span: 15 }}
+                  label="业务线名称"
+                  hasFeedback
+                >
+                  {getFieldDecorator('businessLine', {
+                    initialValue: businessLineValue
+                  })(
+                    <Input
+                      onChange={this.handleAllInputChange.bind(
+                        this,
+                        'businessLine'
+                      )}
+                    />
                   )}
                 </Form.Item>
               </Col>

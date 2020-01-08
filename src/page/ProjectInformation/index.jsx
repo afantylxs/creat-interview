@@ -84,7 +84,8 @@ class ProjectInformation extends Component {
       backboneFlag: currentPageData.backboneFlag,
       chargeFlag: currentPageData.chargeFlag,
       keyword: currentPageData.keyword,
-      statusFlag
+      statusFlag,
+      businessLine: currentPageData.businessLine
     };
     changeCurrentPageData(arg0);
     queryProjectRecordInfoList(arg0);
@@ -259,7 +260,8 @@ class ProjectInformation extends Component {
       resourceStatus: '',
       backboneFlag: '',
       chargeFlag: '',
-      keyword: value.target.value
+      keyword: value.target.value,
+      businessLine: ''
     };
     changeCurrentPageData(arg0);
   };
@@ -294,7 +296,8 @@ class ProjectInformation extends Component {
       resourceStatus: '',
       backboneFlag: '',
       chargeFlag: '',
-      keyword: ''
+      keyword: '',
+      businessLine: ''
     };
     changeCurrentPageData(arg0);
     localStorage.setItem('statusFlag', '');
@@ -379,6 +382,7 @@ class ProjectInformation extends Component {
           <Col className="project-paging" span={24}>
             <Pagination
               total={total}
+              showTotal={total => `共 ${total} 条数据`}
               current={currentPageData.currentPage}
               onChange={page => {
                 this.handleTableChange(page);

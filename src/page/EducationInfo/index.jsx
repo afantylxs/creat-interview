@@ -521,6 +521,7 @@ class EducationInfo extends Component {
           <Col className="educ-paging" span={24}>
             <Pagination
               total={total}
+              showTotal={total => `共 ${total} 条数据`}
               current={currentPageData.currentPage}
               onChange={page => {
                 this.handleTableChange(page);
