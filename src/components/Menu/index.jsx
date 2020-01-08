@@ -65,7 +65,7 @@ class Menus extends Component {
               <Link to="/project">项目信息</Link>
             </Menu.Item>
           )}
-          {permission && permission !== 'recruitmentConsultant' && (
+          {/* {permission && permission !== 'recruitmentConsultant' && (
             <Menu.Item key="department">
               <Link to="/department">人事调整</Link>
             </Menu.Item>
@@ -79,7 +79,7 @@ class Menus extends Component {
             <Menu.Item key="analysis">
               <Link to="/analysis">数据分析</Link>
             </Menu.Item>
-          )}
+          )} */}
         </Menu>
       </div>
     );

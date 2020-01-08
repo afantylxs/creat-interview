@@ -48,9 +48,9 @@ class Layout extends Component {
           <Route path="/basic" component={BasicInformation} />
           <Route path="/education" component={EducationInfo} />
           <Route path="/project" component={ProjectInformation} />
-          <Route path="/department" component={Department} />
+          {/* <Route path="/department" component={Department} />
           <Route path="/leave" component={Leave} />
-          <Route path="/analysis" component={Analysis} />
+          <Route path="/analysis" component={Analysis} /> */}
           <Route component={Error} />
         </Switch>
       </div>
