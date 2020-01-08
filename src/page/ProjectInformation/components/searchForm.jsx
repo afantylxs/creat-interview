@@ -9,6 +9,34 @@ const { Option } = Select;
 
 @connect(state => state.project, actionCreators)
 class SearchForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      aliFrameIdValue: '',
+      careerGroupIdValue: '',
+      groupDeptIdValue: '',
+      careerDeptIdValue: '',
+      deptIdValue: '',
+      ipsaBuDeptIdValue: '',
+      ipsaDeptIdValue: '',
+      aliNoValue: '',
+      firstCategoryIdValue: '',
+      secondCategoryIdValue: '',
+      thirdJobIdValue: '',
+      aliGradeCodeValue: '',
+      projectIdValue: '',
+      projetTypeValue: '',
+      projetDurationTypeValue: '',
+      iduFlagValue: '',
+      tlFlagValue: '',
+      workCityValue: '',
+      workAddressValue: '',
+      resourceStatusValue: '',
+      backboneFlagValue: '',
+      chargeFlagValue: '',
+      joiningProjTimeFormatValue: ''
+    };
+  }
   onChange = (date, dateString) => {
     console.log(date, dateString);
   };
@@ -17,15 +45,28 @@ class SearchForm extends Component {
   handleChangeBuDeptId = value => {
     const { deptInfo, changeDepList } = this.props;
     if (value) {
+      this.setState({
+        ipsaBuDeptIdValue: value,
+        ipsaDeptIdValue: ''
+      });
       const arg0 = {
         flag: 'bu',
         value
       };
       deptInfo(arg0);
-      this.props.form.resetFields();
     } else {
+      this.setState({
+        ipsaDeptIdValue: ''
+      });
       changeDepList([]);
     }
+    this.props.form.resetFields();
+  };
+
+  handleChangeBuMenDeptId = value => {
+    this.setState({
+      ipsaDeptIdValue: value
+    });
   };
 
   //获取一类岗位
@@ -75,27 +116,109 @@ class SearchForm extends Component {
   };
 
   handleChangeIftame = (value, key) => {
+    const {
+      changeCareerGroupId,
+      changeCareerDeptId,
+      changeGroupDeptId,
+      changeDeptId
+    } = this.props;
+
+    //保存查询条件选择的值，在做联动操作时逐级清空操作
     if (key) {
       const { deptInfo } = this.props;
       const arg0 = {
         value: key,
         flag: value
       };
+      if (value === 'aliFrameId') {
+        this.setState({
+          aliFrameIdValue: key,
+          careerGroupIdValue: '',
+          groupDeptIdValue: '',
+          careerDeptIdValue: '',
+          deptIdValue: ''
+        });
+        changeCareerDeptId([]);
+        changeGroupDeptId([]);
+        changeDeptId([]);
+      }
+
+      if (value === 'careerGroupId') {
+        this.setState({
+          careerGroupIdValue: key,
+          groupDeptIdValue: '',
+          careerDeptIdValue: '',
+          deptIdValue: ''
+        });
+        changeGroupDeptId([]);
+        changeDeptId([]);
+      }
+
+      if (value === 'groupDeptId') {
+        this.setState({
+          groupDeptIdValue: key,
+          careerDeptIdValue: '',
+          deptIdValue: ''
+        });
+        changeDeptId([]);
+      }
+
+      if (value === 'careerDeptId') {
+        this.setState({
+          careerDeptIdValue: key,
+          deptIdValue: ''
+        });
+      }
+
+      if (value === 'deptId') {
+        this.setState({
+          deptIdValue: key
+        });
+      }
       deptInfo(arg0);
     }
     if (!key) {
-      const {
-        changeCareerGroupId,
-        changeCareerDeptId,
-        changeGroupDeptId,
-        changeDeptId
-      } = this.props;
-      changeCareerGroupId([]);
-      changeCareerDeptId([]);
-      changeGroupDeptId([]);
-      changeDeptId([]);
-      this.props.form.resetFields();
+      if (value === 'aliFrameId') {
+        this.setState({
+          careerGroupIdValue: '',
+          groupDeptIdValue: '',
+          careerDeptIdValue: '',
+          deptIdValue: ''
+        });
+        changeCareerGroupId([]);
+        changeCareerDeptId([]);
+        changeGroupDeptId([]);
+        changeDeptId([]);
+      }
+
+      if (value === 'careerGroupId') {
+        this.setState({
+          groupDeptIdValue: '',
+          careerDeptIdValue: '',
+          deptIdValue: ''
+        });
+        changeCareerDeptId([]);
+        changeGroupDeptId([]);
+        changeDeptId([]);
+      }
+
+      if (value === 'groupDeptId') {
+        this.setState({
+          careerDeptIdValue: '',
+          deptIdValue: ''
+        });
+        changeCareerDeptId([]);
+        changeDeptId([]);
+      }
+
+      if (value === 'careerDeptId') {
+        this.setState({
+          deptIdValue: ''
+        });
+        changeDeptId([]);
+      }
     }
+    this.props.form.resetFields();
   };
 
   handleSearchSubmit = () => {
@@ -142,8 +265,134 @@ class SearchForm extends Component {
     });
   };
 
+  //保存查询框输入值
+  handleAllInputChange = (value, key) => {
+    if (value === 'aliNo') {
+      this.setState({
+        aliNoValue: key.target.value
+      });
+    }
+
+    if (value === 'joiningProjTimeFormat') {
+      console.log('value', moment(key).format('YYYY-MM-DD'));
+
+      this.setState({
+        joiningProjTimeFormatValue: key ? moment(key).format('YYYY-MM-DD') : ''
+      });
+    }
+
+    if (value === 'firstCategoryId') {
+      this.setState({
+        firstCategoryIdValue: key
+      });
+    }
+
+    if (value === 'secondCategoryId') {
+      this.setState({
+        secondCategoryIdValue: key
+      });
+    }
+
+    if (value === 'thirdJobId') {
+      this.setState({
+        thirdJobIdValue: key
+      });
+    }
+
+    if (value === 'aliGradeCode') {
+      this.setState({
+        aliGradeCodeValue: key
+      });
+    }
+
+    if (value === 'projectId') {
+      this.setState({
+        projectIdValue: key
+      });
+    }
+
+    if (value === 'projetType') {
+      this.setState({
+        projetTypeValue: key
+      });
+    }
+
+    if (value === 'projetDurationType') {
+      this.setState({
+        projetDurationTypeValue: key
+      });
+    }
+
+    if (value === 'iduFlag') {
+      this.setState({
+        iduFlagValue: key
+      });
+    }
+
+    if (value === 'tlFlag') {
+      this.setState({
+        tlFlagValue: key
+      });
+    }
+
+    if (value === 'workCity') {
+      this.setState({
+        workCityValue: key
+      });
+    }
+
+    if (value === 'workAddress') {
+      this.setState({
+        workAddressValue: key.target.value
+      });
+    }
+
+    if (value === 'resourceStatus') {
+      this.setState({
+        resourceStatusValue: key
+      });
+    }
+
+    if (value === 'backboneFlag') {
+      this.setState({
+        backboneFlagValue: key
+      });
+    }
+
+    if (value === 'chargeFlag') {
+      this.setState({
+        chargeFlagValue: key
+      });
+    }
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
+    const {
+      aliFrameIdValue,
+      careerGroupIdValue,
+      groupDeptIdValue,
+      careerDeptIdValue,
+      deptIdValue,
+      ipsaBuDeptIdValue,
+      ipsaDeptIdValue,
+      aliNoValue = '',
+      joiningProjTimeFormatValue,
+      firstCategoryIdValue = '',
+      secondCategoryIdValue = '',
+      thirdJobIdValue = '',
+      aliGradeCodeValue = '',
+      projectIdValue = '',
+      projetTypeValue = '',
+      projetDurationTypeValue = '',
+      iduFlagValue = '',
+      tlFlagValue = '',
+      workCityValue = '',
+      workAddressValue = '',
+      resourceStatusValue = '',
+      backboneFlagValue = '',
+      chargeFlagValue = ''
+    } = this.state;
     const that = this;
     const {
       buList,
@@ -162,6 +411,7 @@ class SearchForm extends Component {
       deptIdList = [],
       handleSaveSearchThis
     } = this.props;
+
     handleSaveSearchThis(that);
     return (
       <div className="project-search-from">
@@ -176,7 +426,7 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('ipsaBuDeptId', {
-                    initialValue: currentPageData.ipsaBuDeptId
+                    initialValue: ipsaBuDeptIdValue
                   })(
                     <Select
                       allowClear
@@ -201,9 +451,12 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('ipsaDeptId', {
-                    initialValue: currentPageData.ipsaDeptId
+                    initialValue: ipsaDeptIdValue
                   })(
-                    <Select allowClear>
+                    <Select
+                      allowClear
+                      onChange={this.handleChangeBuMenDeptId.bind(this)}
+                    >
                       {depList.map(item => {
                         return (
                           <Option key={item.id} value={item.id}>
@@ -223,8 +476,12 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('aliNo', {
-                    initialValue: currentPageData.aliNo
-                  })(<Input />)}
+                    initialValue: aliNoValue
+                  })(
+                    <Input
+                      onChange={this.handleAllInputChange.bind(this, 'aliNo')}
+                    />
+                  )}
                 </Form.Item>
               </Col>
               <Col span={5}>
@@ -235,14 +492,17 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('joiningProjTimeFormat', {
-                    initialValue: currentPageData.joiningProjTimeFormat
-                      ? moment(currentPageData.joiningProjTimeFormat)
+                    initialValue: joiningProjTimeFormatValue
+                      ? moment(joiningProjTimeFormatValue)
                       : null
                   })(
                     <DatePicker
                       showToday={false}
                       placeholder="请选择入项时间"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.handleAllInputChange.bind(
+                        this,
+                        'joiningProjTimeFormat'
+                      )}
                     />
                   )}
                 </Form.Item>
@@ -255,11 +515,15 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('firstCategoryId', {
-                    initialValue: currentPageData.firstCategoryId
+                    initialValue: firstCategoryIdValue
                   })(
                     <Select
                       allowClear
                       onFocus={this.handleFocusFirstCategoryId.bind(this)}
+                      onChange={this.handleAllInputChange.bind(
+                        this,
+                        'firstCategoryId'
+                      )}
                     >
                       {firstCategoryidList &&
                         firstCategoryidList.map(item => {
@@ -281,11 +545,15 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('secondCategoryId', {
-                    initialValue: currentPageData.secondCategoryId
+                    initialValue: secondCategoryIdValue
                   })(
                     <Select
                       allowClear
                       onFocus={this.handleFocusSecondCategoryId.bind(this)}
+                      onChange={this.handleAllInputChange.bind(
+                        this,
+                        'secondCategoryId'
+                      )}
                     >
                       {secondCategoryidList &&
                         secondCategoryidList.map(item => {
@@ -307,11 +575,15 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('thirdJobId', {
-                    initialValue: currentPageData.thirdJobId
+                    initialValue: thirdJobIdValue
                   })(
                     <Select
                       allowClear
                       onFocus={this.handleFocusThirdCategoryId.bind(this)}
+                      onChange={this.handleAllInputChange.bind(
+                        this,
+                        'thirdJobId'
+                      )}
                     >
                       {thirdCategoryidList &&
                         thirdCategoryidList.map(item => {
@@ -333,11 +605,15 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('aliGradeCode', {
-                    initialValue: currentPageData.aliGradeCode
+                    initialValue: aliGradeCodeValue
                   })(
                     <Select
                       allowClear
                       onFocus={this.handleFocusaliGradeCode.bind(this)}
+                      onChange={this.handleAllInputChange.bind(
+                        this,
+                        'aliGradeCode'
+                      )}
                     >
                       {aliGradeCodeList &&
                         aliGradeCodeList.map(item => {
@@ -359,7 +635,7 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('aliFrameId', {
-                    initialValue: currentPageData.ipsaBaliFrameIduDeptId
+                    initialValue: aliFrameIdValue
                   })(
                     <Select
                       allowClear
@@ -389,7 +665,7 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('careerGroupId', {
-                    initialValue: currentPageData.careerGroupId
+                    initialValue: careerGroupIdValue
                   })(
                     <Select
                       allowClear
@@ -418,7 +694,7 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('groupDeptId', {
-                    initialValue: currentPageData.groupDeptId
+                    initialValue: groupDeptIdValue
                   })(
                     <Select
                       allowClear
@@ -447,7 +723,7 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('careerDeptId', {
-                    initialValue: currentPageData.careerDeptId
+                    initialValue: careerDeptIdValue
                   })(
                     <Select
                       allowClear
@@ -476,7 +752,7 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('deptId', {
-                    initialValue: currentPageData.deptId
+                    initialValue: deptIdValue
                   })(
                     <Select allowClear>
                       {Array.isArray(deptIdList) &&
@@ -499,11 +775,15 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('projectId', {
-                    initialValue: currentPageData.projectId
+                    initialValue: projectIdValue
                   })(
                     <Select
                       allowClear
                       onFocus={this.handleFocusProjectList.bind(this)}
+                      onChange={this.handleAllInputChange.bind(
+                        this,
+                        'projectId'
+                      )}
                     >
                       {Array.isArray(newProjectList) &&
                         newProjectList.map(item => {
@@ -525,10 +805,16 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('projetType', {
-                    initialValue: currentPageData.projetType
+                    initialValue: projetTypeValue
                   })(
-                    <Select allowClear>
-                      <Option value="0">EP</Option>
+                    <Select
+                      allowClear
+                      onChange={this.handleAllInputChange.bind(
+                        this,
+                        'projetType'
+                      )}
+                    >
+                      <Option value="0">FP</Option>
                       <Option value="1">TM</Option>
                     </Select>
                   )}
@@ -542,9 +828,15 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('projetDurationType', {
-                    initialValue: currentPageData.projetDurationType
+                    initialValue: projetDurationTypeValue
                   })(
-                    <Select allowClear>
+                    <Select
+                      allowClear
+                      onChange={this.handleAllInputChange.bind(
+                        this,
+                        'projetDurationType'
+                      )}
+                    >
                       <Option value="0">短期</Option>
                       <Option value="1">长期</Option>
                     </Select>
@@ -559,9 +851,12 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('iduFlag', {
-                    initialValue: currentPageData.iduFlag
+                    initialValue: iduFlagValue
                   })(
-                    <Select allowClear>
+                    <Select
+                      allowClear
+                      onChange={this.handleAllInputChange.bind(this, 'iduFlag')}
+                    >
                       <Option value="0">否</Option>
                       <Option value="1">是</Option>
                     </Select>
@@ -576,9 +871,12 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('tlFlag', {
-                    initialValue: currentPageData.tlFlag
+                    initialValue: tlFlagValue
                   })(
-                    <Select allowClear>
+                    <Select
+                      allowClear
+                      onChange={this.handleAllInputChange.bind(this, 'tlFlag')}
+                    >
                       <Option value="0">否</Option>
                       <Option value="1">是</Option>
                     </Select>
@@ -594,9 +892,15 @@ class SearchForm extends Component {
                   onFocus={this.handleFocusWorkCity.bind(this)}
                 >
                   {getFieldDecorator('workCity', {
-                    initialValue: currentPageData.workCity
+                    initialValue: workCityValue
                   })(
-                    <Select allowClear>
+                    <Select
+                      allowClear
+                      onChange={this.handleAllInputChange.bind(
+                        this,
+                        'workCity'
+                      )}
+                    >
                       {workCityList.map(item => {
                         return (
                           <Option key={item.id} value={item.id}>
@@ -616,8 +920,15 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('workAddress', {
-                    initialValue: currentPageData.workAddress
-                  })(<Input />)}
+                    initialValue: workAddressValue
+                  })(
+                    <Input
+                      onChange={this.handleAllInputChange.bind(
+                        this,
+                        'workAddress'
+                      )}
+                    />
+                  )}
                 </Form.Item>
               </Col>
               <Col span={5}>
@@ -628,9 +939,15 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('resourceStatus', {
-                    initialValue: currentPageData.resourceStatus
+                    initialValue: resourceStatusValue
                   })(
-                    <Select allowClear>
+                    <Select
+                      allowClear
+                      onChange={this.handleAllInputChange.bind(
+                        this,
+                        'resourceStatus'
+                      )}
+                    >
                       <Option value="0">闲置</Option>
                       <Option value="1">在岗</Option>
                     </Select>
@@ -645,9 +962,15 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('backboneFlag', {
-                    initialValue: currentPageData.backboneFlag
+                    initialValue: backboneFlagValue
                   })(
-                    <Select allowClear>
+                    <Select
+                      allowClear
+                      onChange={this.handleAllInputChange.bind(
+                        this,
+                        'backboneFlag'
+                      )}
+                    >
                       <Option value="0">否</Option>
                       <Option value="1">是</Option>
                     </Select>
@@ -662,9 +985,15 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('chargeFlag', {
-                    initialValue: currentPageData.chargeFlag
+                    initialValue: chargeFlagValue
                   })(
-                    <Select allowClear>
+                    <Select
+                      allowClear
+                      onChange={this.handleAllInputChange.bind(
+                        this,
+                        'chargeFlag'
+                      )}
+                    >
                       <Option value="0">否</Option>
                       <Option value="1">是</Option>
                     </Select>

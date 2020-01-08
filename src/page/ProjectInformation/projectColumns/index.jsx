@@ -229,7 +229,7 @@ export const projectColumnsFunction = that => {
       title: '操作',
       dataIndex: 'action',
       width: '200px',
-      fixed: 'right',
+      // fixed: 'right',
       render: (text, record) => {
         const { changeProjectVisible, changeLeaveProjVisible } = that.props;
 
@@ -284,6 +284,7 @@ export const projectColumnsFunction = that => {
                 };
                 newRecord.shortDate =
                   record.projetDurationType === 0 ? true : false;
+
                 changeProjectVisible({
                   projectVisible: true,
                   record: newRecord
@@ -295,11 +296,14 @@ export const projectColumnsFunction = that => {
             <Button
               style={{ marginLeft: '5px' }}
               onClick={() => {
-                console.log('111');
-
+                const newRecord = JSON.parse(JSON.stringify(record));
+                newRecord.leaveProjReasonId = {
+                  key: record.leaveProjReasonId,
+                  label: record.leaveProjReasonName
+                };
                 changeLeaveProjVisible({
                   leaveProjVisible: true,
-                  record
+                  record: newRecord
                 });
               }}
             >

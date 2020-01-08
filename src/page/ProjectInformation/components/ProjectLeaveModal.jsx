@@ -31,11 +31,10 @@ class ProjectLeaveModal extends Component {
           leaveProjTimeFormat: values.leaveProjTimeFormat
             ? moment(values.leaveProjTimeFormat).format('YYYY-MM-DD')
             : '',
-          leaveProjReasonId: values.leaveProjReasonId,
+          leaveProjReasonId: values.leaveProjReasonId.key,
           leaveProjType: values.leaveProjType
         };
         updateProjectRecordInfoById(arg0);
-        console.log('arg0', arg0);
       }
     });
   };
@@ -46,7 +45,11 @@ class ProjectLeaveModal extends Component {
   };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { leaveProjList = [], leaveProjVisible } = this.props;
+    const {
+      leaveProjList = [],
+      leaveProjVisible,
+      leaveProjRecord
+    } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -57,10 +60,11 @@ class ProjectLeaveModal extends Component {
         sm: { span: 16 }
       }
     };
+    const { leaveProjTime, leaveProjReasonId, leaveProjType } = leaveProjRecord;
     return (
       <div>
         <Modal
-          title="填写离职信息"
+          title="填写离项信息"
           visible={leaveProjVisible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
@@ -77,20 +81,25 @@ class ProjectLeaveModal extends Component {
               >
                 <Form.Item label="阿里离项时间" hasFeedback>
                   {getFieldDecorator('leaveProjTimeFormat', {
+                    initialValue: leaveProjTime ? moment(leaveProjTime) : null,
                     rules: [{ required: true, message: '不能为空' }]
                   })(
                     <DatePicker
                       showToday={false}
-                      placeholder="请选择入项时间"
+                      placeholder="请选择离项时间"
                     />
                   )}
                 </Form.Item>
                 <Form.Item label="阿里离项原因" hasFeedback>
                   {getFieldDecorator('leaveProjReasonId', {
+                    initialValue:
+                      leaveProjReasonId && leaveProjReasonId.key
+                        ? leaveProjReasonId
+                        : '',
                     rules: [{ required: true, message: '不能为空' }]
                   })(
                     <Select
-                      allowClear
+                      labelInValue
                       onFocus={this.handleFocusLeaveProj.bind(this)}
                     >
                       {leaveProjList.map(item => {
@@ -105,6 +114,8 @@ class ProjectLeaveModal extends Component {
                 </Form.Item>
                 <Form.Item label="阿里离项类型" hasFeedback>
                   {getFieldDecorator('leaveProjType', {
+                    initialValue:
+                      leaveProjType || leaveProjType === 0 ? leaveProjType : '',
                     rules: [{ required: true, message: '不能为空' }]
                   })(
                     <Select allowClear>

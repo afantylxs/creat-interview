@@ -176,7 +176,7 @@ class BasicModal extends Component {
           rsData.map(item => {
             return (
               <Option key={item.id} value={item.id}>
-                {item.username}
+                {item.empName}
               </Option>
             );
           })}
