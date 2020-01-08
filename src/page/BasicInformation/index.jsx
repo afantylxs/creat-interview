@@ -93,7 +93,14 @@ class BasicInformation extends Component {
       });
     } else {
       if (file && file.status === 'done' && !file.response.success) {
-        message.error('上传失败:' + file.response.message);
+        message.error('导入失败:' + file.response.message);
+      }
+      if (file && file.status === 'error') {
+        if (file.error.status === 401) {
+          message.error('导入失败，请重新登录');
+        } else {
+          message.error('导入失败:' + file.response.message);
+        }
       }
     }
   };
@@ -313,6 +320,7 @@ class BasicInformation extends Component {
       currentPageData,
       dmData
     } = this.props;
+    const { permission } = this.state;
     const { getFieldDecorator } = this.props.form;
     const token = localStorage.getItem('token');
     // const { getFieldDecorator } = this.props.form;
@@ -333,6 +341,12 @@ class BasicInformation extends Component {
               </Col>
               <Col span={16} style={{ textAlign: 'right' }}>
                 <Button
+                  disabled={
+                    (permission && permission === 'hr') ||
+                    permission === 'admin'
+                      ? false
+                      : true
+                  }
                   type="primary"
                   onClick={this.handleShowModel.bind(this)}
                   style={{ marginRight: '7%' }}
@@ -347,6 +361,13 @@ class BasicInformation extends Component {
                   }}
                 >
                   <Upload
+                    disabled={
+                      (permission && permission === 'hr') ||
+                      permission === 'admin' ||
+                      permission === 'hr'
+                        ? false
+                        : true
+                    }
                     accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                     action="/api/base/import/employeeBaseInfo.json"
                     method="post"
@@ -358,7 +379,18 @@ class BasicInformation extends Component {
                     beforeUpload={this.handleBeforeUpload.bind(this)}
                   >
                     <Tooltip title="支持导入.xlsx文件">
-                      <Button type="primary">导入</Button>
+                      <Button
+                        disabled={
+                          (permission && permission === 'hr') ||
+                          permission === 'admin' ||
+                          permission === 'hr'
+                            ? false
+                            : true
+                        }
+                        type="primary"
+                      >
+                        导入
+                      </Button>
                     </Tooltip>
                   </Upload>
                 </div>
@@ -370,6 +402,13 @@ class BasicInformation extends Component {
                   }}
                 >
                   <Button
+                    disabled={
+                      (permission && permission === 'hr') ||
+                      permission === 'admin' ||
+                      permission === 'hr'
+                        ? false
+                        : true
+                    }
                     type="primary"
                     onClick={this.handleDownload.bind(this)}
                   >

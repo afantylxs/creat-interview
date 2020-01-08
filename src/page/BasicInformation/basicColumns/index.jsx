@@ -115,7 +115,9 @@ export const basicColumnsFunction = (that, permission) => {
         return (
           <Button
             disabled={
-              (permission && permission === 'hr') || permission === 'admin'
+              (permission && permission === 'hr') ||
+              permission === 'admin' ||
+              permission === 'hr'
                 ? false
                 : true
             }

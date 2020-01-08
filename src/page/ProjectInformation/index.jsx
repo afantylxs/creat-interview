@@ -181,7 +181,14 @@ class ProjectInformation extends Component {
       });
     } else {
       if (file && file.status === 'done' && !file.response.success) {
-        message.error('上传失败:' + file.response.message);
+        message.error('导入失败:' + file.response.message);
+      }
+      if (file && file.status === 'error') {
+        if (file.error.status === 401) {
+          message.error('导入失败，请重新登录');
+        } else {
+          message.error('导入失败:' + file.response.message);
+        }
       }
     }
   };
@@ -320,6 +327,7 @@ class ProjectInformation extends Component {
       currentPageData,
       saveSearchData
     } = this.props;
+    const { permission } = this.state;
     const token = localStorage.getItem('token');
     return (
       <div className="project-information">
@@ -345,6 +353,13 @@ class ProjectInformation extends Component {
                   }}
                 >
                   <Upload
+                    disabled={
+                      (permission && permission === 'projectManage') ||
+                      permission === 'admin' ||
+                      permission === 'hr'
+                        ? false
+                        : true
+                    }
                     accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                     action="/api/project/import/projectRecordInfo.json"
                     method="post"
@@ -356,7 +371,18 @@ class ProjectInformation extends Component {
                     beforeUpload={this.handleBeforeUpload.bind(this)}
                   >
                     <Tooltip title="支持导入.xlsx文件">
-                      <Button type="primary">导入</Button>
+                      <Button
+                        disabled={
+                          (permission && permission === 'projectManage') ||
+                          permission === 'admin' ||
+                          permission === 'hr'
+                            ? false
+                            : true
+                        }
+                        type="primary"
+                      >
+                        导入
+                      </Button>
                     </Tooltip>
                   </Upload>
                 </div>
@@ -368,6 +394,13 @@ class ProjectInformation extends Component {
                   }}
                 >
                   <Button
+                    disabled={
+                      (permission && permission === 'projectManage') ||
+                      permission === 'admin' ||
+                      permission === 'hr'
+                        ? false
+                        : true
+                    }
                     type="primary"
                     onClick={this.handleDownload.bind(this)}
                   >

@@ -115,8 +115,9 @@ class EducationInfo extends Component {
           return (
             <Button
               disabled={
-                (permission && permission === 'projectManage') ||
-                permission === 'admin'
+                (permission && permission === 'recruitmentConsultant') ||
+                permission === 'admin' ||
+                permission === 'hr'
                   ? false
                   : true
               }
@@ -230,7 +231,7 @@ class EducationInfo extends Component {
       });
     } else {
       if (file && file.status === 'done' && !file.response.success) {
-        message.error('上传失败:' + file.response.message);
+        message.error('导入失败:' + file.response.message);
       }
       if (file && file.status === 'error') {
         if (file.error.status === 401) {
@@ -373,6 +374,7 @@ class EducationInfo extends Component {
   render() {
     const columns = this.columns;
     const { buList, depList, educList, total, currentPageData } = this.props;
+    const { permission } = this.state;
     const token = localStorage.getItem('token');
     const { getFieldDecorator } = this.props.form;
     return (
@@ -393,6 +395,13 @@ class EducationInfo extends Component {
               <Col span={16} style={{ textAlign: 'right' }}>
                 <div className="educ-upload-btn" style={{ marginRight: '7%' }}>
                   <Upload
+                    disabled={
+                      (permission && permission === 'recruitmentConsultant') ||
+                      permission === 'admin' ||
+                      permission === 'hr'
+                        ? false
+                        : true
+                    }
                     style={{ marginRight: '7%' }}
                     accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                     action="/api/education/import/education.json"
@@ -405,12 +414,31 @@ class EducationInfo extends Component {
                     beforeUpload={this.handleBeforeUpload.bind(this)}
                   >
                     <Tooltip title="支持导入.xlsx文件">
-                      <Button type="primary">导入</Button>
+                      <Button
+                        disabled={
+                          (permission &&
+                            permission === 'recruitmentConsultant') ||
+                          permission === 'admin' ||
+                          permission === 'hr'
+                            ? false
+                            : true
+                        }
+                        type="primary"
+                      >
+                        导入
+                      </Button>
                     </Tooltip>
                   </Upload>
                 </div>
                 <div className="educ-upload-btn">
                   <Button
+                    disabled={
+                      (permission && permission === 'recruitmentConsultant') ||
+                      permission === 'admin' ||
+                      permission === 'hr'
+                        ? false
+                        : true
+                    }
                     onClick={this.handleDownload.bind(this)}
                     type="primary"
                   >

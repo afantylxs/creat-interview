@@ -273,7 +273,8 @@ export const projectColumnsFunction = (that, permission) => {
             <Button
               disabled={
                 (permission && permission === 'projectManage') ||
-                permission === 'admin'
+                permission === 'admin' ||
+                permission === 'hr'
                   ? false
                   : true
               }
@@ -338,7 +339,8 @@ export const projectColumnsFunction = (that, permission) => {
               style={{ marginLeft: '5px' }}
               disabled={
                 (permission && permission === 'projectManage') ||
-                permission === 'admin'
+                permission === 'admin' ||
+                permission === 'hr'
                   ? false
                   : true
               }
