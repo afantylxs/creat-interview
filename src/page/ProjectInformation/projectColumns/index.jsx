@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import moment from 'moment';
-export const projectColumnsFunction = that => {
+export const projectColumnsFunction = (that, permission) => {
   const projectList = [
     {
       title: 'BU',
@@ -226,6 +226,41 @@ export const projectColumnsFunction = that => {
       }
     },
     {
+      title: '备注',
+      dataIndex: 'remark',
+      width: '150px'
+    },
+    {
+      title: '离项时间',
+      dataIndex: 'leaveProjTime',
+      width: '100px',
+      render: (text, record) => {
+        return <span>{text ? moment(text).format('YYYY-MM-DD') : ''}</span>;
+      }
+    },
+    {
+      title: '离项原因',
+      dataIndex: 'leaveProjReasonName',
+      width: '100px'
+    },
+    {
+      title: '离项类型',
+      dataIndex: 'leaveProjType',
+      width: '100px',
+      render: (text, record) => {
+        switch (text) {
+          case 0:
+            return <span>被动</span>;
+
+          case 1:
+            return <span>主动</span>;
+
+          default:
+            break;
+        }
+      }
+    },
+    {
       title: '操作',
       dataIndex: 'action',
       width: '200px',
@@ -236,6 +271,12 @@ export const projectColumnsFunction = that => {
         return (
           <div>
             <Button
+              disabled={
+                (permission && permission === 'projectManage') ||
+                permission === 'admin'
+                  ? false
+                  : true
+              }
               onClick={() => {
                 const newRecord = JSON.parse(JSON.stringify(record));
                 newRecord.projectId = {
@@ -295,6 +336,12 @@ export const projectColumnsFunction = that => {
             </Button>
             <Button
               style={{ marginLeft: '5px' }}
+              disabled={
+                (permission && permission === 'projectManage') ||
+                permission === 'admin'
+                  ? false
+                  : true
+              }
               onClick={() => {
                 const newRecord = JSON.parse(JSON.stringify(record));
                 newRecord.leaveProjReasonId = {

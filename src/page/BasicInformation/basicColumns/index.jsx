@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-export const basicColumnsFunction = that => {
+export const basicColumnsFunction = (that, permission) => {
   const basicTableList = [
     {
       title: 'BU',
@@ -112,7 +112,6 @@ export const basicColumnsFunction = that => {
       dataIndex: 'action',
       width: '90px',
       render: (text, record) => {
-        const permission = localStorage.getItem('permission');
         return (
           <Button
             disabled={

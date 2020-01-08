@@ -21,6 +21,7 @@ import {
   educationCodeEnum,
   httAddress
 } from '../../utils/optionEnum';
+import fetch from '../../utils/axios.config';
 import './index.less';
 const { Search } = Input;
 const { Option } = Select;
@@ -29,6 +30,9 @@ const { Option } = Select;
 class EducationInfo extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      permission: ''
+    };
     this.columns = [
       {
         title: 'BU',
@@ -107,13 +111,19 @@ class EducationInfo extends Component {
         dataIndex: 'action',
         width: '5%',
         render: (text, record) => {
+          const { permission } = this.state;
           return (
-            <span
-              className="educ-action-span"
+            <Button
+              disabled={
+                (permission && permission === 'projectManage') ||
+                permission === 'admin'
+                  ? false
+                  : true
+              }
               onClick={this.handleShowModal.bind(this, record)}
             >
               编辑
-            </span>
+            </Button>
           );
         }
       }
@@ -147,6 +157,15 @@ class EducationInfo extends Component {
   };
 
   componentDidMount() {
+    fetch.get('/api/user/queryUserPermission.json').then(res => {
+      if (res && res.success) {
+        const { data } = res;
+        const permission = data[0].permission;
+        this.setState({
+          permission
+        });
+      }
+    });
     const { deptInfoBu, queryEducationRecordInfoList } = this.props;
     const educStatusFlag = localStorage.getItem('educStatusFlag');
     queryEducationRecordInfoList({

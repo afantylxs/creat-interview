@@ -20,13 +20,29 @@ import BasicModal from './components/BasicModal.jsx';
 import { empPropertyEumn } from '../../utils/optionEnum';
 import { actionCreators } from './store';
 import { basicColumnsFunction } from './basicColumns';
+import fetch from '../../utils/axios.config';
 import './index.less';
 const { Search } = Input;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 @connect(state => state.basic, actionCreators)
 class BasicInformation extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      permission: ''
+    };
+  }
   componentDidMount() {
+    fetch.get('/api/user/queryUserPermission.json').then(res => {
+      if (res && res.success) {
+        const { data } = res;
+        const permission = data[0].permission;
+        this.setState({
+          permission
+        });
+      }
+    });
     const {
       queryEmployeeBaseInfoList,
       deptInfoBu,
@@ -264,7 +280,8 @@ class BasicInformation extends Component {
   //表格列表
   handleGetColumns = () => {
     const that = this;
-    const projectList = basicColumnsFunction(that);
+    const { permission } = this.state;
+    const projectList = basicColumnsFunction(that, permission);
     return projectList;
   };
 

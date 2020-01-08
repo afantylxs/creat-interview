@@ -145,10 +145,9 @@ class ProjectModal extends Component {
           leaveProjReasonId: values.leaveProjReasonId,
           leaveProjType: values.leaveProjType,
           projectStartTimeFormat,
-          projectEndTimeFormat
+          projectEndTimeFormat,
+          remark: values.remark
         };
-        console.log('arg0', arg0);
-
         updateProjectRecordInfoById(arg0);
       }
     });
@@ -662,6 +661,15 @@ class ProjectModal extends Component {
                       <Option value={1}>是</Option>
                     </Select>
                   )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item label="备注" hasFeedback>
+                  {getFieldDecorator('remark', {
+                    initialValue: projectRecord.remark
+                      ? projectRecord.remark
+                      : ''
+                  })(<Input />)}
                 </Form.Item>
               </Col>
             </Form>

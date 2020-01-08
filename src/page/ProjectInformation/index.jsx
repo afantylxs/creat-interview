@@ -17,6 +17,7 @@ import ProjectLeaveModal from './components/ProjectLeaveModal';
 import { actionCreators } from './store';
 import { projectColumnsFunction } from './projectColumns';
 import SearchForm from './components/searchForm.jsx';
+import fetch from '../../utils/axios.config';
 import './index.less';
 const { Search } = Input;
 
@@ -25,19 +26,28 @@ class ProjectInformation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false,
-      thats: null
+      permission: ''
     };
   }
 
   //table表格
   handleGetColumns = () => {
     const that = this;
-    const projectList = projectColumnsFunction(that);
+    const { permission } = this.state;
+    const projectList = projectColumnsFunction(that, permission);
     return projectList;
   };
 
   componentDidMount() {
+    fetch.get('/api/user/queryUserPermission.json').then(res => {
+      if (res && res.success) {
+        const { data } = res;
+        const permission = data[0].permission;
+        this.setState({
+          permission
+        });
+      }
+    });
     const { deptInfoBu, queryProjectRecordInfoList } = this.props;
     const statusFlag = localStorage.getItem('statusFlag');
     deptInfoBu();
