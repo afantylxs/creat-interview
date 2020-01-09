@@ -9,6 +9,7 @@ import {
 import Home from '../Home'; //首页
 import Header from '../../components/Header'; //头部导航栏
 import Login from '../Login'; //登录页面
+import Register from '../Register';
 import Error from '../../components/Error'; //404页面
 import BasicInformation from '../BasicInformation'; //基础信息页面
 import EducationInfo from '../EducationInfo'; //学历信息页面
@@ -35,15 +36,17 @@ class Layout extends Component {
     const { pathname } = this.props.location;
     return (
       <div style={{ minWidth: '1300px' }}>
-        <FrontendAuth />
+        {/* <FrontendAuth /> */}
         {routerList.includes(pathname) && <Header />}
         <Switch>
           <Route exact path="/login" component={Login} />
-          {flag === 'false' ? (
+          <Route exact path="/interview/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          {/* {flag === 'false' ? (
             <Redirect to="/login" />
           ) : (
             <Route exact path="/" component={Home} />
-          )}
+          )} */}
           <Route exact path="/home" component={Home} />
           <Route path="/basic" component={BasicInformation} />
           <Route path="/education" component={EducationInfo} />
