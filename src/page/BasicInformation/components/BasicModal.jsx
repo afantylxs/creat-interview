@@ -184,18 +184,21 @@ class BasicModal extends Component {
     );
   };
 
+  //切换BU获取部门
   handleGetOption = (key, value) => {
     const { deptInfo, basicRecord, changeBasicVisible } = this.props;
 
     if (key === 'ipsaBuDeptId') {
-      const newBasicRecord = JSON.parse(JSON.stringify(basicRecord));
-      newBasicRecord.ipsaDeptId = {};
-      changeBasicVisible({
-        basicVisible: true,
-        record: newBasicRecord
-      });
-      deptInfo({ id: value.key, tab: 'ipsaPostNo' });
-      this.props.form.resetFields();
+      if (value && value.key) {
+        const newBasicRecord = JSON.parse(JSON.stringify(basicRecord));
+        newBasicRecord.ipsaDeptId = {};
+        changeBasicVisible({
+          basicVisible: true,
+          record: newBasicRecord
+        });
+        deptInfo({ id: value.key, tab: 'ipsaPostNo' });
+        this.props.form.resetFields();
+      }
     }
   };
 
