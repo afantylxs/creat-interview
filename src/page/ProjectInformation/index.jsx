@@ -138,7 +138,8 @@ class ProjectInformation extends Component {
         backboneFlag: currentPageData.backboneFlag,
         chargeFlag: currentPageData.chargeFlag,
         keyword: currentPageData.keyword,
-        statusFlag
+        statusFlag,
+        businessLine: currentPageData.businessLine
       },
       responseType: 'blob'
     })
