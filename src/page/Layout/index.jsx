@@ -28,7 +28,8 @@ const routerList = [
   '/department',
   '/leave',
   '/analysis',
-  '/education'
+  '/education',
+  '/interview/home'
 ];
 class Layout extends Component {
   render() {
@@ -48,6 +49,7 @@ class Layout extends Component {
             <Route exact path="/" component={Home} />
           )} */}
           <Route exact path="/home" component={Home} />
+          <Route exact path="/interview/home" component={Home} />
           <Route path="/basic" component={BasicInformation} />
           <Route path="/education" component={EducationInfo} />
           <Route path="/project" component={ProjectInformation} />

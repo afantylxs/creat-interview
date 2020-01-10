@@ -16,7 +16,13 @@ class Login extends Component {
             if (res.data.success) {
               localStorage.setItem('token', res.data.data.token);
               localStorage.setItem('flag', true);
-              this.props.history.push('/home');
+              const { pathname } = this.props.location;
+              if (pathname === '/login') {
+                this.props.history.push('/home');
+              }
+              if (pathname === '/interview/login') {
+                this.props.history.push('/interview/home');
+              }
             } else {
               message.error('登录失败:' + res.data.message);
             }

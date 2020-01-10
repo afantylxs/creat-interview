@@ -33,6 +33,21 @@ export const changeMyToDoEducationList = payload => ({
   payload
 });
 
+export const changeInterviewResumeData = payload => ({
+  type: constants.CHANGE_INTERVIEWRESUME,
+  payload
+});
+
+export const changeDistributionResumeData = payload => ({
+  type: constants.CHANGE_DISTRIBUTIONRESUME,
+  payload
+});
+
+export const changeInterviewRejularData = payload => ({
+  type: constants.CHANGE_INTERVIEWREJULARLIST,
+  payload
+});
+
 //获取生日列表
 export const getBirthdayList = () => {
   return dispatch => {
@@ -178,6 +193,83 @@ export const queryMyToDoEducation = () => {
           dispatch(changeMyToDoEducationList(data));
         } else {
           message.error('获取列表失败');
+        }
+      })
+      .catch(err => {
+        if (err.data && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了，请稍后再试');
+        }
+      });
+  };
+};
+
+//首页查询待分配简历
+export const queryMyToDoAssignationInterview = () => {
+  return dispatch => {
+    fetch
+      .get('/api/audition/home/queryMyToDoAssignationInterview.json')
+      .then(res => {
+        if (res && res.success) {
+          console.log('res', res);
+
+          dispatch(changeDistributionResumeData(res.data));
+        } else {
+          message.error('出错了，请稍后再试');
+        }
+      })
+      .catch(err => {
+        if (err.data && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了，请稍后再试');
+        }
+      });
+  };
+};
+
+//首页查询待面试
+export const queryMyToDoInterview = () => {
+  return dispatch => {
+    fetch
+      .get('/api/audition/home/queryMyToDoInterview.json')
+      .then(res => {
+        if (res && res.success) {
+          dispatch(changeInterviewResumeData(res.data));
+        } else {
+          message.error('出错了，请稍后再试');
+        }
+      })
+      .catch(err => {
+        if (err.data && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了，请稍后再试');
+        }
+      });
+  };
+};
+
+//面试提醒
+export const queryResumeWillRelease = payload => {
+  return dispatch => {
+    fetch
+      .get('/api/audition/home/queryResumeWillRelease.json', {
+        params: payload
+      })
+      .then(res => {
+        if (res && res.success) {
+          const { data } = res;
+          console.log('data', data);
+          const arg0 = {
+            data: data.data ? data.data : [],
+            total: data.total
+          };
+
+          dispatch(changeInterviewRejularData(arg0));
+        } else {
+          message.error('出错了，请稍后再试');
         }
       })
       .catch(err => {
