@@ -182,7 +182,9 @@ export const basicColumnsFunction = (that, permission) => {
                 basicVisible: true,
                 record: newRecord
               });
-              deptInfo({ id: record.ipsaBuDeptId });
+              if (record.ipsaBuDeptId) {
+                deptInfo({ id: record.ipsaBuDeptId });
+              }
             }}
           >
             编辑
