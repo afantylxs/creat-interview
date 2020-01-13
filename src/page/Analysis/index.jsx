@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
 import { Row, Col, Tabs, message } from 'antd';
+import moment from 'moment';
 import fetch from '../../utils/axios.config';
-
 import WeekAnalysis from './components/WeekAnalysis';
 import GeneralTable from './components/GeneralTable';
 import './index.less';
 const { TabPane } = Tabs;
-const arg1 = {
-  currentPage: 1,
-  pageSize: 10
+
+const weekOfday = moment().format('E');
+const last_monday = moment()
+  .subtract(weekOfday - 1, 'days')
+  .format('YYYY-MM-DD');
+
+const last_sunday = moment()
+  .add(7 - weekOfday, 'days')
+  .format('YYYY-MM-DD');
+const arg0 = {
+  startTimeFormat: last_monday,
+  endTimeFormat: last_sunday
 };
+
 export default class Analysis extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +39,7 @@ export default class Analysis extends Component {
         const { activeKye } = this.state;
         switch (activeKye) {
           case 'week':
-            this.queryEmployeeWeekDataAnalysis();
+            this.queryEmployeeWeekDataAnalysis(arg0);
             break;
           case 'general':
             this.queryAllEmployeeInfoList();
@@ -91,9 +101,14 @@ export default class Analysis extends Component {
 
   componentDidMount() {
     const { activeKye } = this.state;
+
+    const arg1 = {
+      currentPage: 1,
+      pageSize: 10
+    };
     switch (activeKye) {
       case 'week':
-        this.queryEmployeeWeekDataAnalysis();
+        this.queryEmployeeWeekDataAnalysis(arg0);
         break;
       case 'general':
         this.queryAllEmployeeInfoList(arg1);

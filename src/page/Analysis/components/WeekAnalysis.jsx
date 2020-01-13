@@ -5,30 +5,43 @@ import moment from 'moment';
 import { weekAnalysisColumns } from '../../../utils/tableTitle.config';
 import './weekAnalysis.less';
 
-const { WeekPicker } = DatePicker;
+const weekOfday = moment().format('E');
+const last_monday = moment()
+  .subtract(weekOfday - 1, 'days')
+  .format('YYYY-MM-DD');
+
+const last_sunday = moment()
+  .add(7 - weekOfday, 'days')
+  .format('YYYY-MM-DD');
+
+const { WeekPicker, RangePicker } = DatePicker;
 export default class WeekAnalysis extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showYear: '',
       showWeek: '',
-      weekTimeFormat: ''
+      weekTimeFormat: '',
+      startTimeFormat: '',
+      endTimeFormat: ''
     };
   }
 
   //选择日期
   onChangeWeekAnalysis = (date, dateString) => {
     this.setState({
-      weekTimeFormat: date ? moment(date).format('YYYY-MM-DD') : ''
+      startTimeFormat: dateString[0] ? dateString[0] : last_monday,
+      endTimeFormat: dateString[1] ? dateString[1] : last_sunday
     });
   };
 
   //查询调用
   handleSearchWeekAnalysis = () => {
-    const { weekTimeFormat } = this.state;
+    const { startTimeFormat, endTimeFormat } = this.state;
     const { queryEmployeeWeekDataAnalysis } = this.props;
     const arg0 = {
-      weekTimeFormat: weekTimeFormat
+      startTimeFormat,
+      endTimeFormat
     };
     queryEmployeeWeekDataAnalysis(arg0);
   };
@@ -37,16 +50,11 @@ export default class WeekAnalysis extends Component {
     return (
       <div className="week-analysis">
         <Row>
-          <Col className="week-analysis-height" span={2}>
-            <span>{weekData ? weekData.year : ''}</span>
-            <span>{weekData ? '第' + weekData.week + '周' : ''}</span>
-          </Col>
-          <Col span={22}>
-            <span>周期筛选：</span>
-            <WeekPicker
+          <Col span={24}>
+            <span>自定义日期筛选：</span>
+            <RangePicker
               onChange={this.onChangeWeekAnalysis}
-              placeholder="请选择日期"
-              format="YYYY-MM-DD"
+              placeholder={['起始日期', '结束日期']}
             />
             <Button
               onClick={this.handleSearchWeekAnalysis.bind(this)}
