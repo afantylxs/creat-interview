@@ -74,12 +74,12 @@ class Menus extends Component {
             <Menu.Item key="leave">
               <Link to="/leave">离职信息</Link>
             </Menu.Item>
-          )}
+          )}*/}
           {permission && permission !== 'recruitmentConsultant' && (
             <Menu.Item key="analysis">
               <Link to="/analysis">数据分析</Link>
             </Menu.Item>
-          )} */}
+          )}
         </Menu>
       </div>
     );
