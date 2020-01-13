@@ -31,7 +31,9 @@ export default class Analysis extends Component {
           case 'week':
             this.queryEmployeeWeekDataAnalysis();
             break;
-
+          case 'general':
+            this.queryAllEmployeeInfoList();
+            break;
           default:
             break;
         }

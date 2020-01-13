@@ -24,7 +24,6 @@ export default class GeneralTable extends Component {
 
   //搜索框调用查询列表
   handleSearchInput = value => {
-    console.log('value', value);
     const { queryAllEmployeeInfoList } = this.props;
     const arg1 = {
       currentPage: 1,
@@ -95,8 +94,6 @@ export default class GeneralTable extends Component {
   render() {
     const { keyword, currentPage } = this.state;
     const { generalData = [], generalTotal } = this.props;
-    console.log('generalData', generalData);
-
     return (
       <div className="general-analysis">
         <Row className="general-operator-set">
@@ -121,7 +118,7 @@ export default class GeneralTable extends Component {
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ marginTop: '10px' }}>
+          <Col className="general-content-table" span={24}>
             <Table
               rowKey={(record, index) => index}
               columns={generalTableColumns}
