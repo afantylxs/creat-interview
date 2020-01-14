@@ -263,6 +263,11 @@ export const generalTableColumns = [
     width: '100px'
   },
   {
+    title: '阿里工号',
+    dataIndex: 'aliNo',
+    width: '100px'
+  },
+  {
     title: '性别',
     dataIndex: 'gender',
     width: '50px',
