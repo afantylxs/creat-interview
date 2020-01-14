@@ -607,7 +607,7 @@ export const generalTableColumns = [
   },
   {
     title: '备注',
-    dataIndex: 'remark',
+    dataIndex: 'projectRemark',
     width: '150px'
   },
   {
