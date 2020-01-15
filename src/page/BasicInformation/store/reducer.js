@@ -13,7 +13,7 @@ const defaultState = {
     empProperty: '',
     joiningDayStartTime: '',
     joiningDayEndTime: '',
-    deliveryManagerId: ''
+    directSuperiorId: ''
   },
   basicRecord: {},
   basicList: [],

@@ -60,7 +60,7 @@ class BasicInformation extends Component {
       joiningDayStartTime: '',
       joiningDayEndTime: '',
       empProperty: '',
-      deliveryManagerId: '',
+      directSuperiorId: '',
       employeeStatus: entmonth
     };
     changeCurrentPageData(arg0);
@@ -130,7 +130,7 @@ class BasicInformation extends Component {
         joiningDayStartTime: '',
         joiningDayEndTime: '',
         empProperty: '',
-        deliveryManagerId: '',
+        directSuperiorId: '',
         employeeStatus: ''
       };
       changeCurrentPageData(arg0);
@@ -153,7 +153,7 @@ class BasicInformation extends Component {
       joiningDayStartTime: '',
       joiningDayEndTime: '',
       empProperty: '',
-      deliveryManagerId: '',
+      directSuperiorId: '',
       employeeStatus: ''
     };
     changeCurrentPageData(arg0);
@@ -170,11 +170,12 @@ class BasicInformation extends Component {
       const newCurrentPageData = JSON.parse(JSON.stringify(currentPageData));
       newCurrentPageData.ipsaDeptId = '';
       changeCurrentPageData(newCurrentPageData);
-      deptInfo(value);
       this.props.form.resetFields();
+      deptInfo(value);
     } else {
       changeDepList([]);
     }
+    this.props.form.resetFields();
   };
 
   //查询按钮
@@ -200,7 +201,7 @@ class BasicInformation extends Component {
         joiningDayStartTime: dateStart,
         joiningDayEndTime: dateEnd,
         empProperty: values.empProperty,
-        deliveryManagerId: values.deliveryManagerName,
+        directSuperiorId: values.directSuperiorId,
         employeeStatus: ''
       };
       changeCurrentPageData(arg0);
@@ -223,7 +224,7 @@ class BasicInformation extends Component {
       keyword: currentPageData.keyword,
       ipsaBuDeptId: currentPageData.ipsaBuDeptId,
       ipsaDeptId: currentPageData.ipsaDeptId,
-      deliveryManagerId: currentPageData.deliveryManagerId,
+      directSuperiorId: currentPageData.directSuperiorId,
       gender: currentPageData.gender,
       joiningDayEndTime: currentPageData.joiningDayEndTime,
       joiningDayStartTime: currentPageData.joiningDayStartTime,
@@ -250,7 +251,7 @@ class BasicInformation extends Component {
         keyword: currentPageData.keyword,
         ipsaBuDeptId: currentPageData.ipsaBuDeptId,
         ipsaDeptId: currentPageData.ipsaDeptId,
-        deliveryManagerId: currentPageData.deliveryManagerId,
+        directSuperiorId: currentPageData.directSuperiorId,
         gender: currentPageData.gender,
         joiningDayEndTime: currentPageData.joiningDayEndTime,
         joiningDayStartTime: currentPageData.joiningDayStartTime,
@@ -305,7 +306,7 @@ class BasicInformation extends Component {
       joiningDayStartTime: '',
       joiningDayEndTime: '',
       empProperty: '',
-      deliveryManagerId: '',
+      directSuperiorId: '',
       employeeStatus: ''
     };
     changeCurrentPageData(arg0);
@@ -313,17 +314,16 @@ class BasicInformation extends Component {
   }
   render() {
     const {
-      basicList,
-      buList,
-      depList,
+      basicList = [],
+      buList = [],
+      depList = [],
       total,
       currentPageData,
-      dmData
+      manageList = []
     } = this.props;
     const { permission } = this.state;
     const { getFieldDecorator } = this.props.form;
     const token = localStorage.getItem('token');
-    // const { getFieldDecorator } = this.props.form;
     return (
       <div className="basic-information">
         <Row style={{ padding: '20px' }}>
@@ -537,14 +537,14 @@ class BasicInformation extends Component {
                     <Form.Item
                       labelCol={{ span: 14 }}
                       wrapperCol={{ span: 10 }}
-                      label="交付经理"
+                      label="直属上级"
                       hasFeedback
                     >
-                      {getFieldDecorator('deliveryManagerName', {
+                      {getFieldDecorator('directSuperiorId', {
                         initialValue: currentPageData.deliveryManagerName
                       })(
                         <Select allowClear>
-                          {dmData.map(item => {
+                          {manageList.map(item => {
                             return (
                               <Option key={item.id} value={item.id}>
                                 {item.empName}

@@ -266,7 +266,11 @@ export const projectColumnsFunction = (that, permission) => {
       width: '200px',
       fixed: 'right',
       render: (text, record) => {
-        const { changeProjectVisible, changeLeaveProjVisible } = that.props;
+        const {
+          changeProjectVisible,
+          changeLeaveProjVisible,
+          deptInfo
+        } = that.props;
 
         return (
           <div>
@@ -324,6 +328,42 @@ export const projectColumnsFunction = (that, permission) => {
                   key: record.deptId ? record.deptId : '',
                   label: record.deptName ? record.deptName : ''
                 };
+
+                //打开弹框获取事业群
+                if (record.aliFrameName && record.aliFrameId) {
+                  const arg0 = {
+                    value: record.aliFrameId,
+                    flag: 'aliFrameId'
+                  };
+                  deptInfo(arg0);
+                }
+
+                //打开弹框获取事业群本部
+                if (record.careerGroupName && record.careerGroupId) {
+                  const arg0 = {
+                    value: record.careerGroupId,
+                    flag: 'careerGroupId'
+                  };
+                  deptInfo(arg0);
+                }
+
+                //打开弹框获取事业部
+                if (record.groupDeptName && record.groupDeptId) {
+                  const arg0 = {
+                    value: record.groupDeptId,
+                    flag: 'groupDeptId'
+                  };
+                  deptInfo(arg0);
+                }
+
+                //打开弹框获取阿里部门
+                if (record.careerDeptName && record.careerDeptId) {
+                  const arg0 = {
+                    value: record.careerDeptId,
+                    flag: 'careerDeptId'
+                  };
+                  deptInfo(arg0);
+                }
                 newRecord.shortDate =
                   record.projetDurationType === 0 ? true : false;
 
