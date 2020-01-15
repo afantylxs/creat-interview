@@ -4,6 +4,20 @@ import { Menu } from 'antd';
 import fetch from '../../utils/axios.config';
 import './index.less';
 
+//在职人员的路由
+const routerList = [
+  '/home',
+  '/basic',
+  '/project',
+  '/department',
+  '/leave',
+  '/analysis',
+  '/education'
+];
+
+//内面系统的路由
+const inserviceRouterList = ['/interview/home'];
+
 class Menus extends Component {
   constructor(props) {
     super(props);
@@ -25,9 +39,15 @@ class Menus extends Component {
     return activeKey;
   };
 
+  selectInserviceRouterAactive = () => {
+    const { pathname } = this.props.location;
+    const activeKey = pathname;
+    return activeKey;
+  };
+
   componentDidMount() {
     const { pathname } = this.props.location;
-    if (pathname === '/home') {
+    if (routerList.includes(pathname)) {
       fetch.get('/api/user/queryUserPermission.json').then(res => {
         if (res && res.success) {
           const { data } = res;
@@ -43,9 +63,10 @@ class Menus extends Component {
   render() {
     const { pathname } = this.props.location;
 
-    if (pathname === '/home') {
+    if (routerList.includes(pathname)) {
       const activeKey = this.selectRouterAactive();
       const { permission } = this.state;
+
       return (
         <div className="inservice-menu">
           <Menu
@@ -80,25 +101,27 @@ class Menus extends Component {
               <Menu.Item key="leave">
                 <Link to="/leave">离职信息</Link>
               </Menu.Item>
-            )}
+            )}*/}
             {permission && permission !== 'recruitmentConsultant' && (
               <Menu.Item key="analysis">
                 <Link to="/analysis">数据分析</Link>
               </Menu.Item>
-            )} */}
+            )}
           </Menu>
         </div>
       );
-    } else {
+    } else if (inserviceRouterList.includes(pathname)) {
+      const activeKey = this.selectInserviceRouterAactive();
       return (
         <div className="inservice-menu">
           <Menu
             theme="dark"
+            selectedKeys={[activeKey]}
             className="inservice-menu-antd"
             style={{ backgroundColor: '#658ef7', color: '#fff' }}
             mode="horizontal"
           >
-            <Menu.Item key="home">
+            <Menu.Item key="/interview/home">
               <Link to="/interview/home">首页</Link>
             </Menu.Item>
           </Menu>
