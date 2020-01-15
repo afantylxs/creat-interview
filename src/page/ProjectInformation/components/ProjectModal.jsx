@@ -94,7 +94,7 @@ class ProjectModal extends Component {
     this.props.form.resetFields();
   };
 
-  handleOk = () => {
+  updateProjectRecordInfoById = () => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const { projectRecord, updateProjectRecordInfoById } = this.props;
@@ -106,9 +106,10 @@ class ProjectModal extends Component {
           : '';
 
         const reg = /[\u4e00-\u9fa5]/g;
-        const level = values.aliGradeCode.label
-          ? values.aliGradeCode.label.match(reg).join('')
-          : '';
+        const level =
+          values.aliGradeCode.label && values.aliGradeCode.label.match(reg)
+            ? values.aliGradeCode.label.match(reg).join('')
+            : '';
         const arg0 = {
           id: projectRecord.id,
           aliNo: values.aliNo,
@@ -214,7 +215,7 @@ class ProjectModal extends Component {
         <Modal
           title="编辑项目信息"
           visible={projectVisible}
-          onOk={this.handleOk}
+          onOk={this.updateProjectRecordInfoById}
           onCancel={this.handleCancel}
           afterClose={this.handleAfterClose}
           className="project-add-modal"
