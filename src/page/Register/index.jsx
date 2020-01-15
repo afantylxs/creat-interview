@@ -27,10 +27,23 @@ class Register extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      //   if (!err) {
-      console.log('values', values);
-      this.props.history.push('/home');
-      //   }
+      if (!err) {
+        axios
+          .post('/api/user/register.json', {
+            ...values
+          })
+          .then(res => {
+            if (res.data.success) {
+              message.success('注册成功');
+              this.props.history.push('/interview/login');
+            } else {
+              message.error('注册失败:' + res.data.message);
+            }
+          })
+          .catch(err => {
+            message.error('注册失败：' + err);
+          });
+      }
     });
   };
   render() {
@@ -77,7 +90,7 @@ class Register extends Component {
                       className="register-form"
                     >
                       <Form.Item>
-                        {getFieldDecorator('username', {
+                        {getFieldDecorator('userName', {
                           rules: [
                             {
                               required: true,
@@ -104,7 +117,7 @@ class Register extends Component {
                             type={passwordType}
                             onFocus={this.handleFocusPasswordType.bind(this)}
                             placeholder="请输入密码"
-                            autoComplete="new-password"
+                            autocomplete="off"
                           />
                         )}
                       </Form.Item>

@@ -6,6 +6,8 @@ import FieldNumber from './components/FieldNumber.jsx';
 import Rejular from './components/Rejular.jsx';
 import InterviewReminder from './interviewComponents/InterviewReminder.jsx';
 import InterviewRejular from './interviewComponents/InterviewRejular.jsx';
+import WaitingDistribution from './interviewComponents/WaitingDistribution.jsx';
+import ProjectApproval from './interviewComponents/ProjectApproval.jsx';
 import fetch from '../../utils/axios.config';
 import './index.less';
 let homeList = [];
@@ -92,7 +94,9 @@ export default class Home extends Component {
                   <div className="layout-home-info">
                     <div>
                       {(item === '提醒事项' && <InterviewReminder />) ||
-                        (item === '面试提醒' && <InterviewRejular />)}
+                        (item === '面试提醒' && <InterviewRejular />) ||
+                        (item === '待分配简历' && <WaitingDistribution />) ||
+                        (item === '项目通过人数' && <ProjectApproval />)}
                     </div>
                   </div>
                 </Col>

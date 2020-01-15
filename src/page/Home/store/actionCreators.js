@@ -212,8 +212,6 @@ export const queryMyToDoAssignationInterview = () => {
       .get('/api/audition/home/queryMyToDoAssignationInterview.json')
       .then(res => {
         if (res && res.success) {
-          console.log('res', res);
-
           dispatch(changeDistributionResumeData(res.data));
         } else {
           message.error('出错了，请稍后再试');

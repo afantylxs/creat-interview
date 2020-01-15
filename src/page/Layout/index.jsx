@@ -37,7 +37,7 @@ class Layout extends Component {
     const { pathname } = this.props.location;
     return (
       <div style={{ minWidth: '1300px' }}>
-        {/* <FrontendAuth /> */}
+        <FrontendAuth />
         {routerList.includes(pathname) && <Header />}
         <Switch>
           <Route exact path="/login" component={Login} />
