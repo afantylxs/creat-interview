@@ -2,21 +2,12 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Menu } from 'antd';
 import fetch from '../../utils/axios.config';
+
+import {
+  IncumbencyRouterList,
+  inserviceRouterList
+} from '../../utils/router.config.js';
 import './index.less';
-
-//在职人员的路由
-const routerList = [
-  '/home',
-  '/basic',
-  '/project',
-  '/department',
-  '/leave',
-  '/analysis',
-  '/education'
-];
-
-//内面系统的路由
-const inserviceRouterList = ['/interview/home'];
 
 class Menus extends Component {
   constructor(props) {
@@ -47,7 +38,7 @@ class Menus extends Component {
 
   componentDidMount() {
     const { pathname } = this.props.location;
-    if (routerList.includes(pathname)) {
+    if (IncumbencyRouterList.includes(pathname)) {
       fetch.get('/api/user/queryUserPermission.json').then(res => {
         if (res && res.success) {
           const { data } = res;
@@ -63,7 +54,7 @@ class Menus extends Component {
   render() {
     const { pathname } = this.props.location;
 
-    if (routerList.includes(pathname)) {
+    if (IncumbencyRouterList.includes(pathname)) {
       const activeKey = this.selectRouterAactive();
       const { permission } = this.state;
 
@@ -123,6 +114,9 @@ class Menus extends Component {
           >
             <Menu.Item key="/interview/home">
               <Link to="/interview/home">首页</Link>
+            </Menu.Item>
+            <Menu.Item key="/interview/personnel">
+              <Link to="/interview/personnel">面试管理</Link>
             </Menu.Item>
           </Menu>
         </div>

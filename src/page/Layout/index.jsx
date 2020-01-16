@@ -17,20 +17,13 @@ import ProjectInformation from '../ProjectInformation'; //项目信息页面
 import Department from '../Department'; //部门调整页面
 import Leave from '../Leave'; //离职离项页面
 import Analysis from '../Analysis/'; //数据分析页面
+import PersonnelInformation from '../PersonnelInformation/index'; //内面系统人员信息页面
+
+//路由配置
+import { allRouterList } from '../../utils/router.config.js';
 
 import FrontendAuth from '../../components/FrontendAuth'; //根据是否存有token值，判断是否登录
 
-const routerList = [
-  '/',
-  '/home',
-  '/basic',
-  '/project',
-  '/department',
-  '/leave',
-  '/analysis',
-  '/education',
-  '/interview/home'
-];
 class Layout extends Component {
   render() {
     const flag = localStorage.getItem('flag');
@@ -38,7 +31,7 @@ class Layout extends Component {
     return (
       <div style={{ minWidth: '1300px' }}>
         <FrontendAuth />
-        {routerList.includes(pathname) && <Header />}
+        {allRouterList.includes(pathname) && <Header />}
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/interview/login" component={Login} />
@@ -56,6 +49,7 @@ class Layout extends Component {
           {/* <Route path="/department" component={Department} />
           <Route path="/leave" component={Leave} />*/}
           <Route path="/analysis" component={Analysis} />
+          <Route path="/interview/personnel" component={PersonnelInformation} />
           <Route component={Error} />
         </Switch>
       </div>
