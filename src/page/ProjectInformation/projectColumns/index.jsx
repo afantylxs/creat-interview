@@ -439,12 +439,44 @@ export const projectColumnsFunction = (that, permission) => {
     {
       title: '工作城市',
       dataIndex: 'workCityName',
-      width: '100px'
+      width: '100px',
+      onCell: () => {
+        return {
+          style: {
+            maxWidth: 100,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            cursor: 'pointer'
+          }
+        };
+      },
+      render: text => (
+        <Tooltip placement="topLeft" title={text}>
+          {text}
+        </Tooltip>
+      )
     },
     {
       title: '办公场地',
       dataIndex: 'workAddress',
-      width: '100px'
+      width: '100px',
+      onCell: () => {
+        return {
+          style: {
+            maxWidth: 100,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            cursor: 'pointer'
+          }
+        };
+      },
+      render: text => (
+        <Tooltip placement="topLeft" title={text}>
+          {text}
+        </Tooltip>
+      )
     },
     {
       title: '资源状态',
