@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { Tooltip } from 'antd';
 export const reminderColumns = [
   {
     title: '姓名',
@@ -245,27 +246,107 @@ export const generalTableColumns = [
   {
     title: 'BU',
     dataIndex: 'ipsaBuDeptName',
-    width: '100px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '部门',
     dataIndex: 'ipsaDeptName',
-    width: '150px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '姓名',
     dataIndex: 'empName',
-    width: '80px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '软通工号',
     dataIndex: 'empNo',
-    width: '100px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '阿里工号',
     dataIndex: 'aliNo',
-    width: '100px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '性别',
@@ -309,12 +390,44 @@ export const generalTableColumns = [
   {
     title: '通用职位',
     dataIndex: 'ipsaPostName',
-    width: '150px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: 'Grade代码',
     dataIndex: 'ipsaGradeName',
-    width: '90px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '是否在职',
@@ -354,22 +467,86 @@ export const generalTableColumns = [
   {
     title: '直属上级',
     dataIndex: 'directSuperiorName',
-    width: '100px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '交付经理',
     dataIndex: 'deliveryManagerName',
-    width: '100px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '毕业学校',
     dataIndex: 'graduatedUniversities',
-    width: '100px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '专业',
     dataIndex: 'majorName',
-    width: '100px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '学历',
@@ -424,17 +601,65 @@ export const generalTableColumns = [
   {
     title: '一类岗位',
     dataIndex: 'firstCategoryName',
-    width: '100px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '二类岗位',
     dataIndex: 'secondCategoryName',
-    width: '100px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '三类岗位',
     dataIndex: 'thirdJobName',
-    width: '100px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '层级',
@@ -444,42 +669,170 @@ export const generalTableColumns = [
   {
     title: '技术方向',
     dataIndex: 'techDirection',
-    width: '100px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '框架',
     dataIndex: 'aliFrameName',
-    width: '150px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '事业群',
     dataIndex: 'careerGroupName',
-    width: '150px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '事业群本部',
     dataIndex: 'groupDeptName',
-    width: '150px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '事业部',
     dataIndex: 'careerDeptName',
-    width: '150px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '阿里部门',
     dataIndex: 'deptName',
-    width: '150px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '项目名称',
     dataIndex: 'projectName',
-    width: '200px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '业务线名称',
     dataIndex: 'businessLine',
-    width: '100px'
+    width: '100px',
+    onCell: () => {
+      return {
+        style: {
+          maxWidth: 100,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      };
+    },
+    render: text => (
+      <Tooltip placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    )
   },
   {
     title: '项目类型',
