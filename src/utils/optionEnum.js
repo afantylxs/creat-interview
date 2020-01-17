@@ -162,3 +162,44 @@ export const reminderColumnsForm = [
     dataIndex: 'recruitmentUserId'
   }
 ];
+
+export const resumeStatusList = [
+  {
+    value: 1,
+    label: '待分配'
+  },
+  {
+    value: 2,
+    label: '已分配'
+  },
+  {
+    value: 3,
+    label: '待面试(锁定)'
+  },
+  {
+    value: 4,
+    label: '已面试'
+  }
+];
+
+export const initialInterviewResultList = [
+  {
+    value: 1,
+    label: '通过'
+  },
+  {
+    value: 2,
+    label: '不通过'
+  }
+];
+
+export const finalInterviewResultList = [
+  {
+    value: 1,
+    label: '通过'
+  },
+  {
+    value: 2,
+    label: '不通过'
+  }
+];
