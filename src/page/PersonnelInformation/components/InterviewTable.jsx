@@ -8,7 +8,7 @@ import fetch from '../../../utils/axios.config';
 
 import EditModal from './EidtModal.jsx';
 import DetailsModal from './DetailsModal.jsx';
-import './distributionTable.less';
+import './interviewTable.less';
 @connect(state => state.personnel, actionCreators)
 class InterviewTable extends Component {
   constructor(props) {
@@ -23,6 +23,12 @@ class InterviewTable extends Component {
         title: '姓名',
         dataIndex: 'resumeUserName',
         width: '7%'
+      },
+
+      {
+        title: '电话',
+        dataIndex: 'resumeUserPhone',
+        width: '10%'
       },
       {
         title: '项目名称',
@@ -44,11 +50,6 @@ class InterviewTable extends Component {
             {text}
           </Tooltip>
         )
-      },
-      {
-        title: '电话',
-        dataIndex: 'resumeUserPhone',
-        width: '10%'
       },
       {
         title: '截止时间',
@@ -269,8 +270,8 @@ class InterviewTable extends Component {
     const { updataId } = this.state;
     return (
       <div>
-        <Row className="distribution-table">
-          <Col className="distribution-table-data">
+        <Row className="interview-table">
+          <Col className="interview-table-data">
             <Table
               rowKey={(record, index) => record.id}
               columns={columns}
@@ -278,7 +279,7 @@ class InterviewTable extends Component {
               pagination={false}
             />
           </Col>
-          <Col className="distribution-paging">
+          <Col className="interview-paging">
             <Pagination
               total={interviewotal}
               showTotal={interviewotal => `共 ${interviewotal} 条数据`}

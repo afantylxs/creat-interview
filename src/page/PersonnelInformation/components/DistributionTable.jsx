@@ -29,6 +29,16 @@ class DistributionTable extends Component {
     };
     this.columns = [
       {
+        title: '姓名',
+        dataIndex: 'resumeUserName',
+        width: '7%'
+      },
+      {
+        title: '电话',
+        dataIndex: 'resumeUserPhone',
+        width: '10%'
+      },
+      {
         title: '项目名称',
         dataIndex: 'projectName',
         width: '10%',
@@ -48,16 +58,6 @@ class DistributionTable extends Component {
             {text}
           </Tooltip>
         )
-      },
-      {
-        title: '姓名',
-        dataIndex: 'resumeUserName',
-        width: '7%'
-      },
-      {
-        title: '电话',
-        dataIndex: 'resumeUserPhone',
-        width: '10%'
       },
       {
         title: '截止时间',
@@ -229,7 +229,7 @@ class DistributionTable extends Component {
     return (
       <div>
         <Row className="distribution-table">
-          <Col style={{ textAlign: 'right', marginBottom: '20px' }}>
+          <Col style={{ marginBottom: '20px' }}>
             <Tooltip
               title={
                 selectedRowKeys && selectedRowKeys.length

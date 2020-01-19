@@ -40,6 +40,11 @@ class AssignModal extends Component {
       }
     });
   };
+
+  //设置禁选日期
+  disabledDate = currentDate => {
+    return currentDate && currentDate < moment().subtract(1, 'days');
+  };
   render() {
     const {
       assignModalVisible,
@@ -116,7 +121,13 @@ class AssignModal extends Component {
               {getFieldDecorator(
                 'interviewEndTimeFormat',
                 {}
-              )(<DatePicker placeholder="请选择截止时间" />)}
+              )(
+                <DatePicker
+                  showToday={false}
+                  disabledDate={this.disabledDate}
+                  placeholder="请选择截止时间"
+                />
+              )}
             </Form.Item>
           </Form>
         </Modal>
