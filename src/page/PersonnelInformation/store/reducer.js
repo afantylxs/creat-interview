@@ -4,6 +4,7 @@ const defaultState = {
   assignModalVisible: false,
   addModalvisible: false,
   editModalVisible: false,
+  editRecord: {},
   detailsVisible: false,
   interviewerList: [],
   resourceMangeList: [],
@@ -37,7 +38,8 @@ export default (state = defaultState, action) => {
     case constants.CHANGE_EDITMODALVISIBLE:
       return {
         ...state,
-        editModalVisible: payload.editModalVisible
+        editModalVisible: payload.editModalVisible,
+        editRecord: payload.editRecord
       };
     case constants.CHANGE_DETAilSVISIBLE:
       return {

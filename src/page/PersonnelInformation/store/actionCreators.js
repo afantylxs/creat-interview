@@ -326,6 +326,7 @@ export const assignInterview = payload => {
               pageSize: 10
             })
           );
+          dispatch(changeSelectedRowKeys([]));
         } else {
           if (res && res.message) {
             message.error('分配简历失败: ' + res.message);

@@ -49,7 +49,7 @@ class EditModal extends Component {
     });
   };
   render() {
-    const { editModalVisible, leveList = [] } = this.props;
+    const { editModalVisible, leveList = [], editRecord } = this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -76,11 +76,13 @@ class EditModal extends Component {
         >
           <Form {...formItemLayout}>
             <Form.Item label="建议级别" hasFeedback>
-              {getFieldDecorator(
-                'interviewLevel',
-                {}
-              )(
-                <Select placeholder="请选择">
+              {getFieldDecorator('interviewLevel', {
+                initialValue:
+                  editRecord && editRecord.interviewLevel
+                    ? editRecord.interviewLevel
+                    : ''
+              })(
+                <Select allowClear placeholder="请选择">
                   {leveList.map(item => {
                     return (
                       <Option key={item.id} value={item.label}>
@@ -92,10 +94,12 @@ class EditModal extends Component {
               )}
             </Form.Item>
             <Form.Item label="是否通过" hasFeedback>
-              {getFieldDecorator(
-                'initialInterviewResult',
-                {}
-              )(
+              {getFieldDecorator('initialInterviewResult', {
+                initialValue:
+                  editRecord && editRecord.initialInterviewResult
+                    ? editRecord.initialInterviewResult
+                    : ''
+              })(
                 <Select placeholder="请选择">
                   <Option value={1}>通过</Option>
                   <Option value={2}>不通过</Option>
@@ -103,10 +107,12 @@ class EditModal extends Component {
               )}
             </Form.Item>
             <Form.Item label="面试评价" hasFeedback>
-              {getFieldDecorator(
-                'interviewComment',
-                {}
-              )(<TextArea placeholder="请输入评价" />)}
+              {getFieldDecorator('interviewComment', {
+                initialValue:
+                  editRecord && editRecord.interviewComment
+                    ? editRecord.interviewComment
+                    : ''
+              })(<TextArea placeholder="请输入评价" />)}
             </Form.Item>
           </Form>
         </Modal>

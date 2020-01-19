@@ -20,9 +20,14 @@ class InterviewTable extends Component {
     };
     this.columns = [
       {
+        title: '姓名',
+        dataIndex: 'resumeUserName',
+        width: '7%'
+      },
+      {
         title: '项目名称',
         dataIndex: 'projectName',
-        width: '10%',
+        width: '7%',
         onCell: () => {
           return {
             style: {
@@ -39,11 +44,6 @@ class InterviewTable extends Component {
             {text}
           </Tooltip>
         )
-      },
-      {
-        title: '姓名',
-        dataIndex: 'resumeUserName',
-        width: '7%'
       },
       {
         title: '电话',
@@ -66,7 +66,7 @@ class InterviewTable extends Component {
       {
         title: '招聘级别',
         dataIndex: 'recruitmentLevel',
-        width: '6%'
+        width: '8%'
       },
       {
         title: '简历状态',
@@ -170,7 +170,11 @@ class InterviewTable extends Component {
               }
               if (item === 'download') {
                 return (
-                  <Button key={item} className="action-buttons">
+                  <Button
+                    key={item}
+                    onClick={this.handleDownload.bind(this, record)}
+                    className="action-buttons"
+                  >
                     下载
                   </Button>
                 );
@@ -182,12 +186,20 @@ class InterviewTable extends Component {
     ];
   }
 
+  //下载
+  handleDownload = record => {
+    const url = record.resumeDownloadUrl;
+    console.log('url', url);
+    window.location.href = url;
+  };
+
   //打开更新简历弹窗
   handleOpenEditModal = record => {
     const id = record.id;
     const { changeEditModalVisible, dictInfo } = this.props;
     changeEditModalVisible({
-      editModalVisible: true
+      editModalVisible: true,
+      editRecord: record
     });
     dictInfo('wutong_position_level');
     this.setState({

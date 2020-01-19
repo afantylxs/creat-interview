@@ -75,12 +75,12 @@ class DistributionTable extends Component {
       {
         title: '招聘级别',
         dataIndex: 'recruitmentLevel',
-        width: '6%'
+        width: '8%'
       },
       {
         title: '简历状态',
         dataIndex: 'resumeStatus',
-        width: '7%',
+        width: '8%',
         render: (text, render) => {
           switch (text) {
             case 1:
@@ -100,7 +100,7 @@ class DistributionTable extends Component {
       {
         title: '初面结果',
         dataIndex: 'initialInterviewResult',
-        width: '7%',
+        width: '8%',
         render: (text, render) => {
           switch (text) {
             case 1:
@@ -117,7 +117,7 @@ class DistributionTable extends Component {
       {
         title: '终面结果',
         dataIndex: 'finalInterviewResult',
-        width: '7%',
+        width: '8%',
         render: (text, render) => {
           switch (text) {
             case 1:
@@ -133,12 +133,12 @@ class DistributionTable extends Component {
       {
         title: '建议级别',
         dataIndex: 'interviewLevel',
-        width: '7%'
+        width: '8%'
       },
       {
         title: '操作',
         dataIndex: 'buttons',
-        width: '30%',
+        width: '27%',
         render: (text, record) => {
           const buttonsArr =
             text &&

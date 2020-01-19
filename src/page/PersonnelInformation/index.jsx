@@ -31,7 +31,7 @@ class PersonnelInformation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeKye: 'distribution',
+      activeKye: 'interview',
       searchValue: '',
       distriSearchValue: {},
       interviewSearchValue: {}
@@ -53,12 +53,12 @@ class PersonnelInformation extends Component {
   };
 
   componentDidMount() {
-    const { queryAssignInterviewList } = this.props;
+    const { queryInterviewList } = this.props;
     const arg0 = {
       currentPage: 1,
       pageSize: 10
     };
-    queryAssignInterviewList(arg0);
+    queryInterviewList(arg0);
   }
 
   //切换tab
@@ -72,7 +72,8 @@ class PersonnelInformation extends Component {
         const {
           queryAssignInterviewList,
           queryInterviewList,
-          changeCurrentPage
+          changeCurrentPage,
+          changeSelectedRowKeys
         } = this.props;
         switch (key) {
           case 'distribution':
@@ -92,6 +93,7 @@ class PersonnelInformation extends Component {
           default:
             break;
         }
+        changeSelectedRowKeys([]);
         changeCurrentPage({
           interCurrentPage: 1,
           dispCurrentPage: 1
@@ -349,14 +351,14 @@ class PersonnelInformation extends Component {
               defaultActiveKey={activeKye}
               onChange={this.handleChangeTabs}
             >
+              <TabPane tab="简历面试" key="interview">
+                <InterviewTable interviewSearchValue={interviewSearchValue} />
+              </TabPane>
               <TabPane tab="简历分配" key="distribution">
                 <DistributionTable
                   distriSearchValue={distriSearchValue}
                   activeKye={activeKye}
                 />
-              </TabPane>
-              <TabPane tab="简历面试" key="interview">
-                <InterviewTable interviewSearchValue={interviewSearchValue} />
               </TabPane>
             </Tabs>
           </Col>

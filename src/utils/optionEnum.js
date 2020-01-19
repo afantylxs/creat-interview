@@ -174,7 +174,7 @@ export const resumeStatusList = [
   },
   {
     value: 3,
-    label: '待面试(锁定)'
+    label: '待面试'
   },
   {
     value: 4,

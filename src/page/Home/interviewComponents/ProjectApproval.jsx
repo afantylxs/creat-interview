@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
-import { Table, Button, message } from 'antd';
+import { Table, Button, message, Tooltip } from 'antd';
 
 import fetch from '../../../utils/axios.config';
 
-const data = [
-  {
-    resourceManagerName: '张三',
-    assignResumeTotal: '10'
-  }
-];
 export default class ProjectApproval extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +14,23 @@ export default class ProjectApproval extends Component {
       {
         title: '项目',
         dataIndex: 'projectName',
-        width: '40%'
+        width: '40%',
+        onCell: () => {
+          return {
+            style: {
+              maxWidth: 100,
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              cursor: 'pointer'
+            }
+          };
+        },
+        render: text => (
+          <Tooltip placement="topLeft" title={text}>
+            {text}
+          </Tooltip>
+        )
       },
       {
         title: '人数',

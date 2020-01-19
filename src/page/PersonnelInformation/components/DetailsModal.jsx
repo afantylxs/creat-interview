@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 
 import { actionCreators } from '../store';
-import { resumeStatusList } from '../../../utils/optionEnum';
+import {
+  resumeStatusList,
+  initialInterviewResultList,
+  finalInterviewResultList
+} from '../../../utils/optionEnum';
 import './detailsModal.less';
 const { TextArea } = Input;
 
@@ -143,7 +147,9 @@ class DetailsModal extends Component {
                 <Form.Item label="初面结果" hasFeedback>
                   {getFieldDecorator('initialInterviewResult', {
                     initialValue: detailsList.initialInterviewResult
-                      ? detailsList.initialInterviewResult
+                      ? initialInterviewResultList[
+                          detailsList.initialInterviewResult - 1
+                        ].label
                       : ''
                   })(<Input disabled={true} />)}
                 </Form.Item>
@@ -152,7 +158,9 @@ class DetailsModal extends Component {
                 <Form.Item label="终面结果" hasFeedback>
                   {getFieldDecorator('finalInterviewResult', {
                     initialValue: detailsList.finalInterviewResult
-                      ? detailsList.finalInterviewResult
+                      ? finalInterviewResultList[
+                          detailsList.finalInterviewResult - 1
+                        ].label
                       : ''
                   })(<Input disabled={true} />)}
                 </Form.Item>
