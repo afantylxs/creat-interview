@@ -1,14 +1,32 @@
 import React, { Component } from 'react';
-import { Modal, Form, Select, Input } from 'antd';
+import {
+  Modal,
+  Form,
+  Select,
+  Input,
+  Row,
+  Col,
+  Upload,
+  message,
+  Icon,
+  Button
+} from 'antd';
 import { connect } from 'react-redux';
 
 import { actionCreators } from '../store';
+import './AddModal.less';
 const { Option } = Select;
 
 @connect(state => state.personnel, actionCreators)
 class AddModal extends Component {
-  //关闭弹窗
+  constructor(props) {
+    super(props);
+    this.state = {
+      fileList: []
+    };
+  }
 
+  //关闭弹窗
   handleCancel = () => {
     const { changeAddModalVisible } = this.props;
     changeAddModalVisible({
@@ -20,6 +38,55 @@ class AddModal extends Component {
     const { dictInfo } = this.props;
     dictInfo(key);
   };
+
+  //提交
+  handleAddSubmit = () => {
+    this.props.form.validateFields((err, values) => {
+      const { addInterview } = this.props;
+      const { fileList } = this.state;
+      let id = '';
+      fileList.forEach(item => {
+        if (item.response && item.response.data && item.response.data.fileId) {
+          id = item.response.data.fileId;
+        }
+      });
+      values.fileId = id;
+      addInterview(values);
+    });
+  };
+
+  //上传简历
+  handleChangeFile = ({ file, fileList }) => {
+    if (file && file.status === 'done' && file.response.success) {
+      if (file.response.data) {
+        if (fileList.length > 1) {
+          fileList.splice(0, 1);
+          this.setState({ fileList: [...fileList] });
+        }
+      } else {
+        message.error(
+          '上传图片失败' + file.response.message && file.response.message
+        );
+      }
+    }
+    if (file && file.status === 'done' && !file.response.success) {
+      message.error(
+        '上传图片失败' + file.response.message && file.response.message
+      );
+    }
+    if (file && file.status === 'error' && file.error.status === 401) {
+      message.error('上传失败，请重新登录');
+    }
+    this.setState({ fileList: [...fileList] });
+  };
+
+  //关闭回调
+  afterClose = () => {
+    this.setState({
+      fileList: []
+    });
+  };
+
   render() {
     const {
       addModalvisible,
@@ -28,6 +95,8 @@ class AddModal extends Component {
       leveList = [],
       typeList = []
     } = this.props;
+    const { fileList } = this.state;
+    const token = localStorage.getItem('token');
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -45,9 +114,11 @@ class AddModal extends Component {
         <Modal
           title="新建简历"
           visible={addModalvisible}
-          onOk={this.handleEducationSubmit}
+          onOk={this.handleAddSubmit}
           onCancel={this.handleCancel}
-          className="basic-add-modal"
+          destroyOnClose={true}
+          afterClose={this.afterClose}
+          className="personnel-add-modal"
           okText="提交"
           cancelText="取消"
         >
@@ -85,7 +156,7 @@ class AddModal extends Component {
                 >
                   {ownerList.map(item => {
                     return (
-                      <Option key={item.key} value={item.key}>
+                      <Option key={item.id} value={item.value}>
                         {item.label}
                       </Option>
                     );
@@ -99,12 +170,15 @@ class AddModal extends Component {
                 {}
               )(
                 <Select
-                  onFocus={this.handleGetDicInfo.bind(this, 'position_level')}
+                  onFocus={this.handleGetDicInfo.bind(
+                    this,
+                    'wutong_position_level'
+                  )}
                   placeholder="请选择招聘级别"
                 >
                   {leveList.map(item => {
                     return (
-                      <Option key={item.key} value={item.key}>
+                      <Option key={item.id} value={item.label}>
                         {item.label}
                       </Option>
                     );
@@ -124,12 +198,15 @@ class AddModal extends Component {
                 {}
               )(
                 <Select
-                  onFocus={this.handleGetDicInfo.bind(this, 'position_type')}
+                  onFocus={this.handleGetDicInfo.bind(
+                    this,
+                    'wutong_position_type'
+                  )}
                   placeholder="请选择职位类型"
                 >
                   {typeList.map(item => {
                     return (
-                      <Option key={item.key} value={item.key}>
+                      <Option key={item.id} value={item.label}>
                         {item.label}
                       </Option>
                     );
@@ -137,6 +214,28 @@ class AddModal extends Component {
                 </Select>
               )}
             </Form.Item>
+            <Row>
+              <Col style={{ marginRight: '10px', textAlign: 'right' }} span={6}>
+                上传简历：
+              </Col>
+              <Col span={16}>
+                <Upload
+                  method="post"
+                  headers={{
+                    Authorization: 'Bearer ' + token
+                  }}
+                  listType="personnel-card"
+                  className="personnel-add-uploader"
+                  // beforeUpload={this.beforeUpload.bind(this)}
+                  action="/api/file/uploadLocalStorageFile.json"
+                  onChange={this.handleChangeFile.bind(this)}
+                  fileList={fileList}
+                >
+                  <Icon type="upload" />{' '}
+                  <span className="personnel-add-uploader-elect">选择文件</span>
+                </Upload>
+              </Col>
+            </Row>
           </Form>
         </Modal>
       </div>

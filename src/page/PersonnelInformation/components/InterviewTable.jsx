@@ -1,30 +1,21 @@
 import React, { Component } from 'react';
-import {
-  Row,
-  Col,
-  Button,
-  Table,
-  Input,
-  Pagination,
-  message,
-  Tooltip
-} from 'antd';
+import { Row, Col, Button, Table, message, Tooltip, Pagination } from 'antd';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
 import { actionCreators } from '../store';
 import fetch from '../../../utils/axios.config';
 
-import AssignModal from './AssignModal.jsx';
 import EditModal from './EidtModal.jsx';
 import DetailsModal from './DetailsModal.jsx';
 import './distributionTable.less';
 @connect(state => state.personnel, actionCreators)
-class DistributionTable extends Component {
+class InterviewTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedRowKeys: [],
+      updataId: '',
       currentPage: 1
     };
     this.columns = [
@@ -144,6 +135,17 @@ class DistributionTable extends Component {
             text &&
             text.length &&
             text.map(item => {
+              if (item === 'edit') {
+                return (
+                  <Button
+                    key={item}
+                    onClick={this.handleOpenEditModal.bind(this, record)}
+                    className="action-buttons"
+                  >
+                    编辑
+                  </Button>
+                );
+              }
               if (item === 'detail') {
                 return (
                   <Button
@@ -155,6 +157,24 @@ class DistributionTable extends Component {
                   </Button>
                 );
               }
+              if (item === 'interview') {
+                return (
+                  <Button
+                    key={item}
+                    onClick={this.handleAcquireInterview.bind(this, record)}
+                    className="action-buttons"
+                  >
+                    面试
+                  </Button>
+                );
+              }
+              if (item === 'download') {
+                return (
+                  <Button key={item} className="action-buttons">
+                    下载
+                  </Button>
+                );
+              }
             });
           return buttonsArr;
         }
@@ -162,18 +182,16 @@ class DistributionTable extends Component {
     ];
   }
 
-  //打开分配简历弹窗
-  handleOpenAssignModal = () => {
-    const {
-      changeAssignModalVisible,
-      queryUserListInfoByRolePermission
-    } = this.props;
-    changeAssignModalVisible({
-      assignModalVisible: true
+  //打开更新简历弹窗
+  handleOpenEditModal = record => {
+    const id = record.id;
+    const { changeEditModalVisible, dictInfo } = this.props;
+    changeEditModalVisible({
+      editModalVisible: true
     });
-    queryUserListInfoByRolePermission({
-      key: 'assign',
-      value: 'interviewPerson'
+    dictInfo('wutong_position_level');
+    this.setState({
+      updataId: id
     });
   };
 
@@ -187,88 +205,78 @@ class DistributionTable extends Component {
     queryInterviewInfoById(id);
   };
 
-  //多选项
-  onSelectChange = (selectedRowKeys, a) => {
-    const { changeSelectedRowKeys } = this.props;
-    changeSelectedRowKeys(selectedRowKeys);
+  //面试提交
+  handleAcquireInterview = record => {
+    const id = record.id;
+    const { queryInterviewList } = this.props;
+    fetch
+      .get('/api/interview/acquireInterview.json', {
+        params: {
+          id
+        }
+      })
+      .then(res => {
+        if (res && res.success) {
+          message.success('操作成功');
+          queryInterviewList();
+        } else {
+          message.error('操作失败');
+        }
+      })
+      .catch(err => {
+        if (err && err.data && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了');
+        }
+      });
   };
 
   //分页查询
   handleTableChange = page => {
     const {
-      queryAssignInterviewList,
-      distriSearchValue,
+      queryInterviewList,
+      interviewSearchValue,
       changeCurrentPage
     } = this.props;
 
     const arg0 = {
       currentPage: page,
       pageSize: 10,
-      ...distriSearchValue
+      ...interviewSearchValue
     };
     changeCurrentPage({
-      interCurrentPage: 1,
-      dispCurrentPage: page
+      interCurrentPage: page,
+      dispCurrentPage: 1
     });
-    queryAssignInterviewList(arg0);
+    queryInterviewList(arg0);
   };
-
   render() {
     const columns = this.columns;
-    const {
-      assignList = [],
-      selectedRowKeys,
-      assignTotal,
-      dispCurrentPage
-    } = this.props;
-
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange
-    };
+    const { interviewList = [], interviewotal, interCurrentPage } = this.props;
+    const { updataId } = this.state;
     return (
       <div>
         <Row className="distribution-table">
-          <Col style={{ textAlign: 'right', marginBottom: '20px' }}>
-            <Tooltip
-              title={
-                selectedRowKeys && selectedRowKeys.length
-                  ? ''
-                  : '请先选择分配项'
-              }
-            >
-              <Button
-                style={{ marginRight: '20px' }}
-                disabled={
-                  selectedRowKeys && selectedRowKeys.length ? false : true
-                }
-                onClick={this.handleOpenAssignModal}
-                type="primary"
-              >
-                分配简历
-              </Button>
-            </Tooltip>
-          </Col>
           <Col className="distribution-table-data">
             <Table
               rowKey={(record, index) => record.id}
               columns={columns}
-              rowSelection={rowSelection}
-              dataSource={assignList}
+              dataSource={interviewList}
               pagination={false}
             />
           </Col>
           <Col className="distribution-paging">
             <Pagination
-              total={assignTotal}
-              showTotal={assignTotal => `共 ${assignTotal} 条数据`}
-              current={dispCurrentPage}
+              total={interviewotal}
+              showTotal={interviewotal => `共 ${interviewotal} 条数据`}
+              current={interCurrentPage}
               onChange={page => {
                 this.handleTableChange(page);
               }}
             />
           </Col>
-          <AssignModal selectedRowKeys={selectedRowKeys} />
+          <EditModal updataId={updataId} />
           <DetailsModal />
         </Row>
       </div>
@@ -276,4 +284,4 @@ class DistributionTable extends Component {
   }
 }
 
-export default DistributionTable;
+export default InterviewTable;

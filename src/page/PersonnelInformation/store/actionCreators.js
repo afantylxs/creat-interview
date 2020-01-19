@@ -57,6 +57,27 @@ export const changeFocusProjectList = payload => ({
   payload
 });
 
+export const changeQueryInterviewList = payload => ({
+  type: constants.CHANGE_QUERYINTERVIEWLIST,
+  payload
+});
+
+export const changeSelectedRowKeys = payload => ({
+  type: constants.CHANGE_SELECTEDROWKEYS,
+  payload
+});
+
+export const changeDatailsList = payload => ({
+  type: constants.CHANGE_DATAILSLIST,
+  payload
+});
+
+//切换分页
+export const changeCurrentPage = payload => ({
+  type: constants.CHANGE_CURRENTPAGE,
+  payload
+});
+
 //获取面试官信息
 export const queryUserListInfoByRolePermission = payload => {
   return dispatch => {
@@ -111,9 +132,34 @@ export const queryAssignInterviewList = payload => {
       })
       .then(res => {
         if (res && res.success && res.data) {
-          const { data = [], total } = res;
-          changeAssignInterviewList({ data, total });
-          console.log('res', res);
+          const { data = [], total } = res.data;
+
+          dispatch(changeAssignInterviewList({ data, total }));
+        } else {
+          message.error('列表获取失败' + res.message);
+        }
+      })
+      .catch(err => {
+        if (err && err.data && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了');
+        }
+      });
+  };
+};
+
+//查询分配简历列表
+export const queryInterviewList = payload => {
+  return dispatch => {
+    fetch
+      .post('/api/interview/queryInterviewList.json', {
+        ...payload
+      })
+      .then(res => {
+        if (res && res.success && res.data) {
+          const { data = [], total } = res.data;
+          dispatch(changeQueryInterviewList({ data, total }));
         } else {
           message.error('列表获取失败' + res.message);
         }
@@ -137,9 +183,26 @@ export const addInterview = payload => {
       })
       .then(res => {
         if (res && res.success && res.data) {
-          console.log('res', res);
+          message.success('提交成功');
+          dispatch(
+            changeAddModalVisible({
+              addModalvisible: false
+            })
+          );
+          dispatch(
+            queryAssignInterviewList({
+              currentPage: 1,
+              pageSize: 10
+            })
+          );
+          dispatch(
+            queryInterviewList({
+              currentPage: 1,
+              pageSize: 10
+            })
+          );
         } else {
-          message.error('列表获取失败' + res.message);
+          message.error('提交失败失败' + res.message);
         }
       })
       .catch(err => {
@@ -156,15 +219,15 @@ export const addInterview = payload => {
 export const dictInfo = payload => {
   return dispatch => {
     fetch
-      .get('/api/dictInfo/name?dictName= owner_range', {
+      .get('/api/dictInfo/name', {
         params: {
           dictName: payload
         }
       })
       .then(res => {
-        if (res && res.success) {
+        if (res && res.success && res.data) {
           const { data = [] } = res;
-          switch (payload.key) {
+          switch (payload) {
             case 'owner_range':
               dispatch(
                 changeOwnerRangeList({
@@ -172,14 +235,14 @@ export const dictInfo = payload => {
                 })
               );
               break;
-            case 'position_level':
+            case 'wutong_position_level':
               dispatch(
                 changePositionLevelList({
                   data
                 })
               );
               break;
-            case 'position_type':
+            case 'wutong_position_type':
               dispatch(
                 changePositionTypeList({
                   data
@@ -187,18 +250,92 @@ export const dictInfo = payload => {
               );
               break;
             case 'project_list':
-              dispatch(changeFocusProjectList(data));
+              dispatch(
+                changeFocusProjectList({
+                  data
+                })
+              );
               break;
 
             default:
               break;
           }
         } else {
-          message.error('获取面试官失败');
+          message.error('获取信息失败');
+        }
+      })
+      .catch(err => {
+        if (err && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了');
+        }
+      });
+  };
+};
+
+//获取面试详情
+export const queryInterviewInfoById = payload => {
+  return dispatch => {
+    fetch
+      .get('/api/interview/queryInterviewInfoById.json', {
+        params: {
+          id: payload
+        }
+      })
+      .then(res => {
+        if (res && res.success && res.data) {
+          const { data = {} } = res;
+          dispatch(changeDatailsList(data));
+        } else {
+          message.error('获取详情失败');
         }
       })
       .catch(err => {
         if (err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了');
+        }
+      });
+  };
+};
+
+//分配简历
+export const assignInterview = payload => {
+  return dispatch => {
+    fetch
+      .post('/api/interview/assignInterview.json', payload)
+      .then(res => {
+        if (res && res.success) {
+          message.success('分配简历成功');
+          dispatch(
+            changeAssignModalVisible({
+              assignModalVisible: false
+            })
+          );
+          dispatch(
+            queryAssignInterviewList({
+              currentPage: 1,
+              pageSize: 10
+            })
+          );
+          dispatch(
+            queryInterviewList({
+              currentPage: 1,
+              pageSize: 10
+            })
+          );
+        } else {
+          if (res && res.message) {
+            message.error('分配简历失败: ' + res.message);
+          } else {
+            message.error('分配简历失败');
+          }
+        }
+      })
+      .catch(err => {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了');

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Form, Select, DatePicker } from 'antd';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import { actionCreators } from '../store';
 const { Option } = Select;
@@ -20,6 +21,25 @@ class AssignModal extends Component {
     const { dictInfo } = this.props;
     dictInfo(key);
   };
+
+  //分配提交
+  handleAssignSubmit = () => {
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        const { assignInterview, selectedRowKeys } = this.props;
+        const date = values.interviewEndTimeFormat
+          ? moment(values.interviewEndTimeFormat).format('YYYY-MM-DD')
+          : '';
+        const arg0 = {
+          ids: selectedRowKeys,
+          userIds: values.userIds,
+          projectId: values.projectId,
+          interviewEndTimeFormat: date
+        };
+        assignInterview(arg0);
+      }
+    });
+  };
   render() {
     const {
       assignModalVisible,
@@ -37,14 +57,14 @@ class AssignModal extends Component {
         sm: { span: 16 }
       }
     };
-
     return (
       <div>
         <Modal
           title="简历分配"
           visible={assignModalVisible}
-          onOk={this.handleEducationSubmit}
+          onOk={this.handleAssignSubmit}
           onCancel={this.handleCancel}
+          destroyOnClose={true}
           className="basic-add-modal"
           okText="提交"
           cancelText="取消"
@@ -58,10 +78,12 @@ class AssignModal extends Component {
                 <Select
                   onFocus={this.handleGetDicInfo.bind(this, 'project_list')}
                   placeholder="请选择项目"
+                  showSearch
+                  optionFilterProp="children"
                 >
                   {projectList.map(item => {
                     return (
-                      <Option key={item.key} value={item.key}>
+                      <Option key={item.id} value={item.id}>
                         {item.label}
                       </Option>
                     );
@@ -71,17 +93,22 @@ class AssignModal extends Component {
             </Form.Item>
             <Form.Item label="面试官" hasFeedback>
               {getFieldDecorator(
-                'interviewUserInfo',
+                'userIds',
                 {}
               )(
-                <Select placeholder="请选择面试官">
-                  {interviewerList.map(item => {
-                    return (
-                      <Option key={item.id} value={item.id}>
-                        {item.empName}
-                      </Option>
-                    );
-                  })}
+                <Select
+                  mode="multiple"
+                  tokenSeparators={[',']}
+                  placeholder="请选择面试官"
+                >
+                  {interviewerList.length &&
+                    interviewerList.map(item => {
+                      return (
+                        <Option key={item.id} value={item.id}>
+                          {item.empName}
+                        </Option>
+                      );
+                    })}
                 </Select>
               )}
             </Form.Item>

@@ -12,7 +12,13 @@ const defaultState = {
   typeList: [],
   projectList: [],
   assignList: [],
-  assignTotal: 0
+  assignTotal: 0,
+  interviewList: [],
+  interviewotal: 0,
+  selectedRowKeys: [],
+  detailsList: {},
+  dispCurrentPage: 1,
+  interCurrentPage: 1
 };
 
 export default (state = defaultState, action) => {
@@ -54,6 +60,12 @@ export default (state = defaultState, action) => {
         assignList: payload.data,
         assignTotal: payload.total
       };
+    case constants.CHANGE_QUERYINTERVIEWLIST:
+      return {
+        ...state,
+        interviewList: payload.data,
+        interviewotal: payload.total
+      };
     case constants.CHANGE_OWNERRANGELIST:
       return {
         ...state,
@@ -73,6 +85,22 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         projectList: payload.data
+      };
+    case constants.CHANGE_SELECTEDROWKEYS:
+      return {
+        ...state,
+        selectedRowKeys: payload
+      };
+    case constants.CHANGE_DATAILSLIST:
+      return {
+        ...state,
+        detailsList: payload
+      };
+    case constants.CHANGE_CURRENTPAGE:
+      return {
+        ...state,
+        dispCurrentPage: payload.dispCurrentPage,
+        interCurrentPage: payload.interCurrentPage
       };
     default:
       return state;
