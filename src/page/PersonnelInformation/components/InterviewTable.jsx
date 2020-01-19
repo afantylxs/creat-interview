@@ -264,6 +264,11 @@ class InterviewTable extends Component {
     });
     queryInterviewList(arg0);
   };
+
+  componentWillUnmount() {
+    const { changeQueryInterviewList } = this.props;
+    changeQueryInterviewList([]);
+  }
   render() {
     const columns = this.columns;
     const { interviewList = [], interviewotal, interCurrentPage } = this.props;

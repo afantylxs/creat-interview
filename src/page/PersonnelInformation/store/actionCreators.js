@@ -149,7 +149,7 @@ export const queryAssignInterviewList = payload => {
   };
 };
 
-//查询分配简历列表
+//查询面试简历列表
 export const queryInterviewList = payload => {
   return dispatch => {
     fetch

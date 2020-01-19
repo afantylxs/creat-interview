@@ -213,6 +213,11 @@ class DistributionTable extends Component {
     queryAssignInterviewList(arg0);
   };
 
+  componentWillUnmount() {
+    const { changeAssignInterviewList } = this.props;
+    changeAssignInterviewList([]);
+  }
+
   render() {
     const columns = this.columns;
     const {
