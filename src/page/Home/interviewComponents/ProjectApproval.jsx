@@ -99,7 +99,7 @@ export default class ProjectApproval extends Component {
       onChange: this.handleChangePage
     };
     return (
-      <div>
+      <div style={{ padding: '5px' }}>
         <Table
           rowKey={(record, index) => index}
           columns={columns}

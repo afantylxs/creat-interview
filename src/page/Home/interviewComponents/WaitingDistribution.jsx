@@ -26,14 +26,6 @@ export default class WaitingDistribution extends Component {
         title: '份数',
         dataIndex: 'assignResumeTotal',
         width: '40%'
-      },
-      {
-        title: '操作',
-        dataIndex: 'action',
-        width: '20%',
-        render: (text, render) => {
-          return <Button>查看</Button>;
-        }
       }
     ];
   }
@@ -89,7 +81,7 @@ export default class WaitingDistribution extends Component {
       onChange: this.handleChangePage
     };
     return (
-      <div>
+      <div style={{ padding: '5px' }}>
         <Table
           rowKey={(record, index) => index}
           columns={columns}
