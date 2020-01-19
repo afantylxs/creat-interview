@@ -36,15 +36,15 @@ export default class ProjectApproval extends Component {
         title: '人数',
         dataIndex: 'interviewPassTotal',
         width: '40%'
-      },
-      {
-        title: '操作',
-        dataIndex: 'action',
-        width: '20%',
-        render: (text, render) => {
-          return <Button>查看</Button>;
-        }
       }
+      // {
+      //   title: '操作',
+      //   dataIndex: 'action',
+      //   width: '20%',
+      //   render: (text, render) => {
+      //     return <Button>查看</Button>;
+      //   }
+      // }
     ];
   }
 
@@ -69,7 +69,6 @@ export default class ProjectApproval extends Component {
             projectApprovalList: data,
             projectApprovalTotal: total
           });
-          console.log('res', res);
         } else {
           message.error('出错了，请稍后再试');
         }

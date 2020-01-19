@@ -233,7 +233,7 @@ class InterviewTable extends Component {
           message.success('操作成功');
           queryInterviewList();
         } else {
-          message.error('操作失败');
+          message.error('操作失败：' + res.message && res.message);
         }
       })
       .catch(err => {
