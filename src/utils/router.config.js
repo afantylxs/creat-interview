@@ -24,4 +24,8 @@ export const IncumbencyRouterList = [
 ];
 
 //内面系统路由
-export const inserviceRouterList = ['/interview/home', '/interview/personnel'];
+export const inserviceRouterList = [
+  '/interview/home',
+  '/interview/personnel',
+  '/register'
+];
