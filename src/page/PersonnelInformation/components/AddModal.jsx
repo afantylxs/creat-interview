@@ -149,6 +149,10 @@ class AddModal extends Component {
                   {
                     required: true,
                     message: '不能为空'
+                  },
+                  {
+                    pattern: new RegExp(/^[1-9]\d*$/, 'g'),
+                    message: '请输入正确的电话'
                   }
                 ]
               })(<Input />)}
