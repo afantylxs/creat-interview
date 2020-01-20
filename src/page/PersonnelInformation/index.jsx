@@ -313,6 +313,7 @@ class PersonnelInformation extends Component {
                   {}
                 )(
                   <Select
+                    allowClear
                     onFocus={this.handleGetDicInfo.bind(
                       this,
                       'wutong_position_level'

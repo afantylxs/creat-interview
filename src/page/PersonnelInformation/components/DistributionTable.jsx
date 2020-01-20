@@ -218,6 +218,15 @@ class DistributionTable extends Component {
     changeAssignInterviewList([]);
   }
 
+  //设置多选的禁用
+  getCheckboxPropsStatus = record => {
+    if (record.resumeStatus === 1) {
+      return null;
+    } else {
+      return { disabled: true };
+    }
+  };
+
   render() {
     const columns = this.columns;
     const {
@@ -229,7 +238,8 @@ class DistributionTable extends Component {
 
     const rowSelection = {
       selectedRowKeys,
-      onChange: this.onSelectChange
+      onChange: this.onSelectChange,
+      getCheckboxProps: this.getCheckboxPropsStatus
     };
     return (
       <div>

@@ -8,7 +8,7 @@ class InterviewRejular extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rejularPage: 1
+      currentPage: 1
     };
   }
 
@@ -21,10 +21,22 @@ class InterviewRejular extends Component {
     queryResumeWillRelease(arg0);
   }
 
+  //分页
+  handleChangeInterviewRejularPage = page => {
+    const { queryResumeWillRelease } = this.props;
+    const arg0 = {
+      pageSize: 6,
+      currentPage: page
+    };
+    queryResumeWillRelease(arg0);
+    this.setState({
+      currentPage: page
+    });
+  };
+
   render() {
     const { interviewRejularList, interviewRejularTotal } = this.props;
-    console.log('interviewRejularList', interviewRejularList);
-
+    const { currentPage } = this.state;
     return (
       <div className="rejular" style={{ padding: '10px' }}>
         {interviewRejularList.map((item, index) => {
@@ -38,10 +50,10 @@ class InterviewRejular extends Component {
         })}
         <div className="rejular-pagination">
           <Pagination
-            current={1}
+            current={currentPage}
             pageSize={6}
             total={interviewRejularTotal}
-            // onChange={this.handleChangeRejularPage.bind(this)}
+            onChange={this.handleChangeInterviewRejularPage.bind(this)}
           />
         </div>
       </div>
