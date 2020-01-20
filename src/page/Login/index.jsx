@@ -86,7 +86,7 @@ class Login extends Component {
                           rules: [
                             {
                               required: true,
-                              message: 'Please input your username!'
+                              message: '用户名不能为空'
                             }
                           ]
                         })(
@@ -106,7 +106,7 @@ class Login extends Component {
                           rules: [
                             {
                               required: true,
-                              message: 'Please input your Password!'
+                              message: '密码不能为空'
                             }
                           ]
                         })(

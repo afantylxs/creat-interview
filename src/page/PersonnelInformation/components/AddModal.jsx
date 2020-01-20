@@ -42,16 +42,26 @@ class AddModal extends Component {
   //提交
   handleAddSubmit = () => {
     this.props.form.validateFields((err, values) => {
-      const { addInterview } = this.props;
-      const { fileList } = this.state;
-      let id = '';
-      fileList.forEach(item => {
-        if (item.response && item.response.data && item.response.data.fileId) {
-          id = item.response.data.fileId;
+      if (!err) {
+        const { addInterview } = this.props;
+        const { fileList } = this.state;
+        if (fileList && fileList.length > 0) {
+          let id = '';
+          fileList.forEach(item => {
+            if (
+              item.response &&
+              item.response.data &&
+              item.response.data.fileId
+            ) {
+              id = item.response.data.fileId;
+            }
+          });
+          values.fileId = id;
+          addInterview(values);
+        } else {
+          message.error('请上传简历');
         }
-      });
-      values.fileId = id;
-      addInterview(values);
+      }
     });
   };
 
@@ -124,16 +134,34 @@ class AddModal extends Component {
         >
           <Form {...formItemLayout}>
             <Form.Item label="姓名" hasFeedback>
-              {getFieldDecorator('resumeUserName', {})(<Input />)}
+              {getFieldDecorator('resumeUserName', {
+                rules: [
+                  {
+                    required: true,
+                    message: '不能为空'
+                  }
+                ]
+              })(<Input />)}
             </Form.Item>
             <Form.Item label="电话" hasFeedback>
-              {getFieldDecorator('resumeUserPhone', {})(<Input />)}
+              {getFieldDecorator('resumeUserPhone', {
+                rules: [
+                  {
+                    required: true,
+                    message: '不能为空'
+                  }
+                ]
+              })(<Input />)}
             </Form.Item>
             <Form.Item label="资源经理" hasFeedback>
-              {getFieldDecorator(
-                'resourceManagerId',
-                {}
-              )(
+              {getFieldDecorator('resourceManagerId', {
+                rules: [
+                  {
+                    required: true,
+                    message: '不能为空'
+                  }
+                ]
+              })(
                 <Select placeholder="请选择面试官">
                   {resourceMangeList.map(item => {
                     return (
@@ -146,10 +174,14 @@ class AddModal extends Component {
               )}
             </Form.Item>
             <Form.Item label="简历来源" hasFeedback>
-              {getFieldDecorator(
-                'resumeSource',
-                {}
-              )(
+              {getFieldDecorator('resumeSource', {
+                rules: [
+                  {
+                    required: true,
+                    message: '不能为空'
+                  }
+                ]
+              })(
                 <Select
                   onFocus={this.handleGetDicInfo.bind(this, 'owner_range')}
                   placeholder="请选择简历来源"
@@ -165,10 +197,14 @@ class AddModal extends Component {
               )}
             </Form.Item>
             <Form.Item label="招聘级别" hasFeedback>
-              {getFieldDecorator(
-                'recruitmentLevel',
-                {}
-              )(
+              {getFieldDecorator('recruitmentLevel', {
+                rules: [
+                  {
+                    required: true,
+                    message: '不能为空'
+                  }
+                ]
+              })(
                 <Select
                   onFocus={this.handleGetDicInfo.bind(
                     this,
@@ -187,16 +223,24 @@ class AddModal extends Component {
               )}
             </Form.Item>
             <Form.Item label="工作地点" hasFeedback>
-              {getFieldDecorator(
-                'workAddress',
-                {}
-              )(<Input placeholder="请输入工作地点" />)}
+              {getFieldDecorator('workAddress', {
+                rules: [
+                  {
+                    required: true,
+                    message: '不能为空'
+                  }
+                ]
+              })(<Input placeholder="请输入工作地点" />)}
             </Form.Item>
             <Form.Item label="职位类型" hasFeedback>
-              {getFieldDecorator(
-                'positionType',
-                {}
-              )(
+              {getFieldDecorator('positionType', {
+                rules: [
+                  {
+                    required: true,
+                    message: '不能为空'
+                  }
+                ]
+              })(
                 <Select
                   onFocus={this.handleGetDicInfo.bind(
                     this,
