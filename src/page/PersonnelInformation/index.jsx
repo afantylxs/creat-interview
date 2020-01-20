@@ -142,6 +142,10 @@ class PersonnelInformation extends Component {
       finalInterviewResult: '',
       interviewLevel: ''
     });
+    this.setState({
+      distriSearchValue: {},
+      interviewSearchValue: {}
+    });
   };
 
   //修改搜索框的值
