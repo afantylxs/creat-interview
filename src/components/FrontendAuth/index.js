@@ -14,7 +14,7 @@ class FrontendAuth extends Component {
     const token = localStorage.getItem('token');
 
     //如果是登录状态，输入登录地址直接跳转至首页
-    if (token) {
+    if (flag && token) {
       if (pathname === '/login') {
         this.props.history.push('/home');
       }
@@ -39,10 +39,10 @@ class FrontendAuth extends Component {
   componentDidMount() {
     const { pathname } = this.props.location;
     const flag = localStorage.getItem('flag');
+    const token = localStorage.getItem('token');
 
     //如果是登录状态，输入登录地址直接跳转至首页
-    if (flag) {
-      console.log('componentDidMount', flag);
+    if (flag && token) {
       if (pathname === '/login') {
         this.props.history.push('/home');
       }
