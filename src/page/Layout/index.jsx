@@ -33,14 +33,10 @@ class Layout extends Component {
         <FrontendAuth />
         {allRouterList.includes(pathname) && <Header />}
         <Switch>
+          {/* <Route exact path="/" component={Login} /> */}
           <Route exact path="/login" component={Login} />
           <Route exact path="/interview/login" component={Login} />
           <Route exact path="/register" component={Register} />
-          {/* {flag === 'false' ? (
-            <Redirect to="/login" />
-          ) : (
-            <Route exact path="/" component={Home} />
-          )} */}
           <Route exact path="/home" component={Home} />
           <Route exact path="/interview/home" component={Home} />
           <Route path="/basic" component={BasicInformation} />

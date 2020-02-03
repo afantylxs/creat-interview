@@ -1,6 +1,5 @@
 //所有路由
 export const allRouterList = [
-  '/',
   '/home',
   '/basic',
   '/project',
