@@ -19,8 +19,8 @@ class FrontendAuth extends Component {
         this.props.history.push('/home');
       }
 
-      if (pathname === 'interview/login') {
-        this.props.history.push('interview/home');
+      if (pathname === '/interview/login') {
+        this.props.history.push('/interview/home');
       }
     }
     // 判断登录情况，如果是登录状态跳转至当前页面，如果不是登录状态跳转至登录页
@@ -47,8 +47,8 @@ class FrontendAuth extends Component {
         this.props.history.push('/home');
       }
 
-      if (pathname === 'interview/login') {
-        this.props.history.push('interview/home');
+      if (pathname === '/interview/login') {
+        this.props.history.push('/interview/home');
       }
     }
 
