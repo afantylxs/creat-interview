@@ -13,6 +13,10 @@ class FrontendAuth extends Component {
     const flag = localStorage.getItem('flag');
     const token = localStorage.getItem('token');
 
+    if (pathname === '/register') {
+      return;
+    }
+
     //如果是登录状态，输入登录地址直接跳转至首页
     if (flag && flag !== 'false' && token) {
       if (pathname === '/login') {
