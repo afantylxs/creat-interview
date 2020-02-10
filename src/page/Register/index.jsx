@@ -35,6 +35,8 @@ class Register extends Component {
           .then(res => {
             if (res.data.success) {
               message.success('注册成功');
+              localStorage.setItem('token', '');
+              localStorage.setItem('flag', false);
               this.props.history.push('/interview/login');
             } else {
               message.error('注册失败:' + res.data.message);

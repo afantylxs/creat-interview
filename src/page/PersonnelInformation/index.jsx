@@ -11,6 +11,7 @@ import {
   Tooltip
 } from 'antd';
 import { connect } from 'react-redux';
+import fetch from '../../utils/axios.config';
 
 import { actionCreators } from './store';
 import DistributionTable from './components/DistributionTable.jsx';
@@ -23,6 +24,7 @@ import {
 } from '../../utils/optionEnum';
 import './index.less';
 
+const permissionArr = ['resourceMange', 'resourceMangeAdmin', 'admin'];
 const { Search } = Input;
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -34,7 +36,8 @@ class PersonnelInformation extends Component {
       activeKye: 'interview',
       searchValue: '',
       distriSearchValue: {},
-      interviewSearchValue: {}
+      interviewSearchValue: {},
+      permission: ''
     };
   }
 
@@ -53,6 +56,7 @@ class PersonnelInformation extends Component {
   };
 
   componentDidMount() {
+    this.queryUserPermission();
     const { queryInterviewList } = this.props;
     const arg0 = {
       currentPage: 1,
@@ -60,6 +64,21 @@ class PersonnelInformation extends Component {
     };
     queryInterviewList(arg0);
   }
+
+  //获取权限
+  queryUserPermission = () => {
+    fetch.get('/api/user/queryUserPermission.json').then(res => {
+      if (res && res.success) {
+        const { data } = res;
+        const permission = data[0].permission;
+        this.setState({
+          permission
+        });
+      } else {
+        message.error('获取权限失败');
+      }
+    });
+  };
 
   //切换tab
   handleChangeTabs = key => {
@@ -207,7 +226,8 @@ class PersonnelInformation extends Component {
       activeKye,
       searchValue,
       distriSearchValue,
-      interviewSearchValue
+      interviewSearchValue,
+      permission
     } = this.state;
     const { getFieldDecorator } = this.props.form;
     const { leveList } = this.props;
@@ -227,6 +247,7 @@ class PersonnelInformation extends Component {
           <Col span={12} className="personnel-add">
             <Button
               style={{ marginRight: '20px' }}
+              disabled={permissionArr.includes(permission) ? false : true}
               onClick={this.handleOpenAddModal.bind(this)}
               type="primary"
             >

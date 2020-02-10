@@ -77,6 +77,7 @@ class EditModal extends Component {
           <Form {...formItemLayout}>
             <Form.Item label="建议级别" hasFeedback>
               {getFieldDecorator('interviewLevel', {
+                rules: [{ required: true, message: '不能为空' }],
                 initialValue:
                   editRecord && editRecord.interviewLevel
                     ? editRecord.interviewLevel
@@ -95,6 +96,7 @@ class EditModal extends Component {
             </Form.Item>
             <Form.Item label="是否通过" hasFeedback>
               {getFieldDecorator('initialInterviewResult', {
+                rules: [{ required: true, message: '不能为空' }],
                 initialValue:
                   editRecord && editRecord.initialInterviewResult
                     ? editRecord.initialInterviewResult
@@ -108,6 +110,7 @@ class EditModal extends Component {
             </Form.Item>
             <Form.Item label="面试评价" hasFeedback>
               {getFieldDecorator('interviewComment', {
+                rules: [{ required: true, message: '不能为空' }],
                 initialValue:
                   editRecord && editRecord.interviewComment
                     ? editRecord.interviewComment
