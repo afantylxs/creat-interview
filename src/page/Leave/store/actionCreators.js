@@ -57,6 +57,12 @@ export const changeCurrentPageData = payload => ({
   payload
 });
 
+//存储搜索框里的this指针
+export const handleSaveSearchThis = payload => ({
+  type: constants.CHANGE_SAVESEARCHTHIS,
+  payload
+});
+
 //查询离职信息列表
 export const queryEmployeeLeaveInfoList = payload => {
   return dispatch => {

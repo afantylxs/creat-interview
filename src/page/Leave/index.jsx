@@ -9,7 +9,8 @@ import {
   Input,
   Upload,
   message,
-  Tooltip
+  Tooltip,
+  Pagination
 } from 'antd';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -23,15 +24,6 @@ import './index.less';
 const { Search } = Input;
 const { Option } = Select;
 
-const data = [
-  {
-    key: '1',
-    empName: 'John Brown',
-    ipsaBuDeptId: 32,
-    ipsaDeptId: 'New York No. 1 Lake Park',
-    empNo: 111
-  }
-];
 @connect(state => state.leave, actionCreators)
 class Department extends Component {
   constructor(props) {
@@ -180,8 +172,7 @@ class Department extends Component {
     };
     changeCurrentPageData(arg0);
     this.getQueryEmployeeLeaveInfoList(arg0);
-    // localStorage.setItem('statusFlag', '');
-    // thats.props.form.resetFields();
+    thats.props.form.resetFields();
   };
 
   //修改搜索框的值
@@ -194,9 +185,21 @@ class Department extends Component {
     changeCurrentPageData(arg0);
   };
 
+  //分页查询
+  handleTableChange = page => {
+    const { changeCurrentPageData, currentPageData } = this.props;
+    const arg0 = {
+      ...currentPageData,
+      currentPage: page,
+      pageSize: 10
+    };
+    changeCurrentPageData(arg0);
+    this.getQueryEmployeeLeaveInfoList(arg0);
+  };
+
   render() {
     const token = localStorage.getItem('token');
-    const { leaveDataList, currentPageData } = this.props;
+    const { leaveDataList, currentPageData, leaveTotal } = this.props;
     const { permission } = this.state;
     const { getFieldDecorator } = this.props.form;
 
@@ -303,6 +306,17 @@ class Department extends Component {
               columns={this.handleGetColumns()}
               dataSource={leaveDataList}
               scroll={{ x: '100%' }}
+              pagination={false}
+            />
+          </Col>
+          <Col className="leave-paging" span={24}>
+            <Pagination
+              total={leaveTotal}
+              showTotal={total => `共 ${leaveTotal} 条数据`}
+              current={currentPageData.currentPage}
+              onChange={page => {
+                this.handleTableChange(page);
+              }}
             />
           </Col>
         </Row>

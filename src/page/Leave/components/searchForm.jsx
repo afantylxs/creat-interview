@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Button, Form, Select, DatePicker } from 'antd';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import { empPropertyEumn } from '../../../utils/optionEnum';
 import { actionCreators } from '../store';
@@ -22,7 +23,7 @@ class SearchForm extends Component {
       deptInfo(value);
     }
     this.props.form.setFieldsValue({
-      bumen: ''
+      ipsaDeptId: ''
     });
   };
 
@@ -62,15 +63,39 @@ class SearchForm extends Component {
   //点击查询按钮
   handleClickSearch = () => {
     this.props.form.validateFields((err, values) => {
-      console.log('values', values);
+      const { queryEmployeeLeaveInfoList, changeCurrentPageData } = this.props;
+      const effectiveStartTimeFormat = values.leaveProjTimeFormat
+        ? moment(values.leaveProjTimeFormat[0]).format('YYYY-MM-DD')
+        : '';
+      const effectiveEndTimeFormat = values.leaveProjTimeFormat
+        ? moment(values.leaveProjTimeFormat[1]).format('YYYY-MM-DD')
+        : '';
+      const leaveProjStartTimeFormat = values.effectiveStartTimeFormat
+        ? moment(values.effectiveStartTimeFormat[1]).format('YYYY-MM-DD')
+        : '';
+      const leaveProjEndTimeFormat = values.effectiveStartTimeFormat
+        ? moment(values.effectiveStartTimeFormat[1]).format('YYYY-MM-DD')
+        : '';
+      const arg0 = {
+        ...values,
+        effectiveStartTimeFormat,
+        effectiveEndTimeFormat,
+        leaveProjStartTimeFormat,
+        leaveProjEndTimeFormat,
+        currentPage: 1,
+        pageSize: 10,
+        keyword: '',
+        leaveReasonId: ''
+      };
+      console.log('arg0', arg0);
 
-      // const arg0 = {
-
-      // }
+      changeCurrentPageData(arg0);
+      queryEmployeeLeaveInfoList(arg0);
     });
   };
 
   render() {
+    const that = this;
     const { getFieldDecorator } = this.props.form;
     const {
       buList = [],
@@ -79,8 +104,10 @@ class SearchForm extends Component {
       businessLeaveTypeList = [],
       hrOneTypeList = [],
       hrOneClassList = [],
-      leaveProjList = []
+      leaveProjList = [],
+      handleSaveSearchThis
     } = this.props;
+    handleSaveSearchThis(that);
     return (
       <div>
         <Row>

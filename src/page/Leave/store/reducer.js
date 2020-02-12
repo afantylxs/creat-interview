@@ -12,6 +12,7 @@ const defaultState = {
   record: {},
   buList: [],
   depList: [],
+  thats: null,
   leaveProjList: [],
   currentPageData: {
     currentPage: 1,
@@ -92,6 +93,11 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         currentPageData: payload
+      };
+    case constants.CHANGE_SAVESEARCHTHIS:
+      return {
+        ...state,
+        thats: payload
       };
     default:
       return state;

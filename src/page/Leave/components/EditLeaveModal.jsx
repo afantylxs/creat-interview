@@ -231,7 +231,7 @@ class EditLeaveModal extends Component {
     return (
       <div className="edit-leave-modal">
         <Modal
-          title="编辑离项信息"
+          title={record.id ? '编辑离职信息' : '新增离职信息'}
           visible={leaveVisible}
           width="75%"
           onOk={this.handleOk}
