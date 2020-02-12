@@ -83,7 +83,7 @@ export const queryEmployeeBaseInfoList = payload => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -151,7 +151,7 @@ export const updateEmployeeBaseInfo = payload => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -172,7 +172,7 @@ export const deptInfoBu = payload => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -209,7 +209,7 @@ export const queryUserListInfoByRolePermission = payload => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -236,7 +236,7 @@ export const searchEmployeeBaseInfoList = payload => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -265,7 +265,7 @@ export const deptInfo = payload => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -299,7 +299,7 @@ export const dictInfo = payload => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');

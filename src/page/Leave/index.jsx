@@ -13,9 +13,11 @@ import {
 } from 'antd';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import SearchForm from './components/searchForm.jsx';
+import SearchForm from './components/SearchForm.jsx';
 import fetch from '../../utils/axios.config';
-// import { actionCreators } from '../BasicInformation/store';
+import EditLeaveModal from './components/EditLeaveModal.jsx';
+import { actionCreators } from './store';
+import { leaveColumnsFunction } from './leaveColumns';
 
 import './index.less';
 const { Search } = Input;
@@ -30,109 +32,13 @@ const data = [
     empNo: 111
   }
 ];
-// @connect(state => state.basic, actionCreators)
+@connect(state => state.leave, actionCreators)
 class Department extends Component {
   constructor(props) {
     super(props);
     this.state = {
       permission: ''
     };
-    this.columns = [
-      {
-        title: '姓名',
-        dataIndex: 'name',
-        width: '150px'
-      },
-      {
-        title: 'BU',
-        dataIndex: 'bu',
-        width: '150px'
-      },
-      {
-        title: '部门',
-        dataIndex: 'bumen',
-        width: '150px'
-      },
-      {
-        title: '软通工号',
-        dataIndex: 'empNo',
-        width: '150px'
-      },
-      {
-        title: '阿里离项时间',
-        dataIndex: 'alworkId',
-        width: '150px'
-      },
-      {
-        title: '阿里离项原因',
-        dataIndex: 'entryp',
-        width: '150px'
-      },
-      {
-        title: '阿里离项类型',
-        dataIndex: 'onepost',
-        width: '150px'
-      },
-      {
-        title: '业务线反馈离职原因',
-        dataIndex: 'twopost',
-        width: '150px'
-      },
-      {
-        title: '业务线反馈离职类型',
-        dataIndex: 'threepost',
-        width: '150px'
-      },
-      {
-        title: '业务线反馈离职分类',
-        dataIndex: 'hierarchy',
-        width: '150px'
-      },
-      {
-        title: '离职提出时间',
-        dataIndex: 'direction',
-        width: '150px'
-      },
-      {
-        title: '离职生效日',
-        dataIndex: 'frame',
-        width: '150px'
-      },
-      {
-        title: '离职时状态',
-        dataIndex: 'careergroup',
-        width: '150px'
-      },
-      {
-        title: 'IPSA离职原因',
-        dataIndex: 'businessunit',
-        width: '150px'
-      },
-      {
-        title: 'HR三月后离职分类',
-        dataIndex: 'entryname',
-        width: '150px'
-      },
-      {
-        title: 'HR一月后离职类型',
-        dataIndex: 'business',
-        width: '150px'
-      },
-      {
-        title: 'HR一月后沟通离职原因',
-        dataIndex: 'projecttype',
-        width: '150px'
-      },
-      {
-        title: '操作',
-        dataIndex: 'action',
-        width: '150px',
-        fixed: 'right',
-        render: (text, record) => {
-          return <Button>编辑</Button>;
-        }
-      }
-    ];
   }
 
   componentDidMount() {
@@ -145,7 +51,18 @@ class Department extends Component {
         });
       }
     });
+    const arg0 = {
+      currentPage: 1,
+      pageSize: 10
+    };
+    this.getQueryEmployeeLeaveInfoList(arg0);
   }
+
+  //获取离职列表
+  getQueryEmployeeLeaveInfoList = arg0 => {
+    const { queryEmployeeLeaveInfoList } = this.props;
+    queryEmployeeLeaveInfoList(arg0);
+  };
 
   //上传前的文件校验
   handleBeforeUpload = (file, fileList) => {
@@ -190,7 +107,7 @@ class Department extends Component {
     const token = localStorage.getItem('token');
     axios({
       method: 'get',
-      url: '/api/project/download',
+      url: '/api/leave/download',
       headers: {
         Authorization: 'Bearer ' + token
       },
@@ -221,10 +138,65 @@ class Department extends Component {
         message.error('导出失败');
       });
   };
+
+  //打开新增离职信息编辑框
+  handleShowModel = () => {
+    const { changeLeaveVisible } = this.props;
+    this.props.form.resetFields();
+    changeLeaveVisible({
+      leaveVisible: true,
+      record: {}
+    });
+  };
+
+  //table表格
+  handleGetColumns = () => {
+    const that = this;
+    const { permission } = this.state;
+    const projectList = leaveColumnsFunction(that, permission);
+    return projectList;
+  };
+
+  //搜索框调用查询列表
+  handleSearchInput = value => {
+    const { changeCurrentPageData, thats } = this.props;
+    const arg0 = {
+      currentPage: 1,
+      pageSize: 10,
+      keyword: value,
+      busOnlineFeedbackId: '',
+      busOnlineFeedbackType: '',
+      leaveOfficeStatus: '',
+      leaveReasonId: '',
+      hrOneMonthClass: '',
+      hrOneMonthType: '',
+      ipsaBuDeptId: '',
+      ipsaDeptId: '',
+      leaveProjReasonId: '',
+      effectiveStartTimeFormat: '',
+      effectiveEndTimeFormat: '',
+      leaveProjStartTimeFormat: '',
+      leaveProjEndTimeFormat: ''
+    };
+    changeCurrentPageData(arg0);
+    this.getQueryEmployeeLeaveInfoList(arg0);
+    // localStorage.setItem('statusFlag', '');
+    // thats.props.form.resetFields();
+  };
+
+  //修改搜索框的值
+  handleChangeSearchInput = value => {
+    const { changeCurrentPageData } = this.props;
+    const arg0 = {
+      ...changeCurrentPageData,
+      keyword: value.target.value
+    };
+    changeCurrentPageData(arg0);
+  };
+
   render() {
-    const columns = this.columns;
     const token = localStorage.getItem('token');
-    const { basicList } = this.props;
+    const { leaveDataList, currentPageData } = this.props;
     const { permission } = this.state;
     const { getFieldDecorator } = this.props.form;
 
@@ -237,11 +209,26 @@ class Department extends Component {
                 <Search
                   style={{ width: '50%', marginLeft: '20px' }}
                   placeholder="输入姓名或软通工号"
-                  onSearch={value => console.log(value)}
+                  onSearch={value => this.handleSearchInput(value)}
+                  onChange={value => this.handleChangeSearchInput(value)}
+                  value={currentPageData.keyword}
                   enterButton
                 />
               </Col>
               <Col span={16} style={{ textAlign: 'right' }}>
+                <Button
+                  disabled={
+                    (permission && permission === 'hr') ||
+                    permission === 'admin'
+                      ? false
+                      : true
+                  }
+                  type="primary"
+                  onClick={this.handleShowModel.bind(this)}
+                  style={{ marginRight: '7%' }}
+                >
+                  + 新增
+                </Button>
                 <div
                   style={{
                     width: '64px',
@@ -258,7 +245,7 @@ class Department extends Component {
                         : true
                     }
                     accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                    action="/api/project/import/projectRecordInfo.json"
+                    action="/api/leave/import/leaveRecord.json"
                     method="post"
                     headers={{
                       Authorization: 'Bearer ' + token
@@ -311,9 +298,15 @@ class Department extends Component {
             <SearchForm />
           </Col>
           <Col span={24}>
-            <Table columns={columns} dataSource={data} scroll={{ x: '100%' }} />
+            <Table
+              rowKey={(record, index) => index}
+              columns={this.handleGetColumns()}
+              dataSource={leaveDataList}
+              scroll={{ x: '100%' }}
+            />
           </Col>
         </Row>
+        <EditLeaveModal />
       </div>
     );
   }

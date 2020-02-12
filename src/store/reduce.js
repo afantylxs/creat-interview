@@ -5,13 +5,15 @@ import { reducer as projectRudecer } from '../page/ProjectInformation/store/';
 import { reducer as educationRudecer } from '../page/EducationInfo/store/';
 import { reducer as analysisRudecer } from '../page/Analysis/store/';
 import { reducer as personnelRudecer } from '../page/PersonnelInformation/store/';
+import { reducer as leaveRudecer } from '../page/Leave/store/';
 const reducer = combineReducers({
   home: homeReducer,
   basic: basicRudecer,
   project: projectRudecer,
   educ: educationRudecer,
   analysis: analysisRudecer,
-  personnel: personnelRudecer
+  personnel: personnelRudecer,
+  leave: leaveRudecer
 });
 
 export default reducer;

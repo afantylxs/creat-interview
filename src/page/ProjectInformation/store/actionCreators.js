@@ -118,7 +118,7 @@ export const deptInfoBu = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了');
