@@ -243,7 +243,7 @@ class EditLeaveModal extends Component {
         >
           <Row>
             <Col span={24}>
-              <Form>
+              <Form labelAlign="left">
                 {!record.id && (
                   <div>
                     <Col span={24}>

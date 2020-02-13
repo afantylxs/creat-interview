@@ -68,20 +68,20 @@ class SearchForm extends Component {
   handleClickSearch = () => {
     this.props.form.validateFields((err, values) => {
       const { queryEmployeeLeaveInfoList, changeCurrentPageData } = this.props;
-      const effectiveStartTimeFormat =
+      const leaveProjStartTimeFormat =
         values.leaveProjTimeFormat && values.leaveProjTimeFormat.length
           ? moment(values.leaveProjTimeFormat[0]).format('YYYY-MM-DD')
           : '';
-      const effectiveEndTimeFormat =
+      const leaveProjEndTimeFormat =
         values.leaveProjTimeFormat && values.leaveProjTimeFormat.length
           ? moment(values.leaveProjTimeFormat[1]).format('YYYY-MM-DD')
           : '';
-      const leaveProjStartTimeFormat =
+      const effectiveStartTimeFormat =
         values.effectiveStartTimeFormat &&
         values.effectiveStartTimeFormat.length
           ? moment(values.effectiveStartTimeFormat[0]).format('YYYY-MM-DD')
           : '';
-      const leaveProjEndTimeFormat =
+      const effectiveEndTimeFormat =
         values.effectiveStartTimeFormat &&
         values.effectiveStartTimeFormat.length
           ? moment(values.effectiveStartTimeFormat[1]).format('YYYY-MM-DD')
@@ -100,6 +100,17 @@ class SearchForm extends Component {
       changeCurrentPageData(arg0);
       queryEmployeeLeaveInfoList(arg0);
     });
+  };
+
+  //修改时间
+  handleChangeLeaveProjectPicker = value => {
+    console.log('value', value.length);
+
+    if (value && !value.length) {
+      this.props.form.setFieldsValue({
+        leaveProjTimeFormat: ''
+      });
+    }
   };
 
   render() {
@@ -127,6 +138,7 @@ class SearchForm extends Component {
                   wrapperCol={{ span: 15 }}
                   label="BU"
                   hasFeedback
+                  validateStatus=""
                 >
                   {getFieldDecorator(
                     'ipsaBuDeptId',
@@ -155,11 +167,17 @@ class SearchForm extends Component {
                   labelCol={{ span: 8 }}
                   wrapperCol={{ span: 15 }}
                   hasFeedback
+                  validateStatus=""
                 >
                   {getFieldDecorator(
                     'leaveProjTimeFormat',
                     {}
-                  )(<RangePicker placeholder={['起始日期', '结束日期']} />)}
+                  )(
+                    <RangePicker
+                      onChange={this.handleChangeLeaveProjectPicker}
+                      placeholder={['起始日期', '结束日期']}
+                    />
+                  )}
                 </Form.Item>
               </Col>
               <Col span={5}>
@@ -168,6 +186,7 @@ class SearchForm extends Component {
                   labelCol={{ span: 11 }}
                   wrapperCol={{ span: 11 }}
                   hasFeedback
+                  validateStatus=""
                 >
                   {getFieldDecorator('leaveProjReasonId')(
                     <Select
@@ -191,6 +210,7 @@ class SearchForm extends Component {
                   labelCol={{ span: 13 }}
                   wrapperCol={{ span: 11 }}
                   hasFeedback
+                  validateStatus=""
                 >
                   {getFieldDecorator('busOnlineFeedbackType')(
                     <Select
@@ -219,6 +239,7 @@ class SearchForm extends Component {
                   labelCol={{ span: 7 }}
                   wrapperCol={{ span: 15 }}
                   hasFeedback
+                  validateStatus=""
                 >
                   {getFieldDecorator('ipsaDeptId')(
                     <Select allowClear>
@@ -240,6 +261,7 @@ class SearchForm extends Component {
                   labelCol={{ span: 8 }}
                   wrapperCol={{ span: 15 }}
                   hasFeedback
+                  validateStatus=""
                 >
                   {getFieldDecorator('effectiveStartTimeFormat')(
                     <RangePicker placeholder={['起始日期', '结束日期']} />
@@ -253,6 +275,7 @@ class SearchForm extends Component {
                   labelCol={{ span: 11 }}
                   wrapperCol={{ span: 11 }}
                   hasFeedback
+                  validateStatus=""
                 >
                   {getFieldDecorator('leaveOfficeStatus')(
                     <Select allowClear>
@@ -269,6 +292,7 @@ class SearchForm extends Component {
                   labelCol={{ span: 13 }}
                   wrapperCol={{ span: 11 }}
                   hasFeedback
+                  validateStatus=""
                 >
                   {getFieldDecorator('busOnlineFeedbackId')(
                     <Select allowClear>
@@ -288,6 +312,7 @@ class SearchForm extends Component {
                   labelCol={{ span: 11 }}
                   wrapperCol={{ span: 11 }}
                   hasFeedback
+                  validateStatus=""
                 >
                   {getFieldDecorator('hrOneMonthClass')(
                     <Select
@@ -317,6 +342,7 @@ class SearchForm extends Component {
                   labelCol={{ span: 11 }}
                   wrapperCol={{ span: 13 }}
                   hasFeedback
+                  validateStatus=""
                 >
                   {getFieldDecorator('hrOneMonthType')(
                     <Select allowClear>
