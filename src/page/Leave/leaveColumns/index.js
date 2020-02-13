@@ -96,12 +96,12 @@ export const leaveColumnsFunction = (that, permission) => {
     },
     {
       title: 'HR一月后离职分类',
-      dataIndex: 'hrOneMonthTypeName',
+      dataIndex: 'hrOneMonthClassName',
       width: '150px'
     },
     {
       title: 'HR一月后离职类型',
-      dataIndex: 'hrOneMonthClassName',
+      dataIndex: 'hrOneMonthTypeName',
       width: '150px'
     },
     {

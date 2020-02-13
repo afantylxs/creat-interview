@@ -68,18 +68,24 @@ class SearchForm extends Component {
   handleClickSearch = () => {
     this.props.form.validateFields((err, values) => {
       const { queryEmployeeLeaveInfoList, changeCurrentPageData } = this.props;
-      const effectiveStartTimeFormat = values.leaveProjTimeFormat.length
-        ? moment(values.leaveProjTimeFormat[0]).format('YYYY-MM-DD')
-        : '';
-      const effectiveEndTimeFormat = values.leaveProjTimeFormat.length
-        ? moment(values.leaveProjTimeFormat[1]).format('YYYY-MM-DD')
-        : '';
-      const leaveProjStartTimeFormat = values.effectiveStartTimeFormat.length
-        ? moment(values.effectiveStartTimeFormat[0]).format('YYYY-MM-DD')
-        : '';
-      const leaveProjEndTimeFormat = values.effectiveStartTimeFormat.length
-        ? moment(values.effectiveStartTimeFormat[1]).format('YYYY-MM-DD')
-        : '';
+      const effectiveStartTimeFormat =
+        values.leaveProjTimeFormat && values.leaveProjTimeFormat.length
+          ? moment(values.leaveProjTimeFormat[0]).format('YYYY-MM-DD')
+          : '';
+      const effectiveEndTimeFormat =
+        values.leaveProjTimeFormat && values.leaveProjTimeFormat.length
+          ? moment(values.leaveProjTimeFormat[1]).format('YYYY-MM-DD')
+          : '';
+      const leaveProjStartTimeFormat =
+        values.effectiveStartTimeFormat &&
+        values.effectiveStartTimeFormat.length
+          ? moment(values.effectiveStartTimeFormat[0]).format('YYYY-MM-DD')
+          : '';
+      const leaveProjEndTimeFormat =
+        values.effectiveStartTimeFormat &&
+        values.effectiveStartTimeFormat.length
+          ? moment(values.effectiveStartTimeFormat[1]).format('YYYY-MM-DD')
+          : '';
       const arg0 = {
         ...values,
         effectiveStartTimeFormat,
