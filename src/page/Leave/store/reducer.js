@@ -41,7 +41,7 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         leaveVisible: payload.leaveVisible,
-        record: payload.record
+        record: payload.record ? payload.record : payload.newRecord
       };
     case constants.CHANGE_LEAVEDATALIST:
       return {

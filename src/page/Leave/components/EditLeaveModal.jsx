@@ -66,7 +66,7 @@ class EditLeaveModal extends Component {
       optionData: [],
       leaveOptionData: [],
       searchNameValue: undefined,
-      empNo: ''
+      empNoFlag: ''
     };
   }
 
@@ -132,7 +132,7 @@ class EditLeaveModal extends Component {
   handleSelictNameValue = value => {
     const { optionData } = this.state;
     this.setState({
-      empNo: value
+      empNoFlag: value
     });
     this.props.form.setFieldsValue({
       leaveProjTimeFormat: optionData.length
@@ -148,14 +148,14 @@ class EditLeaveModal extends Component {
   //新增提交
   handleOk = () => {
     this.props.form.validateFields((err, values) => {
-      const { optionData } = this.state;
+      const { empNoFlag } = this.state;
       const {
         updateEmployeeLeaveInfoById,
         saveEmployeeLeaveInfo,
         record
       } = this.props;
       const id = record.id;
-      if (!id && !optionData.length) {
+      if (!id && !empNoFlag) {
         message.error('必须选择增加人员姓名');
         return;
       }
@@ -184,7 +184,7 @@ class EditLeaveModal extends Component {
           updateEmployeeLeaveInfoById(arg0);
         }
         if (!id) {
-          arg0.empNo = optionData.length ? optionData[0].value : '';
+          arg0.empNo = empNoFlag;
           saveEmployeeLeaveInfo(arg0);
         }
         console.log('arg0', arg0);
@@ -195,7 +195,9 @@ class EditLeaveModal extends Component {
   //关闭弹框刷新表单
   handleAfterClose = () => {
     this.setState({
-      searchNameValue: ''
+      searchNameValue: '',
+      optionData: [],
+      empNoFlag: ''
     });
     this.props.form.resetFields();
   };
@@ -223,7 +225,6 @@ class EditLeaveModal extends Component {
       leaveOfficeStatus
     } = record;
     const { searchNameValue, optionData } = this.state;
-
     const searchOptions = optionData.map(d => (
       <Option key={d.value}>{d.label}</Option>
     ));
@@ -278,7 +279,7 @@ class EditLeaveModal extends Component {
                   >
                     {getFieldDecorator('leaveProjTimeFormat', {
                       initialValue: record.leaveProjTime
-                        ? moment(record.leaveProjTime)
+                        ? moment(record.leaveProjTime).format('YYYY-MM-DD')
                         : null
                     })(<Input disabled={true} />)}
                   </Form.Item>
@@ -430,14 +431,17 @@ class EditLeaveModal extends Component {
                     hasFeedback
                   >
                     {getFieldDecorator('leaveOfficeStatus', {
-                      initialValue: leaveOfficeStatus
-                        ? Number(leaveOfficeStatus)
-                        : '',
+                      initialValue:
+                        leaveOfficeStatus || leaveOfficeStatus === 0
+                          ? leaveOfficeStatus
+                          : '',
                       rules: [{ required: true, message: '不能为空' }]
                     })(
                       <Select>
                         {empPropertyEumn.map(item => (
-                          <Option key={item.id}>{item.name}</Option>
+                          <Option key={item.id} value={item.id}>
+                            {item.name}
+                          </Option>
                         ))}
                       </Select>
                     )}
@@ -477,7 +481,7 @@ class EditLeaveModal extends Component {
                     hasFeedback
                   >
                     {getFieldDecorator('hrOneMonthClass', {
-                      initialValue: hrOneMonthType ? hrOneMonthType : '',
+                      initialValue: hrOneMonthClass ? hrOneMonthClass : '',
                       rules: [{ required: true, message: '不能为空' }]
                     })(
                       <Select
@@ -508,7 +512,7 @@ class EditLeaveModal extends Component {
                     hasFeedback
                   >
                     {getFieldDecorator('hrOneMonthType', {
-                      initialValue: hrOneMonthClass ? hrOneMonthClass : '',
+                      initialValue: hrOneMonthType ? hrOneMonthType : '',
                       rules: [{ required: true, message: '不能为空' }]
                     })(
                       <Select labelInValue>

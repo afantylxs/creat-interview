@@ -154,7 +154,6 @@ export const dictInfoSon = payload => {
       .then(res => {
         if (res && res.success) {
           const { data } = res;
-
           switch (payload.name) {
             case 'hr_leave_type':
               dispatch(changeHrOneMonthType(data));

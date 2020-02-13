@@ -26,7 +26,10 @@ export const leaveColumnsFunction = (that, permission) => {
     {
       title: '阿里离项时间',
       dataIndex: 'leaveProjTime',
-      width: '150px'
+      width: '150px',
+      render: (text, record) => {
+        return <span>{text ? moment(text).format('YYYY-MM-DD') : ''}</span>;
+      }
     },
     {
       title: '阿里离项原因',
@@ -115,26 +118,47 @@ export const leaveColumnsFunction = (that, permission) => {
         return (
           <Button
             onClick={() => {
-              const { changeLeaveVisible } = that.props;
-              record.busOnlineFeedbackType = {
-                value: record.busOnlineFeedbackType,
-                label: record.busOnlineFeedbackTypeName
+              const { changeLeaveVisible, dictInfoSon, dictInfo } = that.props;
+              const newRecord = JSON.parse(JSON.stringify(record));
+              newRecord.busOnlineFeedbackType = {
+                value: newRecord.busOnlineFeedbackType,
+                label: newRecord.busOnlineFeedbackTypeName
               };
-              record.busOnlineFeedbackId = {
-                value: record.busOnlineFeedbackId,
-                label: record.busOnlineFeedbackName
+              newRecord.busOnlineFeedbackId = {
+                value: newRecord.busOnlineFeedbackId,
+                label: newRecord.busOnlineFeedbackName
               };
-              record.hrOneMonthClass = {
-                value: record.hrOneMonthClass,
-                label: record.hrOneMonthClassName
+              newRecord.hrOneMonthClass = {
+                value: newRecord.hrOneMonthClass,
+                label: newRecord.hrOneMonthClassName
               };
-              record.hrOneMonthType = {
-                value: record.hrOneMonthType,
-                label: record.hrOneMonthTypeName
+              newRecord.hrOneMonthType = {
+                value: newRecord.hrOneMonthType,
+                label: newRecord.hrOneMonthTypeName
               };
+              if (newRecord.id && newRecord.busOnlineFeedbackType.value) {
+                const arg0 = {
+                  name: 'business_leave_type',
+                  pid: newRecord.busOnlineFeedbackType.value
+                };
+                dictInfoSon(arg0);
+              }
+
+              if (newRecord.id && newRecord.hrOneMonthClass.value) {
+                const arg0 = {
+                  name: 'hr_leave_type',
+                  pid: newRecord.hrOneMonthClass.value
+                };
+
+                dictInfoSon(arg0);
+              }
+
+              if (newRecord.leaveReasonId) {
+                dictInfo('ipsa_leave_reason');
+              }
               changeLeaveVisible({
                 leaveVisible: true,
-                record
+                newRecord
               });
             }}
           >

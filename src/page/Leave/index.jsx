@@ -97,13 +97,16 @@ class Department extends Component {
   //导出excel
   handleDownload = () => {
     const token = localStorage.getItem('token');
+    const { currentPageData } = this.props;
     axios({
       method: 'get',
       url: '/api/leave/download',
       headers: {
         Authorization: 'Bearer ' + token
       },
-      params: {},
+      params: {
+        ...currentPageData
+      },
       responseType: 'blob'
     })
       .then(res => {

@@ -29,18 +29,22 @@ class SearchForm extends Component {
 
   //调用下拉列表字典
   handleGetSelectOption = key => {
-    const { dictInfo } = this.props;
-    dictInfo(key);
+    if (key) {
+      const { dictInfo } = this.props;
+      dictInfo(key);
+    }
   };
 
   //改变父级，查找子集
   handleChangeHrOneMonthClass = (key, value) => {
-    const arg0 = {
-      name: key,
-      pid: value.key
-    };
-    const { dictInfoSon } = this.props;
-    dictInfoSon(arg0);
+    if (value && key) {
+      const arg0 = {
+        name: key,
+        pid: value.key
+      };
+      const { dictInfoSon } = this.props;
+      dictInfoSon(arg0);
+    }
     if (key === 'hr_leave_type') {
       this.props.form.setFieldsValue({
         hrOneMonthType: ''
@@ -64,16 +68,16 @@ class SearchForm extends Component {
   handleClickSearch = () => {
     this.props.form.validateFields((err, values) => {
       const { queryEmployeeLeaveInfoList, changeCurrentPageData } = this.props;
-      const effectiveStartTimeFormat = values.leaveProjTimeFormat
+      const effectiveStartTimeFormat = values.leaveProjTimeFormat.length
         ? moment(values.leaveProjTimeFormat[0]).format('YYYY-MM-DD')
         : '';
-      const effectiveEndTimeFormat = values.leaveProjTimeFormat
+      const effectiveEndTimeFormat = values.leaveProjTimeFormat.length
         ? moment(values.leaveProjTimeFormat[1]).format('YYYY-MM-DD')
         : '';
-      const leaveProjStartTimeFormat = values.effectiveStartTimeFormat
-        ? moment(values.effectiveStartTimeFormat[1]).format('YYYY-MM-DD')
+      const leaveProjStartTimeFormat = values.effectiveStartTimeFormat.length
+        ? moment(values.effectiveStartTimeFormat[0]).format('YYYY-MM-DD')
         : '';
-      const leaveProjEndTimeFormat = values.effectiveStartTimeFormat
+      const leaveProjEndTimeFormat = values.effectiveStartTimeFormat.length
         ? moment(values.effectiveStartTimeFormat[1]).format('YYYY-MM-DD')
         : '';
       const arg0 = {
@@ -87,8 +91,6 @@ class SearchForm extends Component {
         keyword: '',
         leaveReasonId: ''
       };
-      console.log('arg0', arg0);
-
       changeCurrentPageData(arg0);
       queryEmployeeLeaveInfoList(arg0);
     });
@@ -162,7 +164,10 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('leaveProjReasonId')(
-                    <Select onFocus={this.handleFocusLeaveProj.bind(this)}>
+                    <Select
+                      allowClear
+                      onFocus={this.handleFocusLeaveProj.bind(this)}
+                    >
                       {leaveProjList.map(item => {
                         return (
                           <Option key={item.value} value={item.value}>
@@ -191,6 +196,7 @@ class SearchForm extends Component {
                         this,
                         'business_leave_type'
                       )}
+                      allowClear
                     >
                       {busonlineTypeList.map(item => (
                         <Option key={item.id} value={item.id}>
@@ -209,7 +215,7 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('ipsaDeptId')(
-                    <Select>
+                    <Select allowClear>
                       {depList.map(item => {
                         return (
                           <Option key={item.id} value={item.id}>
@@ -243,7 +249,7 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('leaveOfficeStatus')(
-                    <Select>
+                    <Select allowClear>
                       {empPropertyEumn.map(item => (
                         <Option key={item.id}>{item.name}</Option>
                       ))}
@@ -259,7 +265,7 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('busOnlineFeedbackId')(
-                    <Select>
+                    <Select allowClear>
                       {businessLeaveTypeList.map(item => (
                         <Option key={item.id} value={item.id}>
                           {item.label}
@@ -287,6 +293,7 @@ class SearchForm extends Component {
                         this,
                         'hr_leave_type'
                       )}
+                      allowClear
                     >
                       {hrOneClassList.map(item => (
                         <Option key={item.id} value={item.id}>
@@ -306,7 +313,7 @@ class SearchForm extends Component {
                   hasFeedback
                 >
                   {getFieldDecorator('hrOneMonthType')(
-                    <Select>
+                    <Select allowClear>
                       {hrOneTypeList.map(item => (
                         <Option key={item.id} value={item.id}>
                           {item.label}
