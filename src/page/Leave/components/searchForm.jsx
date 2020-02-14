@@ -104,14 +104,16 @@ class SearchForm extends Component {
 
   //修改时间
   handleChangeLeaveProjectPicker = value => {
-    console.log('value', value.length);
-
     if (value && !value.length) {
       this.props.form.setFieldsValue({
-        leaveProjTimeFormat: ''
+        leaveProjTimeFormat: undefined
       });
     }
   };
+
+  componentWillReceiveProps(nextProps) {
+    console.log('nextProps', nextProps);
+  }
 
   render() {
     const that = this;

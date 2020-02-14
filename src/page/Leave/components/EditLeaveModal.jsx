@@ -405,7 +405,9 @@ class EditLeaveModal extends Component {
                         ? moment(leaveOfficeApplyTime)
                         : null,
                       rules: [{ required: true, message: '不能为空' }]
-                    })(<DatePicker />)}
+                    })(
+                      <DatePicker showToday={false} placeholder="请选择时间" />
+                    )}
                   </Form.Item>
                 </Col>
                 <Col span={8}>
@@ -420,7 +422,9 @@ class EditLeaveModal extends Component {
                         ? moment(effectiveTime)
                         : null,
                       rules: [{ required: true, message: '不能为空' }]
-                    })(<DatePicker />)}
+                    })(
+                      <DatePicker showToday={false} placeholder="请选择时间" />
+                    )}
                   </Form.Item>
                 </Col>
                 <Col span={8}>

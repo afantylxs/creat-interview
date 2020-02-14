@@ -111,7 +111,7 @@ export const getFieldList = payload => {
     fetch
       .get('/api/home/queryAreaEmployeeCount.json', {
         params: {
-          payload
+          ...payload
         }
       })
       .then(res => {
