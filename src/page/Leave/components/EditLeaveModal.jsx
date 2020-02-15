@@ -380,11 +380,12 @@ class EditLeaveModal extends Component {
                       rules: [{ required: true, message: '不能为空' }]
                     })(
                       <Select labelInValue>
-                        {businessLeaveTypeList.map(item => (
-                          <Option key={item.id} value={item.id}>
-                            {item.label}
-                          </Option>
-                        ))}
+                        {businessLeaveTypeList &&
+                          businessLeaveTypeList.map(item => (
+                            <Option key={item.id} value={item.id}>
+                              {item.label}
+                            </Option>
+                          ))}
                       </Select>
                     )}
                   </Form.Item>
@@ -520,11 +521,12 @@ class EditLeaveModal extends Component {
                       rules: [{ required: true, message: '不能为空' }]
                     })(
                       <Select labelInValue>
-                        {hrOneTypeList.map(item => (
-                          <Option key={item.id} value={item.id}>
-                            {item.label}
-                          </Option>
-                        ))}
+                        {hrOneTypeList &&
+                          hrOneTypeList.map(item => (
+                            <Option key={item.id} value={item.id}>
+                              {item.label}
+                            </Option>
+                          ))}
                       </Select>
                     )}
                   </Form.Item>

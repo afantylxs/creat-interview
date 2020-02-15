@@ -298,11 +298,12 @@ class SearchForm extends Component {
                 >
                   {getFieldDecorator('busOnlineFeedbackId')(
                     <Select allowClear>
-                      {businessLeaveTypeList.map(item => (
-                        <Option key={item.id} value={item.id}>
-                          {item.label}
-                        </Option>
-                      ))}
+                      {businessLeaveTypeList &&
+                        businessLeaveTypeList.map(item => (
+                          <Option key={item.id} value={item.id}>
+                            {item.label}
+                          </Option>
+                        ))}
                     </Select>
                   )}
                 </Form.Item>
@@ -348,11 +349,12 @@ class SearchForm extends Component {
                 >
                   {getFieldDecorator('hrOneMonthType')(
                     <Select allowClear>
-                      {hrOneTypeList.map(item => (
-                        <Option key={item.id} value={item.id}>
-                          {item.label}
-                        </Option>
-                      ))}
+                      {hrOneTypeList &&
+                        hrOneTypeList.map(item => (
+                          <Option key={item.id} value={item.id}>
+                            {item.label}
+                          </Option>
+                        ))}
                     </Select>
                   )}
                 </Form.Item>

@@ -106,7 +106,7 @@ export const dictInfo = payload => {
       })
       .then(res => {
         if (res && res.success) {
-          const { data } = res;
+          const data = res.data ? res.data : [];
           switch (payload) {
             case 'hr_leave_category':
               dispatch(changeHrOneMonthClass(data));
@@ -153,7 +153,7 @@ export const dictInfoSon = payload => {
       })
       .then(res => {
         if (res && res.success) {
-          const { data } = res;
+          const data = res.data ? res.data : [];
           switch (payload.name) {
             case 'hr_leave_type':
               dispatch(changeHrOneMonthType(data));
