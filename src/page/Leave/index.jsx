@@ -200,6 +200,42 @@ class Department extends Component {
     this.getQueryEmployeeLeaveInfoList(arg0);
   };
 
+  //组件销毁清空搜索
+  componentWillUnmount() {
+    const { changeCurrentPageData } = this.props;
+    const arg0 = {
+      currentPage: 1,
+      pageSize: 10,
+      aliNo: '',
+      ipsaBuDeptId: '',
+      ipsaDeptId: '',
+      projectId: '',
+      joiningProjTimeFormat: '',
+      firstCategoryId: '',
+      secondCategoryId: '',
+      thirdJobId: '',
+      aliGradeCode: '',
+      techDirection: '',
+      aliFrameId: '',
+      careerGroupId: '',
+      groupDeptId: '',
+      careerDeptId: '',
+      deptId: '',
+      projetDurationType: '',
+      projetType: '',
+      iduFlag: '',
+      tlFlag: '',
+      workCity: '',
+      workAddress: '',
+      resourceStatus: '',
+      backboneFlag: '',
+      chargeFlag: '',
+      keyword: '',
+      businessLine: ''
+    };
+    changeCurrentPageData(arg0);
+  }
+
   render() {
     const token = localStorage.getItem('token');
     const { leaveDataList, currentPageData, leaveTotal } = this.props;
@@ -306,6 +342,7 @@ class Department extends Component {
           <Col span={24}>
             <Table
               rowKey={(record, index) => index}
+              className="leave-content-table "
               columns={this.handleGetColumns()}
               dataSource={leaveDataList}
               scroll={{ x: '100%' }}

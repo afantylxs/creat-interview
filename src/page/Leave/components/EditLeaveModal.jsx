@@ -16,6 +16,7 @@ import moment from 'moment';
 import { empPropertyEumn } from '../../../utils/optionEnum';
 import { actionCreators } from '../store';
 import fetch from '../../../utils/axios.config';
+import './editLeaveModal.less';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -230,7 +231,7 @@ class EditLeaveModal extends Component {
     ));
 
     return (
-      <div className="edit-leave-modal">
+      <div>
         <Modal
           title={record.id ? '编辑离职信息' : '新增离职信息'}
           visible={leaveVisible}
@@ -240,17 +241,19 @@ class EditLeaveModal extends Component {
           afterClose={this.handleAfterClose}
           okText="提交"
           cancelText="取消"
+          wrapClassName="edit-leave-modal"
         >
           <Row>
             <Col span={24}>
               <Form labelAlign="left">
                 {!record.id && (
                   <div>
-                    <Col span={24}>
-                      <span>查找姓名</span>
+                    <Col span={5} className="edit-leave-title-father">
+                      <span className="edit-leave-title">查找姓名</span>
                     </Col>
-                    <Col span={10}>
+                    <Col span={24}>
                       <Select
+                        style={{ width: '20%' }}
                         showSearch
                         defaultActiveFirstOption={false}
                         showArrow={false}
@@ -267,8 +270,12 @@ class EditLeaveModal extends Component {
                   </div>
                 )}
 
-                <Col span={24}>
-                  <span>阿里离项原因</span>
+                <Col
+                  style={{ marginTop: '20px' }}
+                  className="edit-leave-title-father"
+                  span={24}
+                >
+                  <span className="edit-leave-title">阿里离项原因</span>
                 </Col>
                 <Col span={8}>
                   <Form.Item
@@ -317,8 +324,8 @@ class EditLeaveModal extends Component {
                     )}
                   </Form.Item>
                 </Col>
-                <Col span={24}>
-                  <span>业务线反馈离职原因</span>
+                <Col span={24} className="edit-leave-title-father">
+                  <span className="edit-leave-title">业务线反馈离职原因</span>
                 </Col>
                 <Col span={8}>
                   <Form.Item
@@ -391,8 +398,8 @@ class EditLeaveModal extends Component {
                   </Form.Item>
                 </Col>
 
-                <Col span={24}>
-                  <span>离职信息</span>
+                <Col className="edit-leave-title-father" span={24}>
+                  <span className="edit-leave-title">离职信息</span>
                 </Col>
                 <Col span={8}>
                   <Form.Item

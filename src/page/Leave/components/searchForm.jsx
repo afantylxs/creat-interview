@@ -339,10 +339,10 @@ class SearchForm extends Component {
                 </Form.Item>
               </Col>
 
-              <Col span={5}>
+              <Col span={7}>
                 <Form.Item
                   label="HR一月后离职类型"
-                  labelCol={{ span: 11 }}
+                  labelCol={{ span: 10 }}
                   wrapperCol={{ span: 13 }}
                   hasFeedback
                   validateStatus=""

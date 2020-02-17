@@ -11,7 +11,23 @@ export const leaveColumnsFunction = (that, permission) => {
     {
       title: '部门',
       dataIndex: 'ipsaDeptName',
-      width: '150px'
+      width: '150px',
+      onCell: () => {
+        return {
+          style: {
+            maxWidth: 100,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            cursor: 'pointer'
+          }
+        };
+      },
+      render: text => (
+        <Tooltip placement="topLeft" title={text}>
+          {text}
+        </Tooltip>
+      )
     },
     {
       title: '姓名',
@@ -55,7 +71,23 @@ export const leaveColumnsFunction = (that, permission) => {
     {
       title: '业务线反馈离职原因',
       dataIndex: 'busOnlineFeedback',
-      width: '180px'
+      width: '180px',
+      onCell: () => {
+        return {
+          style: {
+            maxWidth: 100,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            cursor: 'pointer'
+          }
+        };
+      },
+      render: text => (
+        <Tooltip placement="topLeft" title={text}>
+          {text}
+        </Tooltip>
+      )
     },
     {
       title: '业务线反馈离职分类',
@@ -107,7 +139,23 @@ export const leaveColumnsFunction = (that, permission) => {
     {
       title: 'HR一月后沟通离职原因',
       dataIndex: 'hrCommunicateReason',
-      width: '200px'
+      width: '200px',
+      onCell: () => {
+        return {
+          style: {
+            maxWidth: 100,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            cursor: 'pointer'
+          }
+        };
+      },
+      render: text => (
+        <Tooltip placement="topLeft" title={text}>
+          {text}
+        </Tooltip>
+      )
     },
     {
       title: '操作',
