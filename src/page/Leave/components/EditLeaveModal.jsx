@@ -223,7 +223,8 @@ class EditLeaveModal extends Component {
       effectiveTime,
       leaveReasonId,
       hrCommunicateReason,
-      leaveOfficeStatus
+      leaveOfficeStatus,
+      leaveProjType
     } = record;
     const { searchNameValue, optionData } = this.state;
     const searchOptions = optionData.map(d => (
@@ -313,9 +314,10 @@ class EditLeaveModal extends Component {
                     hasFeedback
                   >
                     {getFieldDecorator('leaveProjType', {
-                      initialValue: record.leaveProjReasonId
-                        ? record.leaveProjReasonId
-                        : ''
+                      initialValue:
+                        leaveProjType || leaveProjType === 0
+                          ? leaveProjType
+                          : ''
                     })(
                       <Select allowClear disabled={true}>
                         <Option value={0}>被动</Option>
