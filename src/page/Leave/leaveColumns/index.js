@@ -127,17 +127,17 @@ export const leaveColumnsFunction = (that, permission) => {
       width: '150px'
     },
     {
-      title: 'HR一月后离职分类',
+      title: 'HR一个月后离职分类',
       dataIndex: 'hrOneMonthClassName',
       width: '150px'
     },
     {
-      title: 'HR一月后离职类型',
+      title: 'HR一个月后离职类型',
       dataIndex: 'hrOneMonthTypeName',
       width: '150px'
     },
     {
-      title: 'HR一月后沟通离职原因',
+      title: 'HR一个月后沟通离职原因',
       dataIndex: 'hrCommunicateReason',
       width: '200px',
       onCell: () => {

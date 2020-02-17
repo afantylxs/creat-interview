@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Button, Form, Select, DatePicker } from 'antd';
+import { Row, Col, Button, Form, Select, DatePicker, Tooltip } from 'antd';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -94,8 +94,7 @@ class SearchForm extends Component {
         leaveProjEndTimeFormat,
         currentPage: 1,
         pageSize: 10,
-        keyword: '',
-        leaveReasonId: ''
+        keyword: ''
       };
       changeCurrentPageData(arg0);
       queryEmployeeLeaveInfoList(arg0);
@@ -111,10 +110,6 @@ class SearchForm extends Component {
     }
   };
 
-  componentWillReceiveProps(nextProps) {
-    console.log('nextProps', nextProps);
-  }
-
   render() {
     const that = this;
     const { getFieldDecorator } = this.props.form;
@@ -126,6 +121,7 @@ class SearchForm extends Component {
       hrOneTypeList = [],
       hrOneClassList = [],
       leaveProjList = [],
+      ipsaLeaveReasonList = [],
       handleSaveSearchThis
     } = this.props;
     handleSaveSearchThis(that);
@@ -197,7 +193,11 @@ class SearchForm extends Component {
                     >
                       {leaveProjList.map(item => {
                         return (
-                          <Option key={item.value} value={item.value}>
+                          <Option
+                            title={item.label}
+                            key={item.value}
+                            value={item.value}
+                          >
                             {item.label}
                           </Option>
                         );
@@ -227,7 +227,11 @@ class SearchForm extends Component {
                       allowClear
                     >
                       {busonlineTypeList.map(item => (
-                        <Option key={item.id} value={item.id}>
+                        <Option
+                          title={item.label}
+                          key={item.id}
+                          value={item.id}
+                        >
                           {item.label}
                         </Option>
                       ))}
@@ -300,7 +304,11 @@ class SearchForm extends Component {
                     <Select allowClear>
                       {businessLeaveTypeList &&
                         businessLeaveTypeList.map(item => (
-                          <Option key={item.id} value={item.id}>
+                          <Option
+                            title={item.label}
+                            key={item.id}
+                            value={item.id}
+                          >
                             {item.label}
                           </Option>
                         ))}
@@ -311,7 +319,7 @@ class SearchForm extends Component {
 
               <Col span={6}>
                 <Form.Item
-                  label="HR一月后离职分类"
+                  label="HR一个月后离职分类"
                   labelCol={{ span: 11 }}
                   wrapperCol={{ span: 11 }}
                   hasFeedback
@@ -330,7 +338,11 @@ class SearchForm extends Component {
                       allowClear
                     >
                       {hrOneClassList.map(item => (
-                        <Option key={item.id} value={item.id}>
+                        <Option
+                          title={item.label}
+                          key={item.id}
+                          value={item.id}
+                        >
                           {item.label}
                         </Option>
                       ))}
@@ -341,7 +353,7 @@ class SearchForm extends Component {
 
               <Col span={7}>
                 <Form.Item
-                  label="HR一月后离职类型"
+                  label="HR一个月后离职类型"
                   labelCol={{ span: 10 }}
                   wrapperCol={{ span: 13 }}
                   hasFeedback
@@ -351,10 +363,43 @@ class SearchForm extends Component {
                     <Select allowClear>
                       {hrOneTypeList &&
                         hrOneTypeList.map(item => (
-                          <Option key={item.id} value={item.id}>
+                          <Option
+                            title={item.label}
+                            key={item.id}
+                            value={item.id}
+                          >
                             {item.label}
                           </Option>
                         ))}
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col span={7}>
+                <Form.Item
+                  label="IPSA离职原因"
+                  labelCol={{ span: 8 }}
+                  wrapperCol={{ span: 8 }}
+                  hasFeedback
+                  validateStatus=""
+                >
+                  {getFieldDecorator('leaveReasonId')(
+                    <Select
+                      allowClear
+                      onFocus={this.handleGetSelectOption.bind(
+                        this,
+                        'ipsa_leave_reason'
+                      )}
+                    >
+                      {ipsaLeaveReasonList.map(item => (
+                        <Option
+                          title={item.label}
+                          key={item.id}
+                          value={item.id}
+                        >
+                          {item.label}
+                        </Option>
+                      ))}
                     </Select>
                   )}
                 </Form.Item>

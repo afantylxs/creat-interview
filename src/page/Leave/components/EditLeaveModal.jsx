@@ -489,7 +489,7 @@ class EditLeaveModal extends Component {
                   <Form.Item
                     labelCol={{ span: 13 }}
                     wrapperCol={{ span: 16 }}
-                    label="HR一月后离职分类"
+                    label="HR一个月后离职分类"
                     hasFeedback
                   >
                     {getFieldDecorator('hrOneMonthClass', {
