@@ -76,10 +76,11 @@ class Department extends Component {
       message.success(
         file.response.message + '，共导入' + file.response.data + '条数据'
       );
-      queryProjectRecordInfoList({
+      const arg0 = {
         currentPage: 1,
-        pageSize: 20
-      });
+        pageSize: 10
+      };
+      this.getQueryEmployeeLeaveInfoList(arg0);
     } else {
       if (file && file.status === 'done' && !file.response.success) {
         message.error('导入失败:' + file.response.message);
