@@ -211,7 +211,8 @@ class EditLeaveModal extends Component {
       busonlineTypeList = [],
       businessLeaveTypeList = [],
       ipsaLeaveReasonList = [],
-      record
+      record,
+      permission
     } = this.props;
     const {
       busOnlineFeedbackType,
@@ -339,7 +340,17 @@ class EditLeaveModal extends Component {
                     {getFieldDecorator('busOnlineFeedback', {
                       initialValue: busOnlineFeedback ? busOnlineFeedback : '',
                       rules: [{ required: true, message: '不能为空' }]
-                    })(<TextArea />)}
+                    })(
+                      <TextArea
+                        disabled={
+                          permission === 'projectManage' ||
+                          permission === 'hr' ||
+                          permission === 'admin'
+                            ? false
+                            : true
+                        }
+                      />
+                    )}
                   </Form.Item>
                 </Col>
                 <Col span={8}>
@@ -356,6 +367,13 @@ class EditLeaveModal extends Component {
                       rules: [{ required: true, message: '不能为空' }]
                     })(
                       <Select
+                        disabled={
+                          permission === 'projectManage' ||
+                          permission === 'hr' ||
+                          permission === 'admin'
+                            ? false
+                            : true
+                        }
                         labelInValue
                         onFocus={this.handleGetSelectOption.bind(
                           this,
@@ -388,7 +406,16 @@ class EditLeaveModal extends Component {
                         : '',
                       rules: [{ required: true, message: '不能为空' }]
                     })(
-                      <Select labelInValue>
+                      <Select
+                        disabled={
+                          permission === 'projectManage' ||
+                          permission === 'hr' ||
+                          permission === 'admin'
+                            ? false
+                            : true
+                        }
+                        labelInValue
+                      >
                         {businessLeaveTypeList &&
                           businessLeaveTypeList.map(item => (
                             <Option key={item.id} value={item.id}>

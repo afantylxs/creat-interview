@@ -74,7 +74,7 @@ export default class ProjectApproval extends Component {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');

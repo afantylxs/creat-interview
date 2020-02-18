@@ -70,7 +70,11 @@ class PersonnelInformation extends Component {
     fetch.get('/api/user/queryUserPermission.json').then(res => {
       if (res && res.success) {
         const { data } = res;
-        const permission = data[0].permission;
+        let permission = '';
+        if (data && data.length) {
+          permission =
+            data.length > 1 ? data[1].permission : data[0].permission;
+        }
         this.setState({
           permission
         });

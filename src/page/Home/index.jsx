@@ -31,6 +31,8 @@ export default class Home extends Component {
       fetch.get('/api/user/queryUserPermission.json').then(res => {
         if (res && res.success) {
           const { data } = res;
+          console.log('data', data);
+
           const permission = data[0].permission;
           this.setState({
             permission

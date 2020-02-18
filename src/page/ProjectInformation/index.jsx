@@ -286,7 +286,7 @@ class ProjectInformation extends Component {
 
   //组件销毁清空搜索
   componentWillUnmount() {
-    const { changeCurrentPageData } = this.props;
+    const { changeCurrentPageData, changeProjectDataList } = this.props;
     const arg0 = {
       currentPage: 1,
       pageSize: 10,
@@ -318,6 +318,7 @@ class ProjectInformation extends Component {
       businessLine: ''
     };
     changeCurrentPageData(arg0);
+    changeProjectDataList({ data: [], total: 1 });
     localStorage.setItem('statusFlag', '');
   }
 

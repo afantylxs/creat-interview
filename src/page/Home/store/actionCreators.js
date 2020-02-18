@@ -67,7 +67,7 @@ export const getBirthdayList = () => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -96,7 +96,7 @@ export const getRejularList = payload => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -127,7 +127,7 @@ export const getFieldList = payload => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -150,7 +150,7 @@ export const getReminderList = () => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -173,7 +173,7 @@ export const queryMyToDoProject = () => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -196,7 +196,7 @@ export const queryMyToDoEducation = () => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -218,7 +218,7 @@ export const queryMyToDoAssignationInterview = () => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -240,7 +240,7 @@ export const queryMyToDoInterview = () => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -271,7 +271,7 @@ export const queryResumeWillRelease = payload => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
