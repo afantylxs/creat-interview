@@ -37,7 +37,7 @@ class PersonnelInformation extends Component {
       searchValue: '',
       distriSearchValue: {},
       interviewSearchValue: {},
-      permission: ''
+      permission: []
     };
   }
 
@@ -70,11 +70,12 @@ class PersonnelInformation extends Component {
     fetch.get('/api/user/queryUserPermission.json').then(res => {
       if (res && res.success) {
         const { data } = res;
-        let permission = '';
-        if (data && data.length) {
-          permission =
-            data.length > 1 ? data[1].permission : data[0].permission;
-        }
+        let permission = [];
+        data &&
+          data.length &&
+          data.forEach(item => {
+            permission.push(item.permission);
+          });
         this.setState({
           permission
         });
@@ -251,7 +252,11 @@ class PersonnelInformation extends Component {
           <Col span={12} className="personnel-add">
             <Button
               style={{ marginRight: '20px' }}
-              disabled={permissionArr.includes(permission) ? false : true}
+              disabled={
+                permission.find(item => permissionArr.includes(item))
+                  ? false
+                  : true
+              }
               onClick={this.handleOpenAddModal.bind(this)}
               type="primary"
             >
