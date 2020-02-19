@@ -21,31 +21,33 @@ class EditModal extends Component {
   handleEditSubmit = () => {
     const { updataId, queryInterviewList, changeEditModalVisible } = this.props;
     this.props.form.validateFields((err, values) => {
-      values.id = updataId;
-      fetch
-        .post('/api/interview/updateInterviewResultById.json', values)
-        .then(res => {
-          if (res && res.success) {
-            const arg1 = {
-              currentPage: 1,
-              pageSize: 10
-            };
-            message.success('编辑成功');
-            queryInterviewList(arg1);
-            changeEditModalVisible({
-              editModalVisible: false
-            });
-          } else {
-            message.error('编辑失败：' + res.message);
-          }
-        })
-        .catch(err => {
-          if (err && err.data && err.data.message) {
-            message.error('编辑失败：' + err.data.message);
-          } else {
-            message.error('编辑失败');
-          }
-        });
+      if (!err) {
+        values.id = updataId;
+        fetch
+          .post('/api/interview/updateInterviewResultById.json', values)
+          .then(res => {
+            if (res && res.success) {
+              const arg1 = {
+                currentPage: 1,
+                pageSize: 10
+              };
+              message.success('编辑成功');
+              queryInterviewList(arg1);
+              changeEditModalVisible({
+                editModalVisible: false
+              });
+            } else {
+              message.error('编辑失败：' + res.message);
+            }
+          })
+          .catch(err => {
+            if (err && err.data && err.data.message) {
+              message.error('编辑失败：' + err.data.message);
+            } else {
+              message.error('编辑失败');
+            }
+          });
+      }
     });
   };
   render() {
