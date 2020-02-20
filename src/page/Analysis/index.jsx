@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { Row, Col, Tabs, message } from 'antd';
 import moment from 'moment';
+import { connect } from 'react-redux';
 import fetch from '../../utils/axios.config';
+import { actionCreators } from './store';
 import WeekAnalysis from './components/WeekAnalysis';
 import GeneralTable from './components/GeneralTable';
+import KpiBiweekly from './kpicomponents';
 import './index.less';
 const { TabPane } = Tabs;
 
@@ -20,7 +23,8 @@ const arg0 = {
   endTimeFormat: last_sunday
 };
 
-export default class Analysis extends Component {
+@connect(state => state.analysis, actionCreators)
+class Analysis extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,12 +41,16 @@ export default class Analysis extends Component {
       },
       () => {
         const { activeKye } = this.state;
+        const { queryKpiWeekLeaveDataAnalysis } = this.props;
         switch (activeKye) {
           case 'week':
             this.queryEmployeeWeekDataAnalysis(arg0);
             break;
           case 'general':
             this.queryAllEmployeeInfoList();
+            break;
+          case 'kpiWeekly':
+            queryKpiWeekLeaveDataAnalysis();
             break;
           default:
             break;
@@ -101,7 +109,7 @@ export default class Analysis extends Component {
 
   componentDidMount() {
     const { activeKye } = this.state;
-
+    const { queryKpiWeekLeaveDataAnalysis } = this.props;
     const arg1 = {
       currentPage: 1,
       pageSize: 10
@@ -113,7 +121,9 @@ export default class Analysis extends Component {
       case 'general':
         this.queryAllEmployeeInfoList(arg1);
         break;
-
+      case 'kpiWeekly':
+        queryKpiWeekLeaveDataAnalysis();
+        break;
       default:
         break;
     }
@@ -146,6 +156,9 @@ export default class Analysis extends Component {
                   queryAllEmployeeInfoList={this.queryAllEmployeeInfoList}
                 />
               </TabPane>
+              <TabPane tab="KPI双周报" key="kpiWeekly">
+                <KpiBiweekly />
+              </TabPane>
             </Tabs>
           </Col>
         </Row>
@@ -153,3 +166,5 @@ export default class Analysis extends Component {
     );
   }
 }
+
+export default Analysis;

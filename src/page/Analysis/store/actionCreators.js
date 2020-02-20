@@ -2,50 +2,40 @@ import * as constants from './constants';
 import { message } from 'antd';
 import fetch from '../../../utils/axios.config';
 
-export const changeEducationVisible = payload => ({
-  type: constants.CHANGE_EDUCATIONVISIBLE,
+export const changeKpiWeekLeaveDataAnalysis = payload => ({
+  type: constants.CHANGE_KPIWEEKLEAVEDATAANALYSIS,
   payload
 });
 
-export const changeBuList = payload => ({
-  type: constants.CHANGE_BULIST,
+export const changeWeekEmployeeDataAnalysis = payload => ({
+  type: constants.CHANGE_WEEKEMPLOYEEDATAANALYSIS,
   payload
 });
 
-export const changeDepList = payload => ({
-  type: constants.CHANGE_DEPLIST,
+export const changeKpiWeekJobTypeDataAnalysis = payload => ({
+  type: constants.CHANGE_KPIWEEKJOBTYPEDATAANALYSIS,
   payload
 });
 
-export const changeEducList = payload => ({
-  type: constants.CHANGE_EDUCLIST,
-  payload
-});
-
-export const changeDircInfoList = payload => ({
-  type: constants.CHANGE_MAGORLIST,
-  payload
-});
-
-export const changeCurrentPageData = payload => ({
-  type: constants.CHANGE_CURRENTPAGE,
-  payload
-});
-//查询BU列表
-export const deptInfoBu = payload => {
+//查询离职率
+export const queryKpiWeekLeaveDataAnalysis = payload => {
   return dispatch => {
     fetch
-      .get('/api/deptInfo/bu')
+      .get('/api/analysis/queryKpiWeekLeaveDataAnalysis.json', {
+        params: {
+          endTimeFormat: payload ? payload : ''
+        }
+      })
       .then(res => {
-        if (res && res.success) {
-          const buList = res.data;
-          dispatch(changeBuList(buList));
+        if (res && res.success && res.data) {
+          const kpiDataAnalysisInfo = res.data.kpiDataAnalysisInfo;
+          dispatch(changeKpiWeekLeaveDataAnalysis(kpiDataAnalysisInfo));
         } else {
           message.error('出错了');
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -54,23 +44,25 @@ export const deptInfoBu = payload => {
   };
 };
 
-//获取部门
-export const deptInfo = payload => {
+//查询人力结构
+export const queryKpiWeekEmployeeDataAnalysis = payload => {
   return dispatch => {
     fetch
-      .get('/api/deptInfo/pid', {
+      .get('/api/analysis/queryKpiWeekEmployeeDataAnalysis.json', {
         params: {
-          pid: payload.id ? payload.id : payload
+          endTimeFormat: payload ? payload : ''
         }
       })
       .then(res => {
-        if (res && res.success) {
-          const depList = res.data;
-          dispatch(changeDepList(depList));
+        if (res && res.success && res.data) {
+          const kpiDataAnalysisInfo = res.data.kpiDataAnalysisInfo;
+          dispatch(changeWeekEmployeeDataAnalysis(kpiDataAnalysisInfo));
+        } else {
+          message.error('出错了');
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');
@@ -79,19 +71,31 @@ export const deptInfo = payload => {
   };
 };
 
-//获取学历信息列表
-export const queryEducationRecordInfoList = payload => {
+//查询人力结构
+export const queryKpiWeekJobTypeDataAnalysis = payload => {
   return dispatch => {
     fetch
-      .post('/api/education/queryEducationRecordInfoList.json', payload)
+      .get('/api/analysis/queryKpiWeekJobTypeDataAnalysis.json', {
+        params: {
+          endTimeFormat: payload ? payload : ''
+        }
+      })
       .then(res => {
-        if (res && res.success) {
-          const educList = res.data.data;
-          const total = res.data.total;
+        if (res && res.success && res.data) {
+          const kpiDataAnalysisInfo = res.data.kpiDataAnalysisInfo;
+          const tableTitleInfo = res.data.tableTitleInfo;
+          const newTableTitleInfo = [];
+          tableTitleInfo &&
+            tableTitleInfo.length &&
+            tableTitleInfo.forEach(item => {
+              newTableTitleInfo.push(
+                Object.assign({}, item, { width: '120px' })
+              );
+            });
           dispatch(
-            changeEducList({
-              educList,
-              total
+            changeKpiWeekJobTypeDataAnalysis({
+              newTableTitleInfo,
+              kpiDataAnalysisInfo
             })
           );
         } else {
@@ -99,67 +103,7 @@ export const queryEducationRecordInfoList = payload => {
         }
       })
       .catch(err => {
-        if (err.data && err.data.message) {
-          message.error(err.data.message);
-        } else {
-          message.error('出错了，请稍后再试');
-        }
-      });
-  };
-};
-
-export const dictInfo = payload => {
-  return dispatch => {
-    fetch
-      .get('/api/dictInfo/name', {
-        params: {
-          dictName: 'major_code'
-        }
-      })
-      .then(res => {
-        if (res && res.success) {
-          const data = res.data;
-          dispatch(changeDircInfoList(data));
-        } else {
-          message.error(res.message && res.message);
-        }
-      })
-      .catch(err => {
-        if (err.data && err.data.message) {
-          message.error(err.data.message);
-        } else {
-          message.error('出错了，请稍后再试');
-        }
-      });
-  };
-};
-
-export const updateEducationRecordInfoById = payload => {
-  return dispatch => {
-    fetch
-      .post('/api/education/updateEducationRecordInfoById.json', payload)
-      .then(res => {
-        if (res && res.success) {
-          message.success('学历编辑成功');
-          dispatch(
-            changeEducationVisible({
-              educVisible: false,
-              record: {},
-              imageUrl: []
-            })
-          );
-          dispatch(
-            queryEducationRecordInfoList({
-              currentPage: 1,
-              pageSize: 10
-            })
-          );
-        } else {
-          message.error('学历编辑失败：' + res.message && res.message);
-        }
-      })
-      .catch(err => {
-        if (err.data && err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了，请稍后再试');

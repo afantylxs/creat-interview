@@ -3,61 +3,34 @@ import * as constants from './constants';
 const defaultState = {
   educVisible: false,
   buList: [],
-  depList: [],
-  educList: [],
-  total: 1,
-  majorList: [],
-  educRecord: {},
-  imageUrl: [],
-  fileId: '',
-  currentPageData: {
-    currentPage: 1,
-    pageSize: 10,
-    keyword: '',
-    ipsaDeptId: '',
-    ipsaBuDeptId: '',
-    uniformFlag: '',
-    educationCode: ''
-  }
+  turnoverRateList: [],
+  manpowerStructureList: [],
+  tableTitleInfoList: [],
+  workTypeList: []
 };
 
 export default (state = defaultState, action) => {
   const { type, payload } = action;
   switch (type) {
-    case constants.CHANGE_EDUCATIONVISIBLE:
+    case constants.CHANGE_KPIWEEKLEAVEDATAANALYSIS:
       return {
         ...state,
-        educVisible: payload.educVisible,
-        educRecord: payload.record,
-        imageUrl: payload.imageUrl,
-        fileId: payload.fileId
+        turnoverRateList: payload
       };
-    case constants.CHANGE_BULIST:
+
+    case constants.CHANGE_WEEKEMPLOYEEDATAANALYSIS:
       return {
         ...state,
-        buList: payload
+        manpowerStructureList: payload
       };
-    case constants.CHANGE_DEPLIST:
+
+    case constants.CHANGE_KPIWEEKJOBTYPEDATAANALYSIS:
       return {
         ...state,
-        depList: payload
+        tableTitleInfoList: payload.kpiDataAnalysisInfo,
+        workTypeList: payload.newTableTitleInfo
       };
-    case constants.CHANGE_EDUCLIST:
-      return {
-        ...state,
-        educList: payload.educList,
-        total: payload.total
-      };
-    case constants.CHANGE_MAGORLIST:
-      return {
-        ...state,
-        majorList: payload
-      };
-    case constants.CHANGE_CURRENTPAGE:
-      return {
-        ...state,
-        currentPageData: payload
-      };
+
     default:
       return state;
   }

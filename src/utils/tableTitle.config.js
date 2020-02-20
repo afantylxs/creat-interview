@@ -999,3 +999,185 @@ export const generalTableColumns = [
     }
   }
 ];
+
+export const turnoverRateColumns = [
+  {
+    title: '产品线',
+    dataIndex: 'productLine',
+    width: '200px'
+  },
+  {
+    title: '9月在职人数(基线)',
+    dataIndex: 'settlementCycleTotal',
+    width: '150px'
+  },
+  {
+    title: '9月在职骨干人数基线',
+    dataIndex: 'settlementCycleBackboneTotal',
+    width: '150px'
+  },
+  {
+    title: '在职总人数',
+    dataIndex: 'onJobTotal',
+    width: '150px'
+  },
+  {
+    title: '在职骨干人数',
+    dataIndex: 'onJobBackboneTotal',
+    width: '150px'
+  },
+  {
+    title: '主动离职人数',
+    dataIndex: 'initiativeLeaveTotal',
+    width: '150px'
+  },
+  {
+    title: '主动离职平均时间',
+    dataIndex: 'initiativeLeaveAvgTime',
+    width: '150px'
+  },
+  {
+    title: '被动离职总人数',
+    dataIndex: 'passiveLeaveTotal',
+    width: '150px'
+  },
+  {
+    title: '主动离职率',
+    dataIndex: 'initiativeLeaveRate',
+    width: '150px'
+  },
+  {
+    title: '被动离职率',
+    dataIndex: 'passiveLeaveRate',
+    width: '150px'
+  },
+  {
+    title: '离职率',
+    dataIndex: 'leaveRate',
+    width: '150px'
+  },
+  {
+    title: '主动离职骨干人数',
+    dataIndex: 'initiativeLeaveBackboneTotal',
+    width: '150px'
+  },
+  {
+    title: '被动离职骨干总人数',
+    dataIndex: 'passiveLeaveBackboneTotal',
+    width: '150px'
+  },
+  {
+    title: '骨干主动离职率',
+    dataIndex: 'initiativeLeaveBackboneRate',
+    width: '150px'
+  },
+  {
+    title: '骨干被动离职率',
+    dataIndex: 'passiveLeaveBackboneRate',
+    width: '150px'
+  },
+  {
+    title: '骨干离职率',
+    dataIndex: 'leaveBackboneRate',
+    width: '150px'
+  }
+];
+
+export const manpowerStructureColumns = [
+  {
+    title: '产品线',
+    dataIndex: 'productLine',
+    width: '200px'
+  },
+  {
+    title: '在职总人数',
+    dataIndex: 'onJobTotal',
+    width: '150px'
+  },
+  {
+    title: '在职骨干人数',
+    dataIndex: 'onJobBackboneTotal',
+    width: '150px'
+  },
+  {
+    title: '211人数',
+    dataIndex: 'emphasisSchoolTotal',
+    width: '150px'
+  },
+
+  {
+    title: '211人数百分比',
+    dataIndex: 'emphasisSchoolRat',
+    width: '150px'
+  },
+  {
+    title: '211骨干人数',
+    dataIndex: 'emphasisSchoolBackboneTotal',
+    width: '150px'
+  },
+  {
+    title: '211骨干人数百分比',
+    dataIndex: 'emphasisSchoolBackboneRat',
+    width: '150px'
+  },
+  {
+    title: '统招本科人数',
+    dataIndex: 'undergraduateTotal',
+    width: '150px'
+  },
+  {
+    title: '统招本科人数百分比',
+    dataIndex: 'undergraduateRat',
+    width: '150px'
+  },
+  {
+    title: '初级人数',
+    dataIndex: 'primaryTotal',
+    width: '150px'
+  },
+  {
+    title: '中级人数',
+    dataIndex: 'middleTotal',
+    width: '150px'
+  },
+  {
+    title: '高级人数',
+    dataIndex: 'highTotal',
+    width: '150px'
+  },
+  {
+    title: '专家人数',
+    dataIndex: 'expertTotal',
+    width: '150px'
+  },
+  {
+    title: '资深',
+    dataIndex: 'seniorTotal',
+    width: '150px'
+  },
+  {
+    title: '初级人数百分比',
+    dataIndex: 'primaryRat',
+    width: '150px'
+  },
+  {
+    title: '中级人数百分比',
+    dataIndex: 'middleRat',
+    width: '150px'
+  },
+  {
+    title: '高级人数百分比',
+    dataIndex: 'highRat',
+    width: '150px'
+  },
+  {
+    title: '专家人数百分比',
+    dataIndex: 'expertRat',
+    width: '150px'
+  },
+  {
+    title: '资深人数百分比',
+    dataIndex: 'seniorRat',
+    width: '150px'
+  }
+];
