@@ -6,6 +6,7 @@ import { actionCreators } from '../store';
 import TurnoverRate from './TurnoverRate.jsx';
 import ManpowerStructure from './ManpowerStructure.jsx';
 import WorkType from './WorkType.jsx';
+import WholeKpi from './WholeKpi.jsx';
 
 const { Panel } = Collapse;
 const customPanelStyle = {
@@ -22,7 +23,8 @@ class KpiBiweekly extends Component {
     const {
       queryKpiWeekLeaveDataAnalysis,
       queryKpiWeekEmployeeDataAnalysis,
-      queryKpiWeekJobTypeDataAnalysis
+      queryKpiWeekJobTypeDataAnalysis,
+      queryKpiWeekKpiWholeDataAnalysis
     } = this.props;
     switch (activeKey) {
       case 'turnoverRate':
@@ -33,6 +35,9 @@ class KpiBiweekly extends Component {
         break;
       case 'workType':
         queryKpiWeekJobTypeDataAnalysis();
+        break;
+      case 'wholeKpi':
+        queryKpiWeekKpiWholeDataAnalysis();
         break;
       default:
         break;
@@ -54,25 +59,32 @@ class KpiBiweekly extends Component {
               )}
             >
               <Panel
-                header="软通阿里实施部 离职率"
+                header="软通阿里实施部 -- 离职率"
                 key="turnoverRate"
                 style={customPanelStyle}
               >
                 <TurnoverRate />
               </Panel>
               <Panel
-                header="软通阿里实施部 人力结构"
+                header="软通阿里实施部 -- 人力结构"
                 key="manpower"
                 style={customPanelStyle}
               >
                 <ManpowerStructure />
               </Panel>
               <Panel
-                header="软通阿里实施部 工种分布"
+                header="软通阿里实施部 -- 工种分布"
                 key="workType"
                 style={customPanelStyle}
               >
                 <WorkType />
+              </Panel>
+              <Panel
+                header="软通阿里ITO -- KPI整体进展"
+                key="wholeKpi"
+                style={customPanelStyle}
+              >
+                <WholeKpi />
               </Panel>
             </Collapse>
           </Col>

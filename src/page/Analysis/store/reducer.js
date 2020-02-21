@@ -6,7 +6,9 @@ const defaultState = {
   turnoverRateList: [],
   manpowerStructureList: [],
   tableTitleInfoList: [],
-  workTypeList: []
+  workTypeList: [],
+  wohleKpiList: [],
+  wohleKpitableTitleInfoList: []
 };
 
 export default (state = defaultState, action) => {
@@ -29,6 +31,12 @@ export default (state = defaultState, action) => {
         ...state,
         tableTitleInfoList: payload.kpiDataAnalysisInfo,
         workTypeList: payload.newTableTitleInfo
+      };
+    case constants.CHANGE_KPIWEEKKPIWHOLEDATAANALYSIS:
+      return {
+        ...state,
+        wohleKpitableTitleInfoList: payload.newKpiDataAnalysisInfo,
+        wohleKpiList: payload.newTableTitleInfo
       };
 
     default:
