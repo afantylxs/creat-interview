@@ -42,7 +42,6 @@ class KpiBiweekly extends Component {
       default:
         break;
     }
-    console.log('activeKey', activeKey);
   };
   render() {
     return (

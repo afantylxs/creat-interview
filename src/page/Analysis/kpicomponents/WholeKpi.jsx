@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { actionCreators } from '../store';
 import './turnoverRate.less';
+const { MonthPicker } = DatePicker;
 
 @connect(state => state.analysis, actionCreators)
 class WholeKpi extends Component {
@@ -16,7 +17,7 @@ class WholeKpi extends Component {
   }
   onChangeTurnoverRate = (date, dateString) => {
     this.setState({
-      dateString: moment(date).format('YYYY-MM')
+      dateString
     });
   };
 
@@ -32,7 +33,7 @@ class WholeKpi extends Component {
         <Row>
           <Col span={24}>
             <span>时间筛选：</span>
-            <DatePicker
+            <MonthPicker
               showToday={false}
               onChange={this.onChangeTurnoverRate}
               placeholder="请选择日期"
