@@ -23,8 +23,8 @@ class WholeKpi extends Component {
 
   handleSearchTurnoverRate = () => {
     const { dateString } = this.state;
-    const { queryKpiWeekJobTypeDataAnalysis } = this.props;
-    queryKpiWeekJobTypeDataAnalysis(dateString);
+    const { queryKpiWeekKpiWholeDataAnalysis } = this.props;
+    queryKpiWeekKpiWholeDataAnalysis(dateString);
   };
   render() {
     const { wohleKpiList, wohleKpitableTitleInfoList } = this.props;
