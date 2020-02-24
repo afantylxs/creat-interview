@@ -85,6 +85,11 @@ export const educationList = [
     width: '150px'
   },
   {
+    title: '学校类型',
+    dataIndex: 'schoolType',
+    width: '150px'
+  },
+  {
     title: '专业',
     dataIndex: 'majorCode',
     width: '150px'

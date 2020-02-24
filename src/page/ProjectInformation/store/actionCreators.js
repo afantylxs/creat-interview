@@ -97,6 +97,11 @@ export const changeFocusLeaveProjList = payload => ({
   payload
 });
 
+export const changeFocusProductLineList = payload => ({
+  type: constants.CHANGE_PRODUCTLINE,
+  payload
+});
+
 //存储搜索框里的this指针
 
 export const handleSaveSearchThis = payload => ({
@@ -175,6 +180,45 @@ export const deptInfo = payload => {
   };
 };
 
+//获取二类，三类岗位
+export const deptInfoName = payload => {
+  return dispatch => {
+    fetch
+      .get('/api/dictInfo/name/pid', {
+        params: {
+          dictName: payload.activeKey,
+          pid: payload.pid ? payload.pid : ''
+        }
+      })
+      .then(res => {
+        if (res && res.success && res.data) {
+          const dicList = res.data;
+          switch (payload.activeKey) {
+            case 'job_class_2':
+              dispatch(changeFocusSecondCategoryId(dicList));
+              break;
+            case 'job_class_3':
+              dispatch(changeFocusThirdCategoryId(dicList));
+              break;
+            default:
+              break;
+          }
+        } else {
+          message.error('出错了');
+          dispatch(changeFocusSecondCategoryId([]));
+          dispatch(changeFocusThirdCategoryId([]));
+        }
+      })
+      .catch(err => {
+        if (err && err.data && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了');
+        }
+      });
+  };
+};
+
 //查询项目列表接口
 export const queryProjectRecordInfoList = payload => {
   return dispatch => {
@@ -194,10 +238,10 @@ export const queryProjectRecordInfoList = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -239,10 +283,10 @@ export const deptInfoIframe = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };
@@ -264,12 +308,6 @@ export const dictInfo = payload => {
             case 'job_class_1':
               dispatch(changeFocusFirstCategoryId(dicList));
               break;
-            case 'job_class_2':
-              dispatch(changeFocusSecondCategoryId(dicList));
-              break;
-            case 'job_class_3':
-              dispatch(changeFocusThirdCategoryId(dicList));
-              break;
             case 'job_class_level':
               dispatch(changeFocusAliGradeCategoryId(dicList));
               break;
@@ -281,6 +319,9 @@ export const dictInfo = payload => {
               break;
             case 'leave_proj_reason':
               dispatch(changeFocusLeaveProjList(dicList));
+              break;
+            case 'product_line':
+              dispatch(changeFocusProductLineList(dicList));
               break;
             default:
               break;
@@ -330,10 +371,10 @@ export const updateProjectRecordInfoById = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
-          message.error('出错了');
+          message.error('出错了，请稍后再试');
         }
       });
   };

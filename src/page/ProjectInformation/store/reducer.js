@@ -23,6 +23,7 @@ const defaultState = {
   saveSearchData: {},
   leaveProjList: [],
   thats: null,
+  productLineList: [],
   currentPageData: {
     currentPage: 1,
     pageSize: 10,
@@ -51,7 +52,8 @@ const defaultState = {
     backboneFlag: '',
     chargeFlag: '',
     keyword: '',
-    businessLine: ''
+    businessLine: '',
+    productLine: ''
   }
 };
 
@@ -160,6 +162,11 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         leaveProjList: payload
+      };
+    case constants.CHANGE_PRODUCTLINE:
+      return {
+        ...state,
+        productLineList: payload
       };
     default:
       return state;

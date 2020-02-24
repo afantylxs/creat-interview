@@ -112,7 +112,13 @@ class EditModal extends Component {
             </Form.Item>
             <Form.Item label="面试评价" hasFeedback>
               {getFieldDecorator('interviewComment', {
-                rules: [{ required: true, message: '不能为空' }],
+                rules: [
+                  { required: true, message: '不能为空' },
+                  {
+                    pattern: /^(?!(\s+$))/,
+                    message: '禁止内容全部为空格'
+                  }
+                ],
                 initialValue:
                   editRecord && editRecord.interviewComment
                     ? editRecord.interviewComment

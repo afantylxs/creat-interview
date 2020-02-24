@@ -60,6 +60,11 @@ class EducationInfo extends Component {
         width: '15%'
       },
       {
+        title: '学校类型',
+        dataIndex: 'schoolTypeName',
+        width: '6%'
+      },
+      {
         title: '专业',
         dataIndex: 'majorName',
         width: '15%'
@@ -154,7 +159,8 @@ class EducationInfo extends Component {
       imageUrl: imgUrl,
       fileId: ''
     });
-    dictInfo();
+    dictInfo('major_code');
+    dictInfo('school_type');
   };
 
   componentDidMount() {

@@ -31,6 +31,12 @@ export const changeCurrentPageData = payload => ({
   type: constants.CHANGE_CURRENTPAGE,
   payload
 });
+
+export const changeSchoolTypeList = payload => ({
+  type: constants.CHANGE_SCHOOLTYPE,
+  payload
+});
+
 //查询BU列表
 export const deptInfoBu = payload => {
   return dispatch => {
@@ -113,13 +119,23 @@ export const dictInfo = payload => {
     fetch
       .get('/api/dictInfo/name', {
         params: {
-          dictName: 'major_code'
+          dictName: payload
         }
       })
       .then(res => {
-        if (res && res.success) {
+        if (res && res.success && res.data) {
           const data = res.data;
-          dispatch(changeDircInfoList(data));
+          switch (payload) {
+            case 'major_code':
+              dispatch(changeDircInfoList(data));
+              break;
+            case 'school_type':
+              dispatch(changeSchoolTypeList(data));
+              break;
+
+            default:
+              break;
+          }
         } else {
           message.error(res.message && res.message);
         }

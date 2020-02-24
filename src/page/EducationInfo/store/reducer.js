@@ -10,6 +10,7 @@ const defaultState = {
   educRecord: {},
   imageUrl: [],
   fileId: '',
+  schoolTypeList: [],
   currentPageData: {
     currentPage: 1,
     pageSize: 10,
@@ -57,6 +58,11 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         currentPageData: payload
+      };
+    case constants.CHANGE_SCHOOLTYPE:
+      return {
+        ...state,
+        schoolTypeList: payload
       };
     default:
       return state;

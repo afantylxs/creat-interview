@@ -279,7 +279,8 @@ class ProjectInformation extends Component {
       backboneFlag: '',
       chargeFlag: '',
       keyword: value.target.value,
-      businessLine: ''
+      businessLine: '',
+      productLine: ''
     };
     changeCurrentPageData(arg0);
   };
@@ -315,7 +316,8 @@ class ProjectInformation extends Component {
       backboneFlag: '',
       chargeFlag: '',
       keyword: '',
-      businessLine: ''
+      businessLine: '',
+      productLine: ''
     };
     changeCurrentPageData(arg0);
     changeProjectDataList({ data: [], total: 1 });

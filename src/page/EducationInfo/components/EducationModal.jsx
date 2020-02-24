@@ -46,7 +46,7 @@ class EducationModal extends Component {
 
   // 根据不同的信息渲染不同的输入框
   baseFormInput = key => {
-    const { majorList } = this.props;
+    const { majorList, schoolTypeList } = this.props;
     if (key === 'majorCode') {
       return (
         <Select>
@@ -54,6 +54,21 @@ class EducationModal extends Component {
             //专业下拉列表
             return (
               <Option key={item.id} value={item.id}>
+                {item.label}
+              </Option>
+            );
+          })}
+        </Select>
+      );
+    }
+
+    if (key === 'schoolType') {
+      return (
+        <Select>
+          {schoolTypeList.map(item => {
+            //学校类型下拉列表
+            return (
+              <Option key={item.value} value={Number(item.value)}>
                 {item.label}
               </Option>
             );
@@ -129,7 +144,8 @@ class EducationModal extends Component {
           educationCode: values.educationCode,
           uniformFlag: values.uniformFlag,
           avatarIdPath: newfiledID,
-          id: educRecord.id
+          id: educRecord.id,
+          schoolType: values.schoolType
         };
         updateEducationRecordInfoById(arg0);
       }
@@ -181,10 +197,6 @@ class EducationModal extends Component {
       record: educRecord
       // fileId: file.response.data.fileId
     });
-  };
-
-  handlePreview = file => {
-    console.log('handlePreviewfile', file);
   };
 
   render() {
@@ -251,7 +263,6 @@ class EducationModal extends Component {
                   fileList={imageUrl}
                   action="/api/file/uploadFile.json"
                   onChange={this.handleChangeFile.bind(this)}
-                  onPreview={this.handlePreview.bind(this)}
                 >
                   {imageUrl.length >= 3 ? null : uploadButton}
                 </Upload>

@@ -73,16 +73,35 @@ class SearchForm extends Component {
     dictInfo('job_class_1');
   };
 
-  //获取二类岗位
-  handleFocusSecondCategoryId = () => {
-    const { dictInfo } = this.props;
-    dictInfo('job_class_2');
-  };
+  //选择二，三类岗位
+  handleChangeCategroy = (activeKey, value) => {
+    const {
+      deptInfoName,
+      changeFocusSecondCategoryId,
+      changeFocusThirdCategoryId
+    } = this.props;
+    if (value) {
+      const arg0 = {
+        activeKey,
+        pid: value
+      };
+      deptInfoName(arg0);
+    }
 
-  //获取三类岗位
-  handleFocusThirdCategoryId = () => {
-    const { dictInfo } = this.props;
-    dictInfo('job_class_3');
+    if (activeKey === 'job_class_2' && !value) {
+      this.props.form.setFieldsValue({
+        secondCategoryId: '',
+        thirdJobId: ''
+      });
+      changeFocusSecondCategoryId([]);
+      changeFocusThirdCategoryId([]);
+    }
+    if (activeKey === 'job_class_3' && !value) {
+      this.props.form.setFieldsValue({
+        thirdJobId: ''
+      });
+      changeFocusThirdCategoryId([]);
+    }
   };
 
   //获取层级
@@ -111,6 +130,12 @@ class SearchForm extends Component {
       flag: 'zero'
     };
     deptInfoIframe(arg0);
+  };
+
+  //获取产品线
+  handleFocusProductLine = () => {
+    const { dictInfo } = this.props;
+    dictInfo('product_line');
   };
 
   handleChangeIftame = (value, key) => {
@@ -255,7 +280,8 @@ class SearchForm extends Component {
         resourceStatus: values.resourceStatus,
         backboneFlag: values.backboneFlag,
         chargeFlag: values.chargeFlag,
-        businessLine: values.businessLine
+        businessLine: values.businessLine,
+        productLine: values.productLine
       };
       changeSaveSearchSubmit(values);
       changeCurrentPageData(arg0);
@@ -445,7 +471,8 @@ class SearchForm extends Component {
       groupdeptList = [],
       careerdepList = [],
       deptIdList = [],
-      handleSaveSearchThis
+      handleSaveSearchThis,
+      productLineList = []
     } = this.props;
 
     handleSaveSearchThis(that);
@@ -556,9 +583,9 @@ class SearchForm extends Component {
                     <Select
                       allowClear
                       onFocus={this.handleFocusFirstCategoryId.bind(this)}
-                      onChange={this.handleAllInputChange.bind(
+                      onChange={this.handleChangeCategroy.bind(
                         this,
-                        'firstCategoryId'
+                        'job_class_2'
                       )}
                     >
                       {firstCategoryidList &&
@@ -585,10 +612,9 @@ class SearchForm extends Component {
                   })(
                     <Select
                       allowClear
-                      onFocus={this.handleFocusSecondCategoryId.bind(this)}
-                      onChange={this.handleAllInputChange.bind(
+                      onChange={this.handleChangeCategroy.bind(
                         this,
-                        'secondCategoryId'
+                        'job_class_3'
                       )}
                     >
                       {secondCategoryidList &&
@@ -613,14 +639,7 @@ class SearchForm extends Component {
                   {getFieldDecorator('thirdJobId', {
                     initialValue: thirdJobIdValue
                   })(
-                    <Select
-                      allowClear
-                      onFocus={this.handleFocusThirdCategoryId.bind(this)}
-                      onChange={this.handleAllInputChange.bind(
-                        this,
-                        'thirdJobId'
-                      )}
-                    >
+                    <Select allowClear>
                       {thirdCategoryidList &&
                         thirdCategoryidList.map(item => {
                           return (
@@ -1052,6 +1071,30 @@ class SearchForm extends Component {
                         'businessLine'
                       )}
                     />
+                  )}
+                </Form.Item>
+              </Col>
+              <Col span={5}>
+                <Form.Item
+                  labelCol={{ span: 9 }}
+                  wrapperCol={{ span: 15 }}
+                  label="产品线"
+                  hasFeedback
+                >
+                  {getFieldDecorator(
+                    'productLine',
+                    {}
+                  )(
+                    <Select onFocus={this.handleFocusProductLine.bind(this)}>
+                      {Array.isArray(productLineList) &&
+                        productLineList.map(item => {
+                          return (
+                            <Option key={item.value} value={item.value}>
+                              {item.label}
+                            </Option>
+                          );
+                        })}
+                    </Select>
                   )}
                 </Form.Item>
               </Col>

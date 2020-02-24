@@ -15,22 +15,30 @@ class ProjectModal extends Component {
       shortTime: null
     };
   }
+
+  //获取产品线
+  handleFocusProductLine = () => {
+    const { dictInfo } = this.props;
+    dictInfo('product_line');
+  };
+
   //获取一类岗位
   handleFocusFirstCategoryId = () => {
     const { dictInfo } = this.props;
     dictInfo('job_class_1');
   };
 
-  //获取二类岗位
-  handleFocusSecondCategoryId = () => {
-    const { dictInfo } = this.props;
-    dictInfo('job_class_2');
-  };
-
-  //获取三类岗位
-  handleFocusThirdCategoryId = () => {
-    const { dictInfo } = this.props;
-    dictInfo('job_class_3');
+  //选择二，三类岗位
+  handleChangeCategroy = (activeKey, value) => {
+    console.log('activeKey', activeKey, 'value', value);
+    const { deptInfoName } = this.props;
+    if (value.key) {
+      const arg0 = {
+        activeKey,
+        pid: value && value.key ? value.key : value
+      };
+      deptInfoName(arg0);
+    }
   };
 
   //获取层级
@@ -147,7 +155,8 @@ class ProjectModal extends Component {
           leaveProjType: values.leaveProjType,
           projectStartTimeFormat,
           projectEndTimeFormat,
-          remark: values.remark
+          remark: values.remark,
+          productLine: values.productLine.key
         };
         updateProjectRecordInfoById(arg0);
       }
@@ -184,7 +193,8 @@ class ProjectModal extends Component {
       groupdeptList = [],
       careerdepList = [],
       deptIdList = [],
-      projectRecord
+      projectRecord,
+      productLineList = []
     } = this.props;
     const {
       projectId,
@@ -196,7 +206,8 @@ class ProjectModal extends Component {
       groupDeptId,
       careerDeptId,
       deptId,
-      careerGroupId
+      careerGroupId,
+      productLine
     } = projectRecord;
 
     const { getFieldDecorator } = this.props.form;
@@ -264,9 +275,12 @@ class ProjectModal extends Component {
                     rules: [{ required: true, message: '不能为空' }]
                   })(
                     <Select
-                      allowClear
                       labelInValue
                       onFocus={this.handleFocusFirstCategoryId.bind(this)}
+                      onChange={this.handleChangeCategroy.bind(
+                        this,
+                        'job_class_2'
+                      )}
                     >
                       {firstCategoryidList.map(item => {
                         return (
@@ -289,9 +303,11 @@ class ProjectModal extends Component {
                     rules: [{ required: true, message: '不能为空' }]
                   })(
                     <Select
-                      allowClear
                       labelInValue
-                      onFocus={this.handleFocusSecondCategoryId.bind(this)}
+                      onChange={this.handleChangeCategroy.bind(
+                        this,
+                        'job_class_3'
+                      )}
                     >
                       {secondCategoryidList.map(item => {
                         return (
@@ -311,11 +327,7 @@ class ProjectModal extends Component {
                       thirdJobId && thirdJobId.key ? thirdJobId : '',
                     rules: [{ required: true, message: '不能为空' }]
                   })(
-                    <Select
-                      allowClear
-                      labelInValue
-                      onFocus={this.handleFocusThirdCategoryId.bind(this)}
-                    >
+                    <Select labelInValue>
                       {thirdCategoryidList.map(item => {
                         return (
                           <Option key={item.id} value={item.id}>
@@ -472,6 +484,28 @@ class ProjectModal extends Component {
                         deptIdList.map(item => {
                           return (
                             <Option key={item.id} value={item.id}>
+                              {item.label}
+                            </Option>
+                          );
+                        })}
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item label="产品线" hasFeedback>
+                  {getFieldDecorator('productLine', {
+                    initialValue: productLine,
+                    rules: [{ required: true, message: '不能为空' }]
+                  })(
+                    <Select
+                      labelInValue
+                      onFocus={this.handleFocusProductLine.bind(this)}
+                    >
+                      {Array.isArray(productLineList) &&
+                        productLineList.map(item => {
+                          return (
+                            <Option key={item.value} value={item.value}>
                               {item.label}
                             </Option>
                           );

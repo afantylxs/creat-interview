@@ -327,6 +327,27 @@ export const projectColumnsFunction = (that, permission) => {
       )
     },
     {
+      title: '产品线',
+      dataIndex: 'productLineName',
+      width: '100px',
+      onCell: () => {
+        return {
+          style: {
+            maxWidth: 100,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            cursor: 'pointer'
+          }
+        };
+      },
+      render: text => (
+        <Tooltip placement="topLeft" title={text}>
+          {text}
+        </Tooltip>
+      )
+    },
+    {
       title: '项目名称',
       dataIndex: 'projectName',
       width: '150px',
@@ -609,7 +630,8 @@ export const projectColumnsFunction = (that, permission) => {
           changeCareerGroupId,
           changeCareerDeptId,
           changeGroupDeptId,
-          changeDeptId
+          changeDeptId,
+          deptInfoName
         } = that.props;
 
         return (
@@ -669,6 +691,14 @@ export const projectColumnsFunction = (that, permission) => {
                   label: record.deptName ? record.deptName : ''
                 };
 
+                newRecord.productLine = {
+                  key:
+                    record.productLine || record.productLine === 0
+                      ? record.productLine
+                      : '',
+                  label: record.productLineName ? record.productLineName : ''
+                };
+
                 //打开弹框获取事业群
                 if (record.aliFrameName && record.aliFrameId) {
                   const arg0 = {
@@ -712,6 +742,25 @@ export const projectColumnsFunction = (that, permission) => {
                 } else {
                   changeDeptId([]);
                 }
+
+                //打开弹窗获取二类岗位
+                if (record.firstCategoryId) {
+                  const arg0 = {
+                    activeKey: 'job_class_2',
+                    pid: record.firstCategoryId
+                  };
+                  deptInfoName(arg0);
+                }
+
+                //打开弹窗获取三类岗位
+                if (record.secondCategoryId) {
+                  const arg0 = {
+                    activeKey: 'job_class_3',
+                    pid: record.secondCategoryId
+                  };
+                  deptInfoName(arg0);
+                }
+
                 newRecord.shortDate =
                   record.projetDurationType === 0 ? true : false;
 
