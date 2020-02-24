@@ -743,23 +743,23 @@ export const projectColumnsFunction = (that, permission) => {
                   changeDeptId([]);
                 }
 
-                //打开弹窗获取二类岗位
-                if (record.firstCategoryId) {
-                  const arg0 = {
-                    activeKey: 'job_class_2',
-                    pid: record.firstCategoryId
-                  };
-                  deptInfoName(arg0);
-                }
+                // //打开弹窗获取二类岗位
+                // if (record.firstCategoryId) {
+                //   const arg0 = {
+                //     activeKey: 'job_class_2',
+                //     pid: record.firstCategoryId
+                //   };
+                //   deptInfoName(arg0);
+                // }
 
-                //打开弹窗获取三类岗位
-                if (record.secondCategoryId) {
-                  const arg0 = {
-                    activeKey: 'job_class_3',
-                    pid: record.secondCategoryId
-                  };
-                  deptInfoName(arg0);
-                }
+                // //打开弹窗获取三类岗位
+                // if (record.secondCategoryId) {
+                //   const arg0 = {
+                //     activeKey: 'job_class_3',
+                //     pid: record.secondCategoryId
+                //   };
+                //   deptInfoName(arg0);
+                // }
 
                 newRecord.shortDate =
                   record.projetDurationType === 0 ? true : false;
