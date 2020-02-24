@@ -76,10 +76,9 @@ class AssignModal extends Component {
         >
           <Form {...formItemLayout}>
             <Form.Item label="项目" hasFeedback>
-              {getFieldDecorator(
-                'projectId',
-                {}
-              )(
+              {getFieldDecorator('projectId', {
+                rules: [{ required: true, message: '不能为空' }]
+              })(
                 <Select
                   onFocus={this.handleGetDicInfo.bind(this, 'project_list')}
                   placeholder="请选择项目"
@@ -97,10 +96,9 @@ class AssignModal extends Component {
               )}
             </Form.Item>
             <Form.Item label="面试官" hasFeedback>
-              {getFieldDecorator(
-                'userIds',
-                {}
-              )(
+              {getFieldDecorator('userIds', {
+                rules: [{ required: true, message: '不能为空' }]
+              })(
                 <Select
                   mode="multiple"
                   tokenSeparators={[',']}
@@ -118,10 +116,9 @@ class AssignModal extends Component {
               )}
             </Form.Item>
             <Form.Item label="面试截止时间" hasFeedback>
-              {getFieldDecorator(
-                'interviewEndTimeFormat',
-                {}
-              )(
+              {getFieldDecorator('interviewEndTimeFormat', {
+                rules: [{ required: true, message: '不能为空' }]
+              })(
                 <DatePicker
                   showToday={false}
                   disabledDate={this.disabledDate}
