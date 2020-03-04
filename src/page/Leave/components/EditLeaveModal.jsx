@@ -187,8 +187,8 @@ class EditLeaveModal extends Component {
         if (!id) {
           arg0.empNo = empNoFlag;
           saveEmployeeLeaveInfo(arg0);
+          localStorage.setItem('leavemonth', '');
         }
-        console.log('arg0', arg0);
       }
     });
   };

@@ -43,9 +43,11 @@ class Department extends Component {
         });
       }
     });
+    const leavemonth = localStorage.getItem('leavemonth');
     const arg0 = {
       currentPage: 1,
-      pageSize: 10
+      pageSize: 10,
+      employeeStatus: leavemonth
     };
     this.getQueryEmployeeLeaveInfoList(arg0);
   }
@@ -96,6 +98,7 @@ class Department extends Component {
   //导出excel
   handleDownload = () => {
     const token = localStorage.getItem('token');
+    const leavemonth = localStorage.getItem('leavemonth');
     const { currentPageData } = this.props;
     axios({
       method: 'get',
@@ -104,7 +107,8 @@ class Department extends Component {
         Authorization: 'Bearer ' + token
       },
       params: {
-        ...currentPageData
+        ...currentPageData,
+        employeeStatus: leavemonth
       },
       responseType: 'blob'
     })
@@ -174,6 +178,7 @@ class Department extends Component {
     };
     changeCurrentPageData(arg0);
     this.getQueryEmployeeLeaveInfoList(arg0);
+    localStorage.setItem('leavemonth', '');
     thats.props.form.resetFields();
   };
 
@@ -190,10 +195,12 @@ class Department extends Component {
   //分页查询
   handleTableChange = page => {
     const { changeCurrentPageData, currentPageData } = this.props;
+    const leavemonth = localStorage.getItem('leavemonth');
     const arg0 = {
       ...currentPageData,
       currentPage: page,
-      pageSize: 10
+      pageSize: 10,
+      employeeStatus: leavemonth
     };
     changeCurrentPageData(arg0);
     this.getQueryEmployeeLeaveInfoList(arg0);
@@ -221,6 +228,7 @@ class Department extends Component {
       leaveProjEndTimeFormat: ''
     };
     changeCurrentPageData(arg0);
+    localStorage.setItem('leavemonth', '');
     changeLeaveDataList({ data: [], total: 1 });
   }
 

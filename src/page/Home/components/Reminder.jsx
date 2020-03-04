@@ -25,6 +25,11 @@ class Reminder extends Component {
     this.props.history.push('/basic');
   };
 
+  handlGoToLeave = () => {
+    localStorage.setItem('leavemonth', '2');
+    this.props.history.push('/leave');
+  };
+
   handlGoToEduc = () => {
     localStorage.setItem('educStatusFlag', '2');
     this.props.history.push('/education');
@@ -53,7 +58,11 @@ class Reminder extends Component {
           </Col>
         )}
         {permission !== 'recruitmentConsultant' && (
-          <Col span={12} className="reminder-content reminder-content-link">
+          <Col
+            span={12}
+            onClick={() => this.handlGoToLeave()}
+            className="reminder-content reminder-content-link"
+          >
             {month}月离职人数
             <span style={{ color: '#658ef7' }}>
               {reminderList && reminderList.leaveEmpTotal}

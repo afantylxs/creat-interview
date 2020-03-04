@@ -43,7 +43,6 @@ export default class Home extends Component {
   }
   render() {
     const { pathname } = this.props.location;
-
     //根据路由判断是进入人员管理还是内面系统
     if (pathname === '/home') {
       const { permission } = this.state;

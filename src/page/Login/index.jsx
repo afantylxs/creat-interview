@@ -41,6 +41,13 @@ class Login extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { pathname } = this.props.location;
+    if (pathname === '/login') {
+      document.title = '在职人员管理系统';
+    }
+
+    if (pathname === '/interview/login') {
+      document.title = '内面管理系统';
+    }
 
     const formItemLayout = {
       labelCol: {

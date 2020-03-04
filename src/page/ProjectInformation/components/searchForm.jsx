@@ -1085,7 +1085,10 @@ class SearchForm extends Component {
                     'productLine',
                     {}
                   )(
-                    <Select onFocus={this.handleFocusProductLine.bind(this)}>
+                    <Select
+                      allowClear
+                      onFocus={this.handleFocusProductLine.bind(this)}
+                    >
                       {Array.isArray(productLineList) &&
                         productLineList.map(item => {
                           return (

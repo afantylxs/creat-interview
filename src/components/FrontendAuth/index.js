@@ -6,6 +6,23 @@ import {
   inserviceRouterList
 } from '../../utils/router.config.js';
 
+const interviewRouter = [
+  '/interview/login',
+  '/interview/home',
+  '/interview/personnel'
+];
+
+const incumbencyRouter = [
+  '/login',
+  '/register',
+  '/home',
+  '/basic',
+  '/education',
+  '/project',
+  '/leave',
+  '/analysis'
+];
+
 class FrontendAuth extends Component {
   componentWillReceiveProps(nextProps) {
     // const { pathname } = this.props.location;
@@ -59,6 +76,14 @@ class FrontendAuth extends Component {
     }
   }
   render() {
+    const { pathname } = this.props.location;
+    if (interviewRouter.includes(pathname)) {
+      document.title = '内面管理系统';
+    }
+
+    if (incumbencyRouter.includes(pathname)) {
+      document.title = '在职人员管理系统';
+    }
     return null;
   }
 }

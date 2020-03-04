@@ -97,6 +97,7 @@ class SearchForm extends Component {
         keyword: ''
       };
       changeCurrentPageData(arg0);
+      localStorage.setItem('leavemonth', '');
       queryEmployeeLeaveInfoList(arg0);
     });
   };

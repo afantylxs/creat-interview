@@ -7,6 +7,7 @@ import { actionCreators } from './store';
 import WeekAnalysis from './components/WeekAnalysis';
 import GeneralTable from './components/GeneralTable';
 import KpiBiweekly from './kpicomponents';
+import Weekly from './weeklycomponents';
 import './index.less';
 const { TabPane } = Tabs;
 
@@ -29,7 +30,7 @@ class Analysis extends Component {
     super(props);
     this.state = {
       weekData: null,
-      activeKye: 'week',
+      activeKye: 'weekly',
       generalTotal: null,
       generalData: []
     };
@@ -41,10 +42,16 @@ class Analysis extends Component {
       },
       () => {
         const { activeKye } = this.state;
-        const { queryKpiWeekLeaveDataAnalysis } = this.props;
+        const {
+          queryKpiWeekLeaveDataAnalysis,
+          queryEmployeeCountByDept
+        } = this.props;
         switch (activeKye) {
           case 'week':
             this.queryEmployeeWeekDataAnalysis(arg0);
+            break;
+          case 'weekly':
+            queryEmployeeCountByDept();
             break;
           case 'general':
             this.queryAllEmployeeInfoList();
@@ -149,15 +156,18 @@ class Analysis extends Component {
                   }
                 />
               </TabPane>
+              <TabPane tab="周报" key="weekly">
+                <Weekly />
+              </TabPane>
+              <TabPane tab="KPI双周报" key="kpiWeekly">
+                <KpiBiweekly />
+              </TabPane>
               <TabPane tab="一览表" key="general">
                 <GeneralTable
                   generalData={generalData}
                   generalTotal={generalTotal}
                   queryAllEmployeeInfoList={this.queryAllEmployeeInfoList}
                 />
-              </TabPane>
-              <TabPane tab="KPI双周报" key="kpiWeekly">
-                <KpiBiweekly />
               </TabPane>
             </Tabs>
           </Col>

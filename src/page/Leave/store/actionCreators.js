@@ -190,13 +190,18 @@ export const saveEmployeeLeaveInfo = payload => {
       .then(res => {
         if (res && res.success) {
           message.success('新增成功');
+          const employeeStatus = localStorage.getItem('leavemonth');
           dispatch(
             changeLeaveVisible({
               leaveVisible: false,
               record: {}
             })
           );
-          dispatch(queryEmployeeLeaveInfoList());
+          dispatch(
+            queryEmployeeLeaveInfoList({
+              employeeStatus
+            })
+          );
         } else {
           if (res.message) {
             message.error(res.message);
@@ -223,13 +228,14 @@ export const updateEmployeeLeaveInfoById = payload => {
       .then(res => {
         if (res && res.success) {
           message.success('编辑成功');
+          const employeeStatus = localStorage.getItem('leavemonth');
           dispatch(
             changeLeaveVisible({
               leaveVisible: false,
               record: {}
             })
           );
-          dispatch(queryEmployeeLeaveInfoList());
+          dispatch(queryEmployeeLeaveInfoList({ employeeStatus }));
         } else {
           if (res.message) {
             message.error(res.message);
