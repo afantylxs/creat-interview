@@ -97,6 +97,17 @@ class AddModal extends Component {
     });
   };
 
+  //来源于资源经理联动操作
+  handleChangeSource = (key, value) => {
+    console.log('key', key, 'e', value);
+    const { queryUserListInfoByRolePermission } = this.props;
+    queryUserListInfoByRolePermission({
+      key,
+      value: 'resourceMange',
+      source: value
+    });
+  };
+
   render() {
     const {
       addModalvisible,
@@ -157,6 +168,30 @@ class AddModal extends Component {
                 ]
               })(<Input />)}
             </Form.Item>
+            <Form.Item label="简历来源" hasFeedback>
+              {getFieldDecorator('resumeSource', {
+                rules: [
+                  {
+                    required: true,
+                    message: '不能为空'
+                  }
+                ]
+              })(
+                <Select
+                  onFocus={this.handleGetDicInfo.bind(this, 'owner_range')}
+                  onChange={this.handleChangeSource.bind(this, 'add')}
+                  placeholder="请选择简历来源"
+                >
+                  {ownerList.map(item => {
+                    return (
+                      <Option key={item.id} value={item.value}>
+                        {item.label}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </Form.Item>
             <Form.Item label="资源经理" hasFeedback>
               {getFieldDecorator('resourceManagerId', {
                 rules: [
@@ -177,29 +212,7 @@ class AddModal extends Component {
                 </Select>
               )}
             </Form.Item>
-            <Form.Item label="简历来源" hasFeedback>
-              {getFieldDecorator('resumeSource', {
-                rules: [
-                  {
-                    required: true,
-                    message: '不能为空'
-                  }
-                ]
-              })(
-                <Select
-                  onFocus={this.handleGetDicInfo.bind(this, 'owner_range')}
-                  placeholder="请选择简历来源"
-                >
-                  {ownerList.map(item => {
-                    return (
-                      <Option key={item.id} value={item.value}>
-                        {item.label}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              )}
-            </Form.Item>
+
             <Form.Item label="招聘级别" hasFeedback>
               {getFieldDecorator('recruitmentLevel', {
                 rules: [

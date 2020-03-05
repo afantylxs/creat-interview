@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Form, Icon, Input, Button, Checkbox, Col, Row, message } from 'antd';
+import { Form, Icon, Input, Button, Select, Col, Row, message } from 'antd';
 import './index.less';
+
+const { Option } = Select;
 
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      passwordType: 'text'
+      passwordType: 'text',
+      sourceList: []
     };
   }
 
@@ -33,7 +36,7 @@ class Register extends Component {
             ...values
           })
           .then(res => {
-            if (res.data.success) {
+            if (res && res.data && res.data.success) {
               message.success('注册成功');
               localStorage.setItem('token', '');
               localStorage.setItem('flag', false);
@@ -48,9 +51,30 @@ class Register extends Component {
       }
     });
   };
+
+  //查询内面官群组范围接口（字典接口）
+  handleFocusGetSource = () => {
+    axios
+      .get('/api/interview/dict/source')
+      .then(res => {
+        if (res && res.data && res.data.success) {
+          const { data } = res.data;
+          this.setState({
+            sourceList: data
+          });
+        } else {
+          message.error(
+            '面试群组获取失败:' + res.data.message ? res.data.message : ''
+          );
+        }
+      })
+      .catch(err => {
+        message.error('面试群组获取失败' + err);
+      });
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { passwordType } = this.state;
+    const { passwordType, sourceList = [] } = this.state;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -187,6 +211,29 @@ class Register extends Component {
                             placeholder="请输入软通员工姓名"
                             autocomplete="off"
                           />
+                        )}
+                      </Form.Item>
+                      <Form.Item>
+                        {getFieldDecorator('source', {
+                          rules: [
+                            {
+                              required: true,
+                              message: '不能为空'
+                            }
+                          ]
+                        })(
+                          <Select
+                            onFocus={this.handleFocusGetSource}
+                            placeholder="请选择内面群组"
+                          >
+                            {sourceList.map(item => {
+                              return (
+                                <Option key={item.value} value={item.value}>
+                                  {item.label}
+                                </Option>
+                              );
+                            })}
+                          </Select>
                         )}
                       </Form.Item>
                       <Form.Item>

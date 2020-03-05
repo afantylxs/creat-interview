@@ -43,16 +43,16 @@ class PersonnelInformation extends Component {
 
   handleOpenAddModal = () => {
     const {
-      changeAddModalVisible,
-      queryUserListInfoByRolePermission
+      changeAddModalVisible
+      // queryUserListInfoByRolePermission
     } = this.props;
     changeAddModalVisible({
       addModalvisible: true
     });
-    queryUserListInfoByRolePermission({
-      key: 'add',
-      value: 'resourceMange'
-    });
+    // queryUserListInfoByRolePermission({
+    //   key: 'add',
+    //   value: 'resourceMange'
+    // });
   };
 
   componentDidMount() {

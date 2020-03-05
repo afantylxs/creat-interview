@@ -82,9 +82,10 @@ export const changeCurrentPage = payload => ({
 export const queryUserListInfoByRolePermission = payload => {
   return dispatch => {
     fetch
-      .get('/api/user/queryUserListInfoByRolePermission.json', {
+      .get('/api/user/queryInterviewUserListInfo.json', {
         params: {
-          permission: payload.value
+          permission: payload.value,
+          source: payload.source ? payload.source : ''
         }
       })
       .then(res => {
