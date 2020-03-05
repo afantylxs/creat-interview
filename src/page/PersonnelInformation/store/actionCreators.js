@@ -115,7 +115,7 @@ export const queryUserListInfoByRolePermission = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了');
@@ -166,7 +166,7 @@ export const queryInterviewList = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了');
@@ -207,7 +207,7 @@ export const addInterview = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了');
@@ -266,7 +266,34 @@ export const dictInfo = payload => {
         }
       })
       .catch(err => {
-        if (err && err.data.message) {
+        if (err && err.data && err.data.message) {
+          message.error(err.data.message);
+        } else {
+          message.error('出错了');
+        }
+      });
+  };
+};
+
+//查询项目接口（二期新）
+export const interviewProject = payload => {
+  return dispatch => {
+    fetch
+      .get('/api/interview/project/name')
+      .then(res => {
+        if (res && res.success && res.data) {
+          const { data = [] } = res;
+          dispatch(
+            changeFocusProjectList({
+              data
+            })
+          );
+        } else {
+          message.error('获取信息失败');
+        }
+      })
+      .catch(err => {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了');
@@ -293,7 +320,7 @@ export const queryInterviewInfoById = payload => {
         }
       })
       .catch(err => {
-        if (err.data.message) {
+        if (err && err.data && err.data.message) {
           message.error(err.data.message);
         } else {
           message.error('出错了');

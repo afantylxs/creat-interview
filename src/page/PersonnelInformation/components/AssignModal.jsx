@@ -18,8 +18,8 @@ class AssignModal extends Component {
   };
 
   handleGetDicInfo = key => {
-    const { dictInfo } = this.props;
-    dictInfo(key);
+    const { interviewProject } = this.props;
+    interviewProject();
   };
 
   //分配提交
