@@ -9,12 +9,12 @@ import {
 const interviewRouter = [
   '/interview/login',
   '/interview/home',
-  '/interview/personnel'
+  '/interview/personnel',
+  '/register'
 ];
 
 const incumbencyRouter = [
   '/login',
-  '/register',
   '/home',
   '/basic',
   '/education',
