@@ -15,7 +15,6 @@ class TurnoverRate extends Component {
     };
   }
   onChangeTurnoverRate = (date, dateString) => {
-    console.log('dateString', dateString);
     this.setState({
       dateString
     });
