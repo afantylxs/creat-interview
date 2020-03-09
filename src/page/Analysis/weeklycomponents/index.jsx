@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Tabs, message, Collapse, Icon } from 'antd';
+import moment from 'moment';
 import { connect } from 'react-redux';
 
 import WeeklyBuDepartment from './WeeklyBuDepartment.jsx';
@@ -41,6 +42,8 @@ class Weekly extends Component {
   };
   render() {
     const { weeklyJobClassYear, weeklyCityYear, weeklyYear } = this.props;
+    console.log('weeklyYear', weeklyYear);
+
     return (
       <div className="analusis-weekly">
         <Row>
@@ -55,7 +58,11 @@ class Weekly extends Component {
               )}
             >
               <Panel
-                header={`${weeklyYear.year}第${weeklyYear.week}周人员分布一览 -- 阿里实施 + 平台`}
+                header={`${
+                  weeklyYear.year ? weeklyYear.year : moment().weekYear()
+                }第${
+                  weeklyYear.week ? weeklyYear.week : moment().week()
+                }周人员分布一览 -- 阿里实施 + 平台`}
                 key="weeklyBu-department"
                 style={customPanelStyle}
               >

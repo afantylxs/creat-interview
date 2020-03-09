@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Button, Table, Input, Pagination, DatePicker } from 'antd';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import { actionCreators } from '../store';
 
@@ -9,7 +10,7 @@ class WeeklyBuDepartment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      endDate: '',
+      endDate: null,
       currentPage: 1
     };
     this.columns = [
@@ -53,9 +54,12 @@ class WeeklyBuDepartment extends Component {
       currentPage: page
     });
   };
+
   render() {
     const columns = this.columns;
-    const { currentPage } = this.state;
+    const { currentPage, endDate } = this.state;
+    console.log('endDate', endDate);
+
     const { weeklyDataList, weeklyTotal } = this.props;
     return (
       <div className="turnover-rate">
@@ -64,6 +68,7 @@ class WeeklyBuDepartment extends Component {
             <span>时间筛选：</span>
             <DatePicker
               showToday={false}
+              value={endDate ? moment(endDate) : null}
               onChange={this.onChangeTurnoverRate}
               placeholder="请选择日期"
             />

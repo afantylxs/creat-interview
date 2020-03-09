@@ -972,36 +972,6 @@ export const generalTableColumns = [
     title: '备注',
     dataIndex: 'projectRemark',
     width: '150px'
-  },
-  {
-    title: '离项时间',
-    dataIndex: 'leaveProjTime',
-    width: '100px',
-    render: (text, record) => {
-      return <span>{text ? moment(text).format('YYYY-MM-DD') : ''}</span>;
-    }
-  },
-  {
-    title: '离项原因',
-    dataIndex: 'leaveProjReasonName',
-    width: '100px'
-  },
-  {
-    title: '离项类型',
-    dataIndex: 'leaveProjType',
-    width: '100px',
-    render: (text, record) => {
-      switch (text) {
-        case 0:
-          return <span>被动</span>;
-
-        case 1:
-          return <span>主动</span>;
-
-        default:
-          break;
-      }
-    }
   }
 ];
 

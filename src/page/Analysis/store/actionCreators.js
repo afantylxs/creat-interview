@@ -233,7 +233,7 @@ export const queryEmployeeCountByDept = payload => {
       })
       .then(res => {
         if (res && res.success && res.data) {
-          const { data, total } = res.data;
+          const { data, total, currentWeeks, currentYears } = res.data;
           const weeklyDataList = [];
           if (data) {
             data.length &&
@@ -246,8 +246,8 @@ export const queryEmployeeCountByDept = payload => {
               });
             dispatch(
               changeWeeklyYear({
-                year: data[0].currentYears,
-                week: data[0].currentWeeks
+                year: currentYears,
+                week: currentWeeks
               })
             );
             dispatch(
@@ -282,7 +282,7 @@ export const queryEmployeeCountByWorkCity = payload => {
       })
       .then(res => {
         if (res && res.success && res.data) {
-          const { data, total } = res.data;
+          const { data, total, currentWeeks, currentYears } = res.data;
           const weeklyCityDataList = [];
           if (data) {
             data.length &&
@@ -296,8 +296,8 @@ export const queryEmployeeCountByWorkCity = payload => {
               });
             dispatch(
               changeWeeklyCity({
-                year: data[0].currentYears,
-                week: data[0].currentWeeks
+                year: currentYears,
+                week: currentWeeks
               })
             );
             dispatch(
@@ -332,7 +332,7 @@ export const queryEmployeeCountByJobClass = payload => {
       })
       .then(res => {
         if (res && res.success && res.data) {
-          const { data, total } = res.data;
+          const { data, total, currentWeeks, currentYears } = res.data;
           const weeklyJobClassList = [];
           if (data) {
             data.length &&
@@ -345,8 +345,8 @@ export const queryEmployeeCountByJobClass = payload => {
               });
             dispatch(
               changeWeeklyJobClass({
-                year: data[0].currentYears,
-                week: data[0].currentWeeks
+                year: currentYears,
+                week: currentWeeks
               })
             );
             dispatch(
