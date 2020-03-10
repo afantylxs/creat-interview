@@ -1,15 +1,5 @@
 //所有路由
-export const allRouterList = [
-  '/home',
-  '/basic',
-  '/project',
-  '/department',
-  '/leave',
-  '/analysis',
-  '/education',
-  '/interview/home',
-  '/interview/personnel'
-];
+export const allRouterList = ['/home', '/personnel'];
 
 //在职人员管理路由
 export const IncumbencyRouterList = [

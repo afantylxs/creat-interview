@@ -40,15 +40,6 @@ class Login extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { pathname } = this.props.location;
-    if (pathname === '/login') {
-      document.title = '在职人员管理系统';
-    }
-
-    if (pathname === '/interview/login') {
-      document.title = '内面管理系统';
-    }
-
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -74,17 +65,16 @@ class Login extends Component {
                   <Col span={4}>
                     <h2 style={{ fontSize: '30px' }}>登录</h2>
                   </Col>
-                  {pathname === '/interview/login' && (
-                    <Col className="login-click-to-login" span={12}>
-                      没有账号？
-                      <span
-                        className="login-click-login-btn"
-                        onClick={this.handleGoToRegister.bind(this)}
-                      >
-                        点此注册 >
-                      </span>
-                    </Col>
-                  )}
+
+                  <Col className="login-click-to-login" span={12}>
+                    没有账号？
+                    <span
+                      className="login-click-login-btn"
+                      onClick={this.handleGoToRegister.bind(this)}
+                    >
+                      点此注册 >
+                    </span>
+                  </Col>
 
                   <Col span={24}>
                     <Form {...formItemLayout} className="login-form">

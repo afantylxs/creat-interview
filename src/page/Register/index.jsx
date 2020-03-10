@@ -23,7 +23,7 @@ class Register extends Component {
 
   //跳转至登录页
   handleGoToLogin = () => {
-    this.props.history.push('/interview/login');
+    this.props.history.push('/login');
   };
 
   //提交注册信息

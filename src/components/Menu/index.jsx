@@ -54,74 +54,25 @@ class Menus extends Component {
   render() {
     const { pathname } = this.props.location;
 
-    if (IncumbencyRouterList.includes(pathname)) {
-      const activeKey = this.selectRouterAactive();
-      const { permission } = this.state;
-
-      return (
-        <div className="inservice-menu">
-          <Menu
-            theme="dark"
-            className="inservice-menu-antd"
-            style={{ backgroundColor: '#658ef7', color: '#fff' }}
-            selectedKeys={[activeKey]}
-            mode="horizontal"
-          >
-            <Menu.Item key="home">
-              <Link to="/home">首页</Link>
-            </Menu.Item>
-            {permission && permission !== 'recruitmentConsultant' && (
-              <Menu.Item key="basic">
-                <Link to="/basic">基础信息</Link>
-              </Menu.Item>
-            )}
-            <Menu.Item key="education">
-              <Link to="/education">学历信息</Link>
-            </Menu.Item>
-            {permission && permission !== 'recruitmentConsultant' && (
-              <Menu.Item key="project">
-                <Link to="/project">项目信息</Link>
-              </Menu.Item>
-            )}
-            {/* {permission && permission !== 'recruitmentConsultant' && (
-              <Menu.Item key="department">
-                <Link to="/department">人事调整</Link>
-              </Menu.Item>
-            )}*/}
-            {permission && permission !== 'recruitmentConsultant' && (
-              <Menu.Item key="leave">
-                <Link to="/leave">离职信息</Link>
-              </Menu.Item>
-            )}
-            {permission && permission !== 'recruitmentConsultant' && (
-              <Menu.Item key="analysis">
-                <Link to="/analysis">数据分析</Link>
-              </Menu.Item>
-            )}
-          </Menu>
-        </div>
-      );
-    } else if (inserviceRouterList.includes(pathname)) {
-      const activeKey = this.selectInserviceRouterAactive();
-      return (
-        <div className="inservice-menu">
-          <Menu
-            theme="dark"
-            selectedKeys={[activeKey]}
-            className="inservice-menu-antd"
-            style={{ backgroundColor: '#658ef7', color: '#fff' }}
-            mode="horizontal"
-          >
-            <Menu.Item key="/interview/home">
-              <Link to="/interview/home">首页</Link>
-            </Menu.Item>
-            <Menu.Item key="/interview/personnel">
-              <Link to="/interview/personnel">面试管理</Link>
-            </Menu.Item>
-          </Menu>
-        </div>
-      );
-    }
+    const activeKey = this.selectInserviceRouterAactive();
+    return (
+      <div className="inservice-menu">
+        <Menu
+          theme="dark"
+          selectedKeys={[activeKey]}
+          className="inservice-menu-antd"
+          style={{ backgroundColor: '#658ef7', color: '#fff' }}
+          mode="horizontal"
+        >
+          <Menu.Item key="/home">
+            <Link to="/home">首页</Link>
+          </Menu.Item>
+          <Menu.Item key="/personnel">
+            <Link to="/personnel">面试管理</Link>
+          </Menu.Item>
+        </Menu>
+      </div>
+    );
   }
 }
 export default withRouter(Menus);

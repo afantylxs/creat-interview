@@ -42,70 +42,32 @@ export default class Home extends Component {
     }
   }
   render() {
-    const { pathname } = this.props.location;
     //根据路由判断是进入人员管理还是内面系统
-    if (pathname === '/home') {
-      const { permission } = this.state;
-      if (permission && permission === 'recruitmentConsultant') {
-        homeList = ['提醒事项'];
-      }
-
-      if (permission && permission !== 'recruitmentConsultant') {
-        homeList = ['提醒事项', '转正提醒', '场地人数', '生日提醒'];
-      }
-      return (
-        <div className="layout-home">
-          <Row>
-            {homeList.map((item, index) => {
-              return (
-                <Col
-                  key={index}
-                  className="layout-home-col"
-                  span={12}
-                  style={{ height: '400px' }}
-                >
-                  <h2 className="layout-home-title">{item}</h2>
-                  <div className="layout-home-info">
-                    <div>
-                      {(item === '提醒事项' && <Reminder />) ||
-                        (item === '场地人数' && <FieldNumber />) ||
-                        (item === '生日提醒' && <BirthdayReminder />) ||
-                        (item === '转正提醒' && <Rejular />)}
-                    </div>
+    return (
+      <div className="layout-home">
+        <Row>
+          {interViewHomeList.map((item, index) => {
+            return (
+              <Col
+                key={index}
+                className="layout-home-col"
+                span={12}
+                style={{ height: '400px' }}
+              >
+                <h2 className="layout-home-title">{item}</h2>
+                <div className="layout-home-info">
+                  <div>
+                    {(item === '提醒事项' && <InterviewReminder />) ||
+                      (item === '面试提醒' && <InterviewRejular />) ||
+                      (item === '待分配简历' && <WaitingDistribution />) ||
+                      (item === '项目通过人数' && <ProjectApproval />)}
                   </div>
-                </Col>
-              );
-            })}
-          </Row>
-        </div>
-      );
-    } else {
-      return (
-        <div className="layout-home">
-          <Row>
-            {interViewHomeList.map((item, index) => {
-              return (
-                <Col
-                  key={index}
-                  className="layout-home-col"
-                  span={12}
-                  style={{ height: '400px' }}
-                >
-                  <h2 className="layout-home-title">{item}</h2>
-                  <div className="layout-home-info">
-                    <div>
-                      {(item === '提醒事项' && <InterviewReminder />) ||
-                        (item === '面试提醒' && <InterviewRejular />) ||
-                        (item === '待分配简历' && <WaitingDistribution />) ||
-                        (item === '项目通过人数' && <ProjectApproval />)}
-                    </div>
-                  </div>
-                </Col>
-              );
-            })}
-          </Row>
-        </div>
-      );
-    }
+                </div>
+              </Col>
+            );
+          })}
+        </Row>
+      </div>
+    );
   }
 }

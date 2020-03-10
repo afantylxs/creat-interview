@@ -12,13 +12,7 @@ class Header extends Component {
   handleCancleLogin = () => {
     localStorage.setItem('flag', false);
     localStorage.setItem('token', '');
-    const { pathname } = this.props.location;
-    if (IncumbencyRouterList.includes(pathname)) {
-      this.props.history.push('/login');
-    }
-    if (inserviceRouterList.includes(pathname)) {
-      this.props.history.push('/interview/login');
-    }
+    this.props.history.push('/login');
   };
   render() {
     const { pathname } = this.props.location;

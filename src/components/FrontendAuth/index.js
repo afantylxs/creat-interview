@@ -76,14 +76,6 @@ class FrontendAuth extends Component {
     }
   }
   render() {
-    const { pathname } = this.props.location;
-    if (interviewRouter.includes(pathname)) {
-      document.title = '内面管理系统';
-    }
-
-    if (incumbencyRouter.includes(pathname)) {
-      document.title = '在职人员管理系统';
-    }
     return null;
   }
 }
