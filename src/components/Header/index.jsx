@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Row, Col } from 'antd';
 import Menus from '../../components/Menu';
-import {
-  IncumbencyRouterList,
-  inserviceRouterList
-} from '../../utils/router.config.js';
 import './index.less';
 
 class Header extends Component {

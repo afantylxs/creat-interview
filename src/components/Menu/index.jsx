@@ -3,10 +3,6 @@ import { Link, withRouter } from 'react-router-dom';
 import { Menu } from 'antd';
 import fetch from '../../utils/axios.config';
 
-import {
-  IncumbencyRouterList,
-  inserviceRouterList
-} from '../../utils/router.config.js';
 import './index.less';
 
 class Menus extends Component {
@@ -37,23 +33,18 @@ class Menus extends Component {
   };
 
   componentDidMount() {
-    const { pathname } = this.props.location;
-    if (IncumbencyRouterList.includes(pathname)) {
-      fetch.get('/api/user/queryUserPermission.json').then(res => {
-        if (res && res.success) {
-          const { data } = res;
-          const permission = data[0].permission;
-          localStorage.setItem('permission', permission);
-          this.setState({
-            permission
-          });
-        }
-      });
-    }
+    fetch.get('/api/user/queryUserPermission.json').then(res => {
+      if (res && res.success) {
+        const { data } = res;
+        const permission = data[0].permission;
+        localStorage.setItem('permission', permission);
+        this.setState({
+          permission
+        });
+      }
+    });
   }
   render() {
-    const { pathname } = this.props.location;
-
     const activeKey = this.selectInserviceRouterAactive();
     return (
       <div className="inservice-menu">

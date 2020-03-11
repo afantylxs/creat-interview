@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'antd';
-import Reminder from './components/Reminder.jsx';
-import BirthdayReminder from './components/BirthdayReminder.jsx';
-import FieldNumber from './components/FieldNumber.jsx';
-import Rejular from './components/Rejular.jsx';
 import InterviewReminder from './interviewComponents/InterviewReminder.jsx';
 import InterviewRejular from './interviewComponents/InterviewRejular.jsx';
 import WaitingDistribution from './interviewComponents/WaitingDistribution.jsx';
 import ProjectApproval from './interviewComponents/ProjectApproval.jsx';
 import fetch from '../../utils/axios.config';
 import './index.less';
-let homeList = [];
 const interViewHomeList = [
   '提醒事项',
   '面试提醒',
@@ -31,8 +26,6 @@ export default class Home extends Component {
       fetch.get('/api/user/queryUserPermission.json').then(res => {
         if (res && res.success) {
           const { data } = res;
-          console.log('data', data);
-
           const permission = data[0].permission;
           this.setState({
             permission

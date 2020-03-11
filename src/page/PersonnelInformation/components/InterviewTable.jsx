@@ -18,6 +18,7 @@ class InterviewTable extends Component {
       updataId: '',
       currentPage: 1
     };
+
     this.columns = [
       {
         title: '姓名',
