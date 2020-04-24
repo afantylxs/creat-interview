@@ -5,6 +5,7 @@ import './index.less';
 
 let num = 2;
 let time = '';
+
 export default class Position extends Component {
   constructor(props) {
     super(props);
