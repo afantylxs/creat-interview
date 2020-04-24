@@ -1,26 +1,36 @@
 .inservice-menu {
     .inservice-menu-antd {
-        height: 100px;
-        line-height: 100px;
+        background-color: #2C2F33 !important;
+        height: 52px;
+        line-height: 52px;
+    }
+
+    .ant-menu-submenu {
+        background-color: #2C2F33;
+    }
+
+    .ant-menu-item-selected {
+        background-color: #2C2F33 !important;
     }
 
     .ant-menu-horizontal {
         border-bottom: none;
-        color: #fff;
 
         .ant-menu-item {
             border-bottom: none;
         }
 
         .ant-menu-item {
-            // padding: 0 45px;
-            margin-left: 3%;
-            font-size: 18px;
+            margin-left: 2%;
+            font-size: 14px;
         }
 
-        .ant-menu-item-selected {
-            background-color: #426fe3;
-            // padding: 0 45px;
+        .ant-menu-item-selected>a {
+            color: #F37327;
+        }
+
+        .ant-menu-item>a:hover {
+            color: #F37327;
         }
     }
 }

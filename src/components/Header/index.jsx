@@ -14,19 +14,19 @@ class Header extends Component {
     const { pathname } = this.props.location;
     return (
       <div className="inservice-header">
-        <Row style={{ height: '100%', display: 'flex' }}>
-          <Col span={5}>
+        <Row className="inservice-header-auto">
+          <Col className="inservice-logo" span={6}>
             <div className="inservice-header-logo"></div>
+            <i className="inservice-logo-line"></i>
+            <i className="inservice-logo-title">社招官网</i>
           </Col>
-          <Col span={16} className="inservice-header-menu">
+          <Col span={13} className="inservice-header-menu">
             <Menus />
           </Col>
-          <Col span={3} style={{ display: 'flex', justifyContent: 'center' }}>
-            {pathname !== '/login' && (
-              <Button onClick={this.handleCancleLogin.bind(this)}>
-                退出登录
-              </Button>
-            )}
+          <Col className="inservice-header-login" span={5}>
+            <div className="inservice-header-login-welcome">
+              欢迎来到阿里巴巴集团招聘！
+            </div>
           </Col>
         </Row>
       </div>

@@ -1,18 +1,68 @@
 .inservice-header {
-    height: 100px;
-    background-color: #658ef7;
+    height: 52px;
+    background-color: #2C2F33;
 
-    .ant-col {
-        display: flex;
-        align-items: center;
+    .inservice-header-auto {
+        width: 1000px;
+        margin: 0 auto;
     }
 
-    .inservice-header-logo {
-        width: 208px;
-        height: 91px;
-        background-image: url('../../images/logo.png');
-        background-repeat: no-repeat;
-        background-size: 208px 91px;
+    // .ant-col {
+    //     display: flex;
+    //     align-items: center;
+    // }
+    .inservice-logo {
+        height: 52px;
+        position: relative;
+
+        .inservice-header-logo {
+            position: absolute;
+            top: 50%;
+            margin-top: -10px;
+            width: 124px;
+            height: 20px;
+            background-image: url('../../images/ali.png');
+            background-repeat: no-repeat;
+            background-size: 124px 20px;
+
+        }
+
+        .inservice-logo-line {
+            position: absolute;
+            top: 50%;
+            margin: 0 10px;
+            margin-top: -10px;
+            left: 124px;
+            height: 20px;
+            width: 1px;
+            background-color: white;
+            opacity: 0.8;
+
+        }
+
+        .inservice-logo-title {
+            position: absolute;
+            font-style: normal;
+            top: 50%;
+            margin: 0 10px;
+            font-size: 14px;
+            margin-top: -10px;
+            left: 135px;
+            color: white;
+            opacity: 0.8;
+
+        }
+    }
+
+    .inservice-header-login {
+        .inservice-header-login-welcome {
+            height: 54px;
+            font-size: 14px;
+            line-height: 54px;
+            color: white;
+            opacity: 0.8;
+            font-size: 12px;
+        }
     }
 
 

@@ -1,29 +1,74 @@
 .layout-home {
-    padding-top: 50px;
-    background-color: #f4f7ff;
+    height: 478px;
+    margin-top: -2px;
+    position: relative;
 
-    .layout-home-col {
-        background-color: #f4f7ff;
-        position: relative;
+    .layout-home-banner {
+        width: 100%;
+        vertical-align: middle;
+        font-size: 0;
+    }
 
-        .layout-home-title {
-            text-indent: 20px;
-            width: 77%;
-            position: absolute;
-            left: 50%;
-            top: 0;
-            transform: translate(-50%);
+    .layout-home-search {
+        width: 490px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -245px;
+        margin-top: -131px;
+
+        p {
+            color: #fff;
+            font-size: 54px;
+            line-height: 56px;
+            margin: 0;
         }
 
-        .layout-home-info {
-            width: 77%;
-            height: 300px;
-            background-color: #fff;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            border: 1px solid #dadada;
+        .search-title {
+            font-size: 36px;
+            line-height: 48px;
         }
+
+        .home-search-btn {
+            margin-top: 20px;
+            padding: 10px 10px 10px 0;
+
+            .home-search-input {
+                width: 368px;
+                height: 40px;
+                margin-top: 1px;
+                border-radius: 3px;
+            }
+
+            .search-click {
+                width: 92px;
+                height: 40px;
+                background-color: #F37327;
+                margin-left: 10px;
+                border-radius: 3px;
+                color: white;
+                border: 0;
+            }
+
+        }
+
+        .search-hot {
+            color: white;
+
+            .search-hot-span {
+                margin-left: 8px;
+                cursor: pointer;
+            }
+
+            .search-hot-span:hover {
+                color: #F37327;
+            }
+        }
+    }
+
+    .layout-home-content {
+        width: 1180px;
+        margin: 32px auto;
+        height: 100px;
     }
 }

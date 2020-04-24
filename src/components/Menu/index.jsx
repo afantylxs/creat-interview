@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Menu } from 'antd';
+import { menuRouter } from '../../utils/router.config.js';
 import fetch from '../../utils/axios.config';
 
 import './index.less';
@@ -9,13 +10,15 @@ class Menus extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      permission: ''
+      permission: '',
     };
   }
   selectRouterAactive = () => {
     const { pathname } = this.props.location;
     let activeKey = '';
     activeKey = pathname.substr(1);
+    console.log('activeKey', activeKey, 'pathname', pathname);
+
     if (pathname !== '/') {
       activeKey = pathname.substr(1);
     }
@@ -26,26 +29,19 @@ class Menus extends Component {
     return activeKey;
   };
 
-  selectInserviceRouterAactive = () => {
-    const { pathname } = this.props.location;
-    const activeKey = pathname;
-    return activeKey;
-  };
-
-  componentDidMount() {
-    fetch.get('/api/user/queryUserPermission.json').then(res => {
-      if (res && res.success) {
-        const { data } = res;
-        const permission = data[0].permission;
-        localStorage.setItem('permission', permission);
-        this.setState({
-          permission
-        });
-      }
+  // 渲染导航栏
+  handleRenderMenu = () => {
+    const menuList = menuRouter.map((item) => {
+      return (
+        <Menu.Item key={item.key}>
+          <Link to={item.path}>{item.label}</Link>
+        </Menu.Item>
+      );
     });
-  }
+    return menuList;
+  };
   render() {
-    const activeKey = this.selectInserviceRouterAactive();
+    const activeKey = this.selectRouterAactive();
     return (
       <div className="inservice-menu">
         <Menu
@@ -55,12 +51,7 @@ class Menus extends Component {
           style={{ backgroundColor: '#658ef7', color: '#fff' }}
           mode="horizontal"
         >
-          <Menu.Item key="/home">
-            <Link to="/home">首页</Link>
-          </Menu.Item>
-          <Menu.Item key="/personnel">
-            <Link to="/personnel">面试管理</Link>
-          </Menu.Item>
+          {this.handleRenderMenu()}
         </Menu>
       </div>
     );
