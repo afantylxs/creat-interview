@@ -10,6 +10,7 @@ class Layout extends Component {
       <div style={{ minWidth: '1300px' }}>
         <Header />
         <Switch>
+          <Route exact path="/" component={Home} />
           <Route exact path="/home" component={Home} />
           <Route exact path="/society" component={Error} />
           <Route exact path="/campus" component={Error} />

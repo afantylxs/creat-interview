@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Menu } from 'antd';
 import { menuRouter } from '../../utils/router.config.js';
-import fetch from '../../utils/axios.config';
 
 import './index.less';
 
@@ -17,8 +16,6 @@ class Menus extends Component {
     const { pathname } = this.props.location;
     let activeKey = '';
     activeKey = pathname.substr(1);
-    console.log('activeKey', activeKey, 'pathname', pathname);
-
     if (pathname !== '/') {
       activeKey = pathname.substr(1);
     }
